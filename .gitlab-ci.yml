@@ -7,11 +7,7 @@ build:
   script:
     - cp app/mock-google-services.json app/google-services.json
     - gradlew build
-
-job1:
-  stage: test
-  script:
     - gradlew test
+
   tags:
     - android
-
