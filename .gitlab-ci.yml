@@ -1,0 +1,12 @@
+image: cangol/android-gradle
+stages:
+  - build
+
+build:
+  stage: build
+  script:
+    - cp app/mock-google-services.json app/google-services.json
+    - gradlew build
+    - ./gradlew test
+  only:
+    - master
