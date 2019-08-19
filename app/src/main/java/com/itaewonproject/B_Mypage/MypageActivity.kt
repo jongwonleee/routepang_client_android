@@ -1,7 +1,10 @@
 package com.itaewonproject.B_Mypage
 
+import android.content.ClipboardManager
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.viewpager.widget.ViewPager
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.material.tabs.TabLayout
@@ -11,7 +14,7 @@ class MypageActivity : AppCompatActivity(){
 
     private lateinit var tabLayout:TabLayout
     private lateinit var viewPager:ViewPager
-
+    private lateinit var clipBoard:ClipboardManager
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -24,5 +27,11 @@ class MypageActivity : AppCompatActivity(){
         adapter.addPage(ReviewFragment(),"Review")
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)
+
+        var clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        clipboard.addPrimaryClipChangedListener {
+            Log.i("!!!!","${clipboard.text}")
+        }
     }
+
 }

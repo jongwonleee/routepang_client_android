@@ -32,12 +32,17 @@ class LinkShareActivity : AppCompatActivity() {
         setContentView(R.layout.activity_link_share)
 
         initActivity()
-        if (Intent.ACTION_SEND == intent.action && intent.type != null) {
+        /*if (Intent.ACTION_SEND == intent.action && intent.type != null) {
             if ("text/plain" == intent.type) {
                 val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)    // 가져온 인텐트의 텍스트 정보
                 textLink.text= Editable.Factory.getInstance().newEditable(sharedText)
                 textLink.isEnabled=false
             }
+        }*/
+        if (intent.getStringExtra(Intent.EXTRA_TEXT) != null) {
+            var url = intent.getStringExtra(Intent.EXTRA_TEXT)
+            textLink.text= Editable.Factory.getInstance().newEditable(url)
+            textLink.isEnabled=false
         }
     }
 
