@@ -20,12 +20,16 @@ import com.itaewonproject.ServerResult.Route
 import java.io.IOException
 import java.net.HttpURLConnection.HTTP_OK
 import android.content.ContentValues
+import android.icu.text.CaseMap
 import android.os.Build
+import com.itaewonproject.ServerResult.Folder
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
+import java.sql.Timestamp
+import java.time.LocalDateTime
 
 
 object APIs{
@@ -117,22 +121,31 @@ object APIs{
         return API1JsonParsing(longitude,latitude,apiResult)
     }
 
-    fun B_API1(userID:Int):ArrayList<Route>{
-        var arr= ArrayList<Route>()
-        var in1 = Route("InRoute1","바르셀로나",101,"2019-05-05",ArrayList<Route>())
-        var in2 = Route("InRoute2","바르셀로나",102,"2019-05-06",ArrayList<Route>())
-        var in3 = Route("InRoute3","바르셀로나",103,"2019-05-07",ArrayList<Route>())
-        var in4 = Route("InRoute4","바르셀로나",101,"2019-05-08",ArrayList<Route>())
-        var r1 = Route("바르셀로나 여행기","바르셀로나",1,"2019-05-08",arrayListOf(in1,in2,in3,in4))
-        var r2 = Route("바르셀로나 여행기","바르셀로나",2,"2019-05-08",arrayListOf(in1,in2,in3,in4))
-        var r3 = Route("바르셀로나 여행기","바르셀로나",3,"2019-05-08",arrayListOf(in1,in2,in3,in4))
-        arr.add(r1)
-        arr.add(Route("바르셀로나 여행기","바르셀로나",15,"2019-05-08",arrayListOf(in1,in2,in3,in4)))
-        for(i in 0 .. 9){
-            arr.add(Route("여행기 $i","스페인 어딘가",4+i,"2019-03-0$i",ArrayList<Route>()))
-        }
-        arr.add(r2)
-        arr.add(r3)
+    fun B_API1(userID:Int):ArrayList<Folder>{
+        var arr= ArrayList<Folder>()
+        var in1 = Route("InRoute1","바르셀로나",101, Timestamp(1479249799770))
+        var in2 = Route("InRoute2","바르셀로나",102,Timestamp(System.currentTimeMillis()))
+        var in3 = Route("InRoute3","바르셀로나",103,Timestamp(System.currentTimeMillis()))
+        var in4 = Route("InRoute4","바르셀로나",101,Timestamp(System.currentTimeMillis()))
+        var r1 = Route("바르셀로나 여행기1","바르셀로나",1,Timestamp(1479249799770))
+        var r2 = Route("바르셀로나 여행기2","바르셀로나",2,Timestamp(System.currentTimeMillis()))
+        var r3 = Route("바르셀로나 여행기3","바르셀로나",3,Timestamp(System.currentTimeMillis()))
+        var r4 = Route("바르셀로나 여행기4","바르셀로나",4,Timestamp(System.currentTimeMillis()))
+        var r5 = Route("바르셀로나 여행기5","바르셀로나",5,Timestamp(System.currentTimeMillis()))
+        var r6 = Route("바르셀로나 여행기6","바르셀로나",6,Timestamp(System.currentTimeMillis()))
+        arr.add(Folder("바르셀로나 폴더1","바르셀로나",1,arrayListOf(in1,in2,in3,in4)))
+        arr.add(Folder("바르셀로나 폴더2","바르셀로나",2,arrayListOf(in1,in2,in3)))
+        arr.add(Folder("바르셀로나 폴더3","바르셀로나",3,arrayListOf(in1,in3,in4)))
+        arr.add(Folder("","바르셀로나",4,arrayListOf(r1)))
+        arr.add(Folder("","바르셀로나",5,arrayListOf(r2)))
+        arr.add(Folder("","바르셀로나",6,arrayListOf(r3)))
+        arr.add(Folder("","바르셀로나",7,arrayListOf(r4)))
+        arr.add(Folder("","바르셀로나",8,arrayListOf(r5)))
+        arr.add(Folder("","바르셀로나",9,arrayListOf(r6)))
+        arr.add(Folder("바르셀로나 폴더4","바르셀로나",10,arrayListOf(in1,in2,in3,in4)))
+        arr.add(Folder("바르셀로나 폴더5","바르셀로나",11,arrayListOf(in1,in2,in3)))
+        arr.add(Folder("바르셀로나 폴더6","바르셀로나",12,arrayListOf(in1,in3,in4)))
+
         return arr
     }
 
@@ -167,7 +180,7 @@ object APIs{
     }
 
     fun API2(placeID:String):ArrayList<Article>{
-       /*var ref = listOf<String>("https://facebookbrand.com/wp-content/themes/fb-branding/assets/images/fb-logo.png?v2",
+       var ref = listOf<String>("https://facebookbrand.com/wp-content/themes/fb-branding/assets/images/fb-logo.png?v2",
             "https://instagram-brand.com/wp-content/uploads/2016/11/Instagram_AppIcon_Aug2017.png?w=300")
         var link = listOf<String>("http://www.facebook.com","http://www.instagram.com")
 
@@ -245,11 +258,11 @@ object APIs{
                 }
             ]
         """.trimIndent()
-*/
-         var taskAPI2 = TaskAPI2()
+
+        /* var taskAPI2 = TaskAPI2()
 
         taskAPI2.execute()
-        var apiResult = taskAPI2.get()
+        var apiResult = taskAPI2.get()*/
         var arr = ArrayList<Article>()
         var gson = Gson()
         try{
@@ -280,6 +293,10 @@ object APIs{
         }
         return bmp
     }
+
+    /*fun requestRouteDetail(routeId:Int):ArrayList<Location>{
+
+    }*/
 
 
     class TaskAPI1: AsyncTask<Map<String, String>, Integer, String>() {

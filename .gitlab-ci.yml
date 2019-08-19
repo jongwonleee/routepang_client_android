@@ -1,13 +1,32 @@
-image: cangol/android-gradle
+image: switaewon/android-build
 stages:
   - build
   - test
 build:
-  stage: build
-  script:
-    - cp app/mock-google-services.json app/google-services.json
-    - gradlew build
-    - gradlew test
+    artifacts:
+        expire_in: 4 hours
+        paths:
+            - app/build/outputs/
+            - .android/
+    stage: build
+    script:
+        - pwd
+        - "cp app/mock-google-services.json app/google-services.json"
+        - ./gradlew assembleDebug
 
-  tags:
-    - android
+    tags:
+        - android
+
+test:
+    stage: test
+    
+    before_script:
+        - "cp app/mock-google-services.json app/google-services.json"
+
+    script:
+        - ./gradlew -Pci --console=plain :app:testDebug
+        - ./gradlew build
+        - ./gradlew test
+    
+    tags:
+        - android

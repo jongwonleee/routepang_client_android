@@ -7,13 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.ViewPager
 import com.itaewonproject.R
+import com.itaewonproject.ServerResult.Route
 
 
 class RouteFragment : Fragment() {
 
     //private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager
-
+    private lateinit var adapter:TabPagerAdapter
+    lateinit var route:Route
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -21,7 +23,7 @@ class RouteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         //tabLayout = view.findViewById(R.id.tabLayout) as TabLayout
         viewPager = view.findViewById(R.id.viewPager) as ViewPager
-        var adapter = TabPagerAdapter(childFragmentManager!!,3)
+        adapter = TabPagerAdapter(childFragmentManager!!,3)
         adapter.addPage(RouteListFragment(),"List")
         adapter.addPage(RouteEditFragment(),"Edit")
         adapter.addPage(RouteMapFragment(),"Map")
@@ -33,12 +35,19 @@ class RouteFragment : Fragment() {
         fragmentTransaction.commit()*/
     }
 
-  /*  fun toEditFragment(pos:Int){
-        var fragmentTransaction = fragmentManager!!.beginTransaction()
+    fun toEditFragment(item: Route){
+        route = item
+        viewPager.setCurrentItem(viewPager.currentItem+1,true)
+       /* var fragmentTransaction = fragmentManager!!.beginTransaction()
         fragmentTransaction.replace(R.id.fragment,RouteEditFragment())
         fragmentTransaction.commit()
-        Log.i("!!~~","!!!")
-    }*/
+        Log.i("!!~~","!!!")*/
+    }
+    fun toFragment(next:Boolean){
+        if(next)viewPager.setCurrentItem(viewPager.currentItem+1,true)
+        else viewPager.setCurrentItem(viewPager.currentItem-1,true)
+    }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment

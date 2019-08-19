@@ -11,6 +11,8 @@ class RoutesItemTouchHelperCallback (var adapter:AdapterRouteList): ItemTouchHel
     private var listener:OnItemMoveListener
     private var mFrom:Int?=null
     private var mTo:Int?=null
+    private var befY:Int?=null
+    private var aftY:Int?=null
     lateinit var movedTime: Date
     init{
         listener = adapter
@@ -21,8 +23,9 @@ class RoutesItemTouchHelperCallback (var adapter:AdapterRouteList): ItemTouchHel
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
         var dragFlag:Int =ItemTouchHelper.UP or ItemTouchHelper.DOWN
         var pos = viewHolder.layoutPosition
-        var routes = adapter.routes
+        var routes = adapter.list
         if(pos<routes.size){
+            //if()
             return makeMovementFlags(dragFlag,ItemTouchHelper.LEFT)
         }else
         {
@@ -34,12 +37,16 @@ class RoutesItemTouchHelperCallback (var adapter:AdapterRouteList): ItemTouchHel
 
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
-        if(mFrom!=null && mTo!=null){
+
+        if(mFrom!=null && mTo!=null&& befY!=null && aftY!=null){
             listener.OnMerge(mFrom!!,mTo!!,movedTime)
 
         }
         mTo = null
         mFrom = null
+        befY=null
+        aftY=null
+
     }
 
     override fun onMove(
@@ -50,12 +57,13 @@ class RoutesItemTouchHelperCallback (var adapter:AdapterRouteList): ItemTouchHel
         /*if (viewHolder.getItemViewType() != target.getItemViewType()) {
             return false;
         }*/
+        Log.i("!!!@","$befY + $aftY, $mFrom $mTo")
 
         // remember FIRST from position
-        if (mFrom == null)
             mFrom = viewHolder.adapterPosition
-        mTo = target.adapterPosition
+            mTo = target.adapterPosition
         movedTime= Date()
+
         // Notify the adapter of the move
         return true
     }
@@ -69,6 +77,8 @@ class RoutesItemTouchHelperCallback (var adapter:AdapterRouteList): ItemTouchHel
         x: Int,
         y: Int
     ) {
+        if(befY==null) befY=y
+        else aftY=y
         //Log.i("!!!","$fromPos, $toPos")
         //listener.OnItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
     }

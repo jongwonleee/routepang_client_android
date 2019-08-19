@@ -1,6 +1,7 @@
 package com.itaewonproject.B_Mypage
 
 import android.os.Bundle
+import android.util.Log
 import android.view.InflateException
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.APIs
 import com.itaewonproject.RecyclerviewAdapter.AdapterRouteList
+import com.itaewonproject.ServerResult.Folder
 import com.itaewonproject.ServerResult.Route
 
 class RouteListFragment: Fragment(),AdapterRouteList.OnStartDragListener {
@@ -19,7 +21,7 @@ class RouteListFragment: Fragment(),AdapterRouteList.OnStartDragListener {
     }
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var list:ArrayList<Route>
+    private lateinit var list:ArrayList<Folder>
     private lateinit var itemTouchHelper:ItemTouchHelper
     private lateinit var par:RouteFragment
     private lateinit var adapter:AdapterRouteList
@@ -38,7 +40,8 @@ class RouteListFragment: Fragment(),AdapterRouteList.OnStartDragListener {
         itemTouchHelper.attachToRecyclerView(recyclerView)
         adapter.setOnItemClickClickListener(object: AdapterRouteList.onItemClickListener {
             override fun onItemClick(v: View, position: Int) {
-               // par.toEditFragment(position)
+                Log.i("!@!","!!")
+                (parentFragment as RouteFragment).toEditFragment(adapter.list[position] as Route)
             }
 
         })

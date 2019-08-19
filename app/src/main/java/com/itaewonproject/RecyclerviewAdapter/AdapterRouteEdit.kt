@@ -20,12 +20,13 @@ import kotlin.collections.ArrayList
 class AdapterRouteEdit(val context: Context, var edits:ArrayList<Location>, var startDragListener:OnStartDragListener) :
     RecyclerView.Adapter<AdapterRouteEdit.EditViewHolder>(),
     EditItemTouchHelperCallback.OnItemMoveListener {
+    private lateinit var listener: onItemClickListener
+    private var editMode=false
     override fun OnItemDrag(from: Int, to: Int,date:Date): Boolean {
         notifyDataSetChanged()
         return true
     }
 
-    private lateinit var listener: onItemClickListener
     override fun OnItemMove(from: Int, to: Int): Boolean {
         Log.i("Moving","$from, $to")
         Collections.swap(edits,from,to)
@@ -41,6 +42,10 @@ class AdapterRouteEdit(val context: Context, var edits:ArrayList<Location>, var 
         return true
     }
 
+    fun setEditMode(mode:Boolean){
+        editMode=mode
+        notifyDataSetChanged()
+    }
 
     override fun onBindViewHolder(holder: EditViewHolder, position: Int) {
         holder.bind(position)
@@ -82,15 +87,6 @@ class AdapterRouteEdit(val context: Context, var edits:ArrayList<Location>, var 
             lineUp=itemView.findViewById(R.id.line_up) as View
             category=itemView.findViewById(R.id.image_category) as ImageView
 
-           /* itemView.setOnClickListener(View.OnClickListener {
-                val pos = adapterPosition
-                if(pos!=RecyclerView.NO_POSITION){
-                    if(listener!=null){
-                        listener.onItemClick(it,pos)
-                    }
-                }
-            })*/
-
 
         }
 
@@ -109,6 +105,12 @@ class AdapterRouteEdit(val context: Context, var edits:ArrayList<Location>, var 
                 lineDown.visibility=View.VISIBLE
             }
             category.setImageBitmap(APIs.getCategoryImage(edit.category))
+            if(editMode){
+                drag.visibility=View.VISIBLE
+            }else
+            {
+                drag.visibility=View.INVISIBLE
+            }
 
             drag.setOnTouchListener({ view: View, motionEvent: MotionEvent ->
                 if(MotionEventCompat.getActionMasked(motionEvent)==MotionEvent.ACTION_DOWN){

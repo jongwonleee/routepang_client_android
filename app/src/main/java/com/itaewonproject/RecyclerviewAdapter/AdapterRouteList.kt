@@ -23,12 +23,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.B_Mypage.RouteListFragment
 import com.itaewonproject.B_Mypage.RoutesItemTouchHelperCallback
 import com.itaewonproject.R
+import com.itaewonproject.ServerResult.Folder
 import com.itaewonproject.ServerResult.Route
+import com.itaewonproject.ServerResult.RouteListBase
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class AdapterRouteList(val context: Context,route:ArrayList<Route>,var startDragListener:OnStartDragListener) :
+class AdapterRouteList(val context: Context, folderArray:ArrayList<Folder>, var startDragListener:OnStartDragListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(),
     RoutesItemTouchHelperCallback.OnItemMoveListener{
     override fun OnShake(pos: Int, date: Date) {
@@ -36,7 +38,7 @@ class AdapterRouteList(val context: Context,route:ArrayList<Route>,var startDrag
     }
 
     override fun OnMerge(from: Int, to: Int, date: Date) {
-        routes.makeFolder(from,to)
+        //routes.makeFolder(from,to)
         /*if((Date().time-date.time)>500)
         {
 
@@ -48,35 +50,19 @@ class AdapterRouteList(val context: Context,route:ArrayList<Route>,var startDrag
     }
 
     private lateinit var listener: onItemClickListener
-    var routes = RouteListManager(route)
 
-    /*override fun OnItemDrag(from: Int, to: Int, date: Date): Boolean {
-        Log.i("!!","${date.seconds}, ${Date().seconds}, ${Date().time-date.time}")
-        if((Date().time-date.time)>1000)
-        {
-            //Log.i("!!","from:$from , to:$to")
-            if(routes[from].childRoute.isEmpty()){
-                routes[to].childRoute.add(routes[from])
-            }else
-            {
-                routes[to].childRoute.addAll(routes[from].childRoute)
-            }
-            routes.removeAt(from)
-            notifyDataSetChanged()
-        }
-        return true
-    }*/
-/*
-    override fun OnItemMove(from: Int, to: Int): Boolean {
-        Log.i("!!","$from,$to")
-        Collections.swap(routes,from,to)
-        notifyItemMoved(from,to)
-        return true
-    }*/
+    var list:ArrayList<RouteListBase>
+    var folder: FolderListManager
+
+    init{
+        list = ArrayList()
+        folder = FolderListManager(folderArray)
+    }
+
 
     override fun OnItemSwipe(pos: Int): Boolean {
-        Log.i("Removing","$pos, ${routes[pos].title}")
-        routes.removeAt(pos)
+        //Log.i("Removing","$pos, ${folder[pos].title}")
+        folder.remove(pos)
         notifyItemRemoved(pos)
         //notifyDataSetChanged()
         return true
@@ -94,13 +80,12 @@ class AdapterRouteList(val context: Context,route:ArrayList<Route>,var startDrag
     }
 
     override fun getItemCount(): Int {
-        return routes.size +1
+        return list.size +1
     }
 
     override fun getItemViewType(position: Int): Int {
-        if(position==routes.size) return 2
-        else if (routes.isFolder(position)) return 1
-        else return 0
+        if(position==list.size) return 2
+        else return list[position].type
     }
 
     interface onItemClickListener{
@@ -132,17 +117,14 @@ class AdapterRouteList(val context: Context,route:ArrayList<Route>,var startDrag
         }
 
         override fun bind(pos:Int){
-            var route = routes[pos]
-            title.text = Editable.Factory.getInstance().newEditable(route.title)
+            var route = list[pos]
+            title.text = route.title
             location.text=route.location
-            updated.text=route.updated
+            updated.text=route.date
             itemView.setOnClickListener(View.OnClickListener {
-                val pos = adapterPosition
-                if(pos!=RecyclerView.NO_POSITION){
-                    //routeFragment.toEditFragment(pos)
-                }
+                listener.onItemClick(itemView,pos)
             })
-            if(routes[pos].opened) {
+            if(folder.isOpened(pos)) {
                 background.background = Color.LTGRAY.toDrawable()
             }
             else {
@@ -172,7 +154,7 @@ class AdapterRouteList(val context: Context,route:ArrayList<Route>,var startDrag
 
     inner class GroupViewHolder(itemView: View) : BaseViewHolder(itemView),OnStartDragListener {
         private var drag:ImageView
-        private var folder:ImageView
+        private var folderImage:ImageView
         private var textTitle:TextView
         private var editTitle:EditText
         private var location:TextView
@@ -186,9 +168,8 @@ class AdapterRouteList(val context: Context,route:ArrayList<Route>,var startDrag
         }
 
         init{
-
             drag = itemView.findViewById(R.id.image_drag) as ImageView
-            folder = itemView.findViewById(R.id.image_folder) as ImageView
+            folderImage = itemView.findViewById(R.id.image_folder) as ImageView
             textTitle = itemView.findViewById(R.id.text_title) as TextView
             editTitle = itemView.findViewById(R.id.edit_title) as EditText
             location = itemView.findViewById(R.id.text_location) as TextView
@@ -201,13 +182,13 @@ class AdapterRouteList(val context: Context,route:ArrayList<Route>,var startDrag
         }
 
         override fun bind(pos:Int){
-            var route = routes[pos]
+            var route = list[pos]
             textTitle.text=route.title
             editTitle.text = Editable.Factory.getInstance().newEditable(route.title)
             location.text=route.location
-            updated.text=route.updated
+            updated.text=route.date
 
-            if(routes[pos].opened) {
+            if(folder.isOpened(pos)) {
                 background.background = Color.LTGRAY.toDrawable()
             }
             else {
@@ -215,17 +196,17 @@ class AdapterRouteList(val context: Context,route:ArrayList<Route>,var startDrag
             }
 
             background.setOnClickListener({
-                routes.open(pos)
-                if(routes[pos].opened) {
+                folder.open(pos)
+                if(folder.isOpened(pos)) {
                     background.background = Color.LTGRAY.toDrawable()
-                    folder.setImageResource(R.drawable.ic_folder_open_black_24dp)
+                    folderImage.setImageResource(R.drawable.ic_folder_open_black_24dp)
                     editTitle.visibility=View.VISIBLE
                     textTitle.visibility=View.INVISIBLE
                     drag.visibility=View.INVISIBLE
                 }
                 else {
                     background.background = Color.WHITE.toDrawable()
-                    folder.setImageResource(R.drawable.ic_folder_black_24dp)
+                    folderImage.setImageResource(R.drawable.ic_folder_black_24dp)
                     editTitle.visibility=View.INVISIBLE
                     textTitle.visibility=View.VISIBLE
                     drag.visibility=View.VISIBLE
@@ -243,8 +224,57 @@ class AdapterRouteList(val context: Context,route:ArrayList<Route>,var startDrag
 
         }
     }
+    inner class FolderListManager(var folders:ArrayList<Folder>):LinkedList<Folder>(){
+        var opened = ArrayList<Boolean>()
+        init{
+            setList()
+        }
 
-    inner class RouteListManager(routes:ArrayList<Route>): LinkedList<Route>() {
+        fun isOpened(pos:Int):Boolean{
+            return opened[pos]
+        }
+
+        /*fun isFolder(pos:Int):Boolean{
+            if(opened[pos])
+        }*/
+
+        fun setList(){
+            list.clear()
+            opened.clear()
+            for(f in folders){
+                f.parIndex=-1
+                if(f.routes.size==1){
+                    list.add(f.routes[0])
+                }else{
+                    list.add(f)
+                }
+                if(f.opened){
+                    opened.add(true)
+                    for( c in f.routes){
+                        c.parIndex = list.indexOf(f)
+                        list.add(c)
+                        opened.add(true)
+                    }
+                }else
+                {
+                    opened.add(false)
+                }
+            }
+        }
+
+        fun open(pos:Int){
+            folders[pos].opened = !folders[pos].opened
+            setList()
+        }
+
+        fun remove(pos:Int){
+            if(list[pos].parIndex==-1){
+
+            }
+        }
+
+    }
+/*    inner class RouteListManager(routes:ArrayList<Route>): LinkedList<Route>() {
         var child : HashSet<Int>
         init{
             this.addAll(routes)
@@ -259,11 +289,11 @@ class AdapterRouteList(val context: Context,route:ArrayList<Route>,var startDrag
             for( i in pos..0)
                 if(!isChild(i)) return i
             return -1
-
         }
 
+
+
         fun makeFolder(from:Int,to:Int){
-            Log.i("!!!mf","${isChild(from)} ${isChild(to)}")
             if(!isChild(from) && !isChild(to)){// from, to 둘다 흰배경 안열림
                 if(isFolder(from)){
                     this[to].childRoute.addAll(this[from].childRoute)
@@ -317,6 +347,9 @@ class AdapterRouteList(val context: Context,route:ArrayList<Route>,var startDrag
         fun isFolder(pos:Int):Boolean{
             return this[pos].childRoute.size>0
         }
+        fun isFolder(pos:Route):Boolean{
+            return pos.childRoute.size>0
+        }
 
         fun open(pos:Int){
             if(isFolder(pos))
@@ -342,6 +375,6 @@ class AdapterRouteList(val context: Context,route:ArrayList<Route>,var startDrag
             return isFolder(pos) && this[pos].opened
         }
 
-    }
+    }*/
 
 }

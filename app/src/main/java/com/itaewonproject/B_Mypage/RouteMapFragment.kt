@@ -27,12 +27,17 @@ class RouteMapFragment : Fragment(),OnMapReadyCallback {
     private lateinit var mMap:GoogleMap
     private lateinit var mapView:MapView
     private lateinit var autoCompleteButton:ImageView
+    private lateinit var buttonMap:ImageView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mapView = view.findViewById(R.id.map) as MapView
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
 
+        buttonMap = view.findViewById(R.id.image_map)
+        buttonMap.setOnClickListener({
+            (parentFragment as RouteFragment).toFragment(false)
+        })
 
         autoCompleteButton = view.findViewById(R.id.button_search) as ImageView
 

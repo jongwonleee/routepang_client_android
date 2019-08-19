@@ -24,6 +24,10 @@ allprojects {
     }
 }
 
+task builddep {
+    println 'build dependency'
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }

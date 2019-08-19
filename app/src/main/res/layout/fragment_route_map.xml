@@ -7,7 +7,51 @@
         android:layout_height="match_parent"
         tools:context=".B_Mypage.RouteMapFragment">
 
-    <fragment
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" android:id="@+id/constraintLayout2">
+
+        <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/text_title"
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp" android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:layout_marginStart="8dp"/>
+        <ImageView
+                android:src="@drawable/ic_map_black_24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/image_map"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
+        <ImageView
+                android:src="@drawable/ic_mode_edit_black_24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/image_edit" app:layout_constraintEnd_toStartOf="@+id/image_map"
+                android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
+                app:layout_constraintTop_toTopOf="parent" app:srcCompat="@drawable/ic_mode_edit_black_24dp"/>
+        <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="TextView"
+                android:ems="10"
+                android:id="@+id/edit_title"
+                app:layout_constraintTop_toTopOf="@+id/text_title"
+                app:layout_constraintBottom_toBottomOf="@+id/text_title"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                app:layout_constraintEnd_toStartOf="@+id/image_edit" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="4dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.gms.maps.MapView
             android:id="@+id/map"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -15,8 +59,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintVertical_bias="0.0"/>
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"/>
     <ImageView
             android:src="@drawable/places_ic_search"
             android:layout_width="wrap_content"
