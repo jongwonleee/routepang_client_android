@@ -10,7 +10,7 @@
             android:orientation="horizontal"
             android:background="@drawable/tab_box_selector"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content" android:id="@+id/background">
 
         <ImageView
                 android:src="@mipmap/ic_launcher_round"

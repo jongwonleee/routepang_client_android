@@ -1,5 +1,6 @@
 package com.itaewonproject.A
 
+import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.app.AlarmManager
 import android.app.Application
@@ -25,6 +26,9 @@ import android.view.*
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.Button
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.animation.addListener
+import androidx.core.animation.doOnEnd
 
 
 class RealService : Service() {
@@ -34,6 +38,7 @@ class RealService : Service() {
     private lateinit var floatyView:View
     private lateinit var params:WindowManager.LayoutParams
     private lateinit var  cm :ClipboardManager
+    private lateinit var background: ConstraintLayout
     private var run = true
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         serviceIntent = intent
@@ -43,36 +48,69 @@ class RealService : Service() {
         cm.addPrimaryClipChangedListener {
             val p = Pattern.compile("^(https?):\\/\\/([^:\\/\\s]+)(:([^\\/]*))?((\\/[^\\s/\\/]+)*)?\\/?([^#\\s\\?]*)(\\?([^#\\s]*))?(#(\\w*))?$")
             if (p.matcher(cm.primaryClip!!.getItemAt(0).text).matches()) {
+                run=true
                 windowManager.addView(floatyView, params)
-                ObjectAnimator.ofFloat(floatyView,"alpha",0f,100f).apply{
-                    interpolator = DecelerateInterpolator()
-                    duration=1000
-                    start()
-                }
-                //showToast(getApplication(), "correct"+String.valueOf(cm.getPrimaryClip().getItemAt(0).getText()));
-            } else {
-                showToast(application, "wrong" + cm.primaryClip!!.getItemAt(0).text.toString())
+                val animator = ObjectAnimator.ofFloat(floatyView,View.ALPHA,1f)
+                animator.duration=500
+                animator.addListener(object:Animator.AnimatorListener{
+                    override fun onAnimationRepeat(p0: Animator?) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
 
+                    override fun onAnimationEnd(p0: Animator?) {
+                        floatyView.alpha=1.0f
+                    }
+
+                    override fun onAnimationCancel(p0: Animator?) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+
+                    override fun onAnimationStart(p0: Animator?) {
+                        floatyView.alpha=0f
+                    }
+
+                })
+                animator.start()
+
+                Handler().postDelayed(Runnable {
+                    removeRunner()
+                },5500)
             }
         }
-        mainThread = Thread(Runnable {
-            run = true
-            var cnt=0
-            while (run) {
-                try {
-                    Thread.sleep(1)
-                    cnt++
-                    if(cnt>5000)
-                        windowManager.removeView(floatyView)
-                } catch (e:InterruptedException) {
-                    run = false
-                    e.printStackTrace();
-                }
-            }
-        })
-        mainThread!!.start()
 
         return Service.START_NOT_STICKY
+    }
+
+    fun removeRunner(){
+        if(run) {
+            run=false
+            val animator = ObjectAnimator.ofFloat(floatyView,View.ALPHA,0f)
+            animator.duration=500
+            animator.addListener(object:Animator.AnimatorListener{
+                override fun onAnimationRepeat(p0: Animator?) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun onAnimationEnd(p0: Animator?) {
+                    floatyView.alpha=0f
+                }
+
+                override fun onAnimationCancel(p0: Animator?) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun onAnimationStart(p0: Animator?) {
+                    floatyView.alpha=1.0f
+                }
+
+            })
+            animator.doOnEnd {
+                windowManager.removeView(floatyView)
+                Log.i("windowManager","removed View")
+            }
+            animator.start()
+
+        }
     }
 
 
@@ -173,13 +211,8 @@ class RealService : Service() {
             var intent = Intent(this,LinkShareActivity::class.java)
             intent.putExtra(Intent.EXTRA_TEXT,cm.primaryClip!!.getItemAt(0).text)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            windowManager.removeView(floatyView)
-            ObjectAnimator.ofFloat(floatyView,"Alpha",100f,0f).apply{
-                interpolator = AccelerateInterpolator()
-                duration=500
-                start()
-            }
-            run=false
+            removeRunner()
+
             startActivity(intent)
         })
     }

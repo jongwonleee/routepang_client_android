@@ -35,6 +35,7 @@ class LandingPageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_landing_page)
         buttonSearch = findViewById(R.id.but_search)
+        buttonSearch.alpha=0.5f
         buttonMypage = findViewById(R.id.but_mypage)
         buttonMypage.setOnClickListener({
             var intent = Intent(this, MypageActivity::class.java)
