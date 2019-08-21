@@ -18,9 +18,7 @@ import com.itaewonproject.ServerResult.Article
 import com.itaewonproject.ServerResult.Location
 import com.itaewonproject.ServerResult.Route
 import java.io.IOException
-import java.net.HttpURLConnection.HTTP_OK
 import android.content.ContentValues
-import android.icu.text.CaseMap
 import android.os.Build
 import com.itaewonproject.ServerResult.Folder
 import com.vividsolutions.jts.geom.Coordinate
@@ -59,7 +57,7 @@ object APIs{
         val apiResult = """
             [
                 {
-                        "title": "title1",
+                        "name": "title1",
                          "imgUrl": ["$bmp1","$bmp2","$bmp3","$bmp4","$bmp5","$bmp4","$bmp3","$bmp2", "$bmp1"],
                         "rating": 3.5f,
                         "placeId": "1",
@@ -71,7 +69,7 @@ object APIs{
                         
                     },
                     {
-                        "title": "title2",
+                        "name": "title2",
                          "imgUrl": ["$bmp1","$bmp2","$bmp3","$bmp4","$bmp5","$bmp4","$bmp3","$bmp2", "$bmp1"],
                         "rating": 5.0f,
                         "placeId": "2",
@@ -83,7 +81,7 @@ object APIs{
                         
                     },
                     {
-                        "title": "title3",
+                        "name": "title3",
                          "imgUrl":["$bmp4","$bmp5","$bmp4","$bmp3","$bmp2", "$bmp1"],
                         "rating": 2f,
                         "placeId": "3",
@@ -95,7 +93,7 @@ object APIs{
                         
                     },
                     {
-                        "title": "title4",
+                        "name": "title4",
                          "imgUrl": ["$bmp3","$bmp1"],
                         "rating": 4.5f,
                         "placeId": "4",
@@ -107,7 +105,7 @@ object APIs{
                         
                     },
                     {
-                        "title": "title5",
+                        "name": "title5",
                          "imgUrl":["$bmp3","$bmp2","$bmp5","$bmp4","$bmp3","$bmp2", "$bmp1"],
                         "rating": 3.5f,
                         "placeId": "5",
@@ -183,7 +181,7 @@ object APIs{
         return arr
     }
 
-    fun API2(placeID:String):ArrayList<Article>{
+    fun API2(placeID:String):ArrayList<com.itaewonproject.ServerModel.Article>{
        var ref = listOf<String>("https://facebookbrand.com/wp-content/themes/fb-branding/assets/images/fb-logo.png?v2",
             "https://instagram-brand.com/wp-content/uploads/2016/11/Instagram_AppIcon_Aug2017.png?w=300")
         var link = listOf<String>("http://www.facebook.com","http://www.instagram.com")
@@ -263,14 +261,14 @@ object APIs{
             ]
         """.trimIndent()
 
-        /* var taskAPI2 = TaskAPI2()
+        var taskAPI2 = TaskAPI2()
 
         taskAPI2.execute()
-        var apiResult = taskAPI2.get()*/
-        var arr = ArrayList<Article>()
+        apiResult = taskAPI2.get()
+        var arr = ArrayList<com.itaewonproject.ServerModel.Article>()
         var gson = Gson()
         try{
-            arr.addAll(gson.fromJson<ArrayList<Article>>(apiResult, object : TypeToken <ArrayList<Article>>(){}.type))
+            arr.addAll(gson.fromJson<ArrayList<com.itaewonproject.ServerModel.Article>>(apiResult, object : TypeToken <ArrayList<com.itaewonproject.ServerModel.Article>>(){}.type))
         }catch(e:JsonParseException)
         {
             e.printStackTrace()
@@ -320,10 +318,10 @@ object APIs{
             os.flush()
             os.close()
             var responseCode = con.responseCode*/
-           val http = HttpClient.Builder("POST", "http://ec2-52-78-225-101.ap-northeast-2.compute.amazonaws.com:9090/getLocationByCoordinate") //포트번호,서블릿주소
+            val http = HttpClient.Builder("GET", "http://ec2-52-78-225-101.ap-northeast-2.compute.amazonaws.com:9090/article/getArticleById/1") //포트번호,서블릿주소
 
             // Parameter 를 전송한다.
-            http.addAllParameters(mutableMapOf(Pair("coordinates", GeometryFactory().createPoint(Coordinate(123.33333,23.44444444)).toString())))
+            //http.addAllParameters(mutableMapOf(Pair("coordinates", GeometryFactory().createPoint(Coordinate(123.33333,23.44444444)).toString())))
 
             Log.i("!!http Request URL",http.url)
 
@@ -351,10 +349,10 @@ object APIs{
         val ip = "localhost"
         override fun doInBackground(vararg p0: Map<String, String>?): String {
 
-            /*val http = HttpClient.Builder("POST", "http://$ip:9090/article/read") //포트번호,서블릿주소
+            val http = HttpClient.Builder("GET", "http://ec2-52-78-225-101.ap-northeast-2.compute.amazonaws.com:9090/article/getArticleByLocationId/1") //포트번호,서블릿주소
 
             // Parameter 를 전송한다.
-            //http.addAllParameters(p0[0]!!)
+            //http.addAllParameters(mutableMapOf(Pair("coordinates", GeometryFactory().createPoint(Coordinate(123.33333,23.44444444)).toString())))
 
             Log.i("!!http Request URL",http.url)
 
@@ -368,18 +366,7 @@ object APIs{
 
             // 응답 상태코드 가져오기
             val statusCode = post.httpStatusCode
-
-            // 응답 본문 가져오기
-
-            return post.body*/
-            var req= RequestHttpURLConnection()
-            var ret = req.request("http://127.0.0.1:9090/article/read",null)
-            if (ret != null) {
-                return ret
-            }else
-            {
-                return ""
-            }
+            return post.body
         }
 
         override fun onPostExecute(result: String?) {
@@ -410,7 +397,7 @@ object APIs{
         return marker
     }
 
-     class RequestHttpURLConnection {
+ /*    class RequestHttpURLConnection {
 
         @TargetApi(Build.VERSION_CODES.N)
         fun request(_url: String, _params: ContentValues?): String? {
@@ -420,9 +407,9 @@ object APIs{
             // URL 뒤에 붙여서 보낼 파라미터.
             val sbParams = StringBuffer()
 
-            /**
+            *//**
              * 1. StringBuffer에 파라미터 연결
-             */
+             *//*
             // 보낼 데이터가 없으면 파라미터를 비운다.
             if (_params == null)
                 sbParams.append("")
@@ -450,9 +437,9 @@ object APIs{
                 }
             }// 보낼 데이터가 있으면 파라미터를 채운다.
 
-            /**
+            *//**
              * 2. HttpURLConnection을 통해 web의 데이터를 가져온다.
-             */
+             *//*
             try {
                 val url = URL(_url)
                 urlConn = url.openConnection() as HttpURLConnection
@@ -503,5 +490,5 @@ object APIs{
 
         }
 
-    }
+    }*/
 }

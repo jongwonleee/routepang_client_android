@@ -23,7 +23,7 @@ class RouteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         //tabLayout = view.findViewById(R.id.tabLayout) as TabLayout
         viewPager = view.findViewById(R.id.viewPager) as ViewPager
-        adapter = TabPagerAdapter(childFragmentManager!!,3)
+        adapter = TabPagerAdapter(childFragmentManager,3)
         adapter.addPage(RouteListFragment(),"List")
         adapter.addPage(RouteEditFragment(),"Edit")
         adapter.addPage(RouteMapFragment(),"Map")

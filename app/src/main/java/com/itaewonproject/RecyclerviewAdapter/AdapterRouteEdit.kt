@@ -36,7 +36,7 @@ class AdapterRouteEdit(val context: Context, var edits:ArrayList<Location>, var 
     }
 
     override fun OnItemSwipe(pos: Int): Boolean {
-        Log.i("Removing","$pos, ${edits[pos].title}")
+        Log.i("Removing","$pos, ${edits[pos].name}")
         edits.removeAt(pos)
         notifyItemRemoved(pos)
         return true
@@ -92,7 +92,7 @@ class AdapterRouteEdit(val context: Context, var edits:ArrayList<Location>, var 
 
         fun bind(pos:Int){
             var edit = edits[pos]
-            title.text = edit.title
+            title.text = edit.name
             usedTime.text= "약 ${APIs.secToString(edit.usedTime)}"
             if(pos==0) {
                 lineUp.visibility=View.INVISIBLE

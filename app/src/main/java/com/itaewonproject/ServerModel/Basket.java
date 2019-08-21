@@ -4,11 +4,11 @@ package com.itaewonproject.ServerModel;
 public class Basket {
 
 
-    private long basketId;
+    public long basketId;
 
-    private long customerId;
+    public long customerId;
 
-    private long locationId;
+    public long locationId;
 
-    private long routeId;
+    public long routeId;
 }

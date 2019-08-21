@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.RatingBar
@@ -28,8 +29,8 @@ class LocationArticleActivity : AppCompatActivity() {
     private lateinit var rating:RatingBar
     private lateinit var info:TextView
     private lateinit var usedTime:TextView
-    private lateinit var title:Toolbar
-    private var list = ArrayList<Article>()
+    private lateinit var title:TextView
+    private var list = ArrayList<com.itaewonproject.ServerModel.Article>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.requestWindowFeature(Window.FEATURE_ACTION_BAR);
@@ -42,9 +43,9 @@ class LocationArticleActivity : AppCompatActivity() {
         rating = findViewById(R.id.ratingBar2) as RatingBar
         info = findViewById(R.id.text_info) as TextView
         usedTime=findViewById(R.id.text_used_time) as TextView
-        title = findViewById(R.id.title_location) as Toolbar
-
-        title.title=location.title
+        title = findViewById(R.id.title_location) as TextView
+        Log.i("!!!","${location.name}")
+        title.text=location.name
         usedTime.text="예상 소요시간: ${APIs.secToString(location.usedTime)}"
         rating.rating=location.rating
 

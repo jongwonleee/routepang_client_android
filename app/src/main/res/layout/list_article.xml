@@ -24,8 +24,8 @@
             app:layout_constraintBottom_toTopOf="@+id/image_arcticle_big"/>
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:background="#AAFFFFFF"
-            android:layout_height="wrap_content" app:layout_constraintTop_toTopOf="parent"
+            android:background="#BBFFFFFF"
+            android:layout_height="150dp" app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="8dp" android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
             android:id="@+id/layout_article" app:layout_constraintBottom_toTopOf="@+id/image_arcticle_big"
@@ -43,9 +43,10 @@
         <TextView
                 android:text="TextView"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:id="@+id/text_summary"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:gravity="center_vertical"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="16dp" android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toStartOf="@+id/imageButton_ref" android:layout_marginStart="8dp"

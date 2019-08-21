@@ -2,12 +2,12 @@ package com.itaewonproject.ServerModel;
 
 public class Rating {
 
-    private long ratingId;
+    public long ratingId;
 
-    private long locationId;
+    public long locationId;
 
-    private long customerId;
+    public long customerId;
 
-    private float rating;
+    public float rating;
 
 }

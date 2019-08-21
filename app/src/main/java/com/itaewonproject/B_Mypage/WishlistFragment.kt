@@ -22,7 +22,7 @@ class WishlistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         tabLayout = view.findViewById(R.id.tabLayout) as TabLayout
         viewPager = view.findViewById(R.id.viewPager) as ViewPager
-        var adapter = TabPagerAdapter(childFragmentManager!!,2)
+        var adapter = TabPagerAdapter(childFragmentManager,2)
         adapter.addPage(WishlistListFragment(),"List")
         adapter.addPage(WishlistMapFragment(),"Map")
         viewPager.adapter = adapter

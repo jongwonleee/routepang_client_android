@@ -1,13 +1,13 @@
 package com.itaewonproject.ServerModel;
 public class Link {
 
-    private long id;
+    public long id;
 
-    private String link;
+    public String link;
 
-    private String favicon;
+    public String favicon;
 
-    private String image;
+    public String image;
 
-    private String summary;
+    public String summary;
 }

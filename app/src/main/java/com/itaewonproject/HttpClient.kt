@@ -1,6 +1,10 @@
 package com.itaewonproject
 
 import android.util.Log
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.vividsolutions.jts.geom.Coordinate
+import com.vividsolutions.jts.geom.GeometryFactory
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -20,7 +24,7 @@ class HttpClient {
     private var builder: Builder? = null
 
     companion object {
-        private val WWW_FORM = "application/x-www-form-urlencoded"
+        private val WWW_FORM = "application/json"//"application/x-www-form-urlencoded"
     }
 
     private val connection: HttpURLConnection?
@@ -47,7 +51,12 @@ class HttpClient {
         setHeader(conn)
         setBody(conn)
         httpStatusCode = getStatusCode(conn!!)
-        body = readStream(conn)
+        if(httpStatusCode==HttpURLConnection.HTTP_OK)
+            body = readStream(conn)
+        else
+        {
+            Log.i("httpError","$httpStatusCode, ${HttpURLConnection.HTTP_OK}, ${conn.responseCode}")
+        }
         conn.disconnect()
     }
 
@@ -56,7 +65,6 @@ class HttpClient {
         setRequestMethod(connection)
 
         connection.connectTimeout = 5000
-        connection.doOutput = true
         connection.doInput = true
     }
 
@@ -110,6 +118,7 @@ class HttpClient {
         var result = ""
         var reader: BufferedReader? = null
         try {
+            Log.i("inputS",connection.inputStream.toString())
             reader = BufferedReader(InputStreamReader(connection.inputStream))
             for (line in reader.readLines()){
                 result += line
@@ -171,7 +180,7 @@ class HttpClient {
 
             val keys = keys
 
-            var key = ""
+            /*var key = ""
             while (keys.hasNext()) {
                 key = keys.next()
                 parameters.append(String.format("%s=%s", key, this.parameters[key]))
@@ -181,8 +190,10 @@ class HttpClient {
             var params = parameters.toString()
             if (params.length > 0) {
                 params = params.substring(0, params.length - 1)
-            }
-
+            }*/
+            var point = GeometryFactory().createPoint(Coordinate(123.33333,23.44444444))
+            parameters.append("")
+            var params = parameters.toString()
             return params
         }
 

@@ -38,7 +38,6 @@
             <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:paddingBottom="?attr/actionBarSize"
                     android:layout_height="match_parent">
                 <RatingBar
                         android:layout_width="wrap_content"
@@ -54,13 +53,34 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" android:id="@+id/text_info"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize">
+
+                    <TextView
+                            android:text="TextView"
+                            android:id="@+id/title_location"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/button_addBucket" android:layout_marginEnd="8dp"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                            android:layout_marginStart="8dp"/>
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_bookmark_border_black_24dp"
+                            android:id="@+id/button_addBucket" app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
+                            app:layout_constraintTop_toTopOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
             <androidx.appcompat.widget.Toolbar
                     android:layout_height="?attr/actionBarSize"
-                    android:layout_width="match_parent"
-                    android:id="@+id/title_location"
-                    app:title="test"/>
+                    android:layout_width="match_parent"/>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>

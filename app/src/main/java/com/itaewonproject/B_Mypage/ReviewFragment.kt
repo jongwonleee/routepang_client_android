@@ -19,7 +19,7 @@ import com.itaewonproject.ServerResult.Article
 
 class ReviewFragment : Fragment() {
     private lateinit var recyclerView:RecyclerView
-    private lateinit var list:ArrayList<Article>
+    private lateinit var list:ArrayList<com.itaewonproject.ServerModel.Article>
 
     private fun setListViewOption(view:View){
         list = APIs.API2("")
@@ -35,7 +35,7 @@ class ReviewFragment : Fragment() {
 
         recyclerView.adapter=adapter
 
-        val linearLayoutManager= LinearLayoutManager(view!!.context)
+        val linearLayoutManager= LinearLayoutManager(view.context)
         recyclerView.layoutManager=linearLayoutManager
         recyclerView.setHasFixedSize(false)
     }

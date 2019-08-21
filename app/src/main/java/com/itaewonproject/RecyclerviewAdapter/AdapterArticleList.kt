@@ -15,7 +15,7 @@ import com.itaewonproject.RatioTransformation
 import com.squareup.picasso.Picasso
 import java.lang.invoke.ConstantCallSite
 
-class AdapterArticleList(val context: Context, var output:ArrayList<Article>) : RecyclerView.Adapter<AdapterArticleList.ViewHolder>() {
+class AdapterArticleList(val context: Context, var output:ArrayList<com.itaewonproject.ServerModel.Article>) : RecyclerView.Adapter<AdapterArticleList.ViewHolder>() {
 
     private lateinit var listener: onItemClickListener
 
@@ -48,7 +48,7 @@ class AdapterArticleList(val context: Context, var output:ArrayList<Article>) : 
         private var imgBig:ImageView
         private var buttonRef:ImageButton
         private var layoutArticle:ConstraintLayout
-        private var articleId=0
+        private var articleId:Long=0
         init{
             summary = itemView.findViewById(R.id.text_summary) as TextView
             imgSmall = itemView.findViewById(R.id.image_article_small) as ImageView
@@ -80,17 +80,17 @@ class AdapterArticleList(val context: Context, var output:ArrayList<Article>) : 
                 }
             })
         }
-        fun bind(output: Article){
-            articleId=output.article_id
+        fun bind(output: com.itaewonproject.ServerModel.Article){
+            articleId=output.articleId
             Picasso.with(itemView.context)
-                .load(output.img_url)
+                .load(output.image)
                 .into(imgSmall)
             Picasso.with(itemView.context)
-                .load(output.img_url)
+                .load(output.image)
                 .into(imgBig)
 
             Picasso.with(itemView.context)
-                .load(output.ref_icon_url)
+                .load(output.favicon_url)
                 .transform(RatioTransformation(100))
                 .into(buttonRef)
             summary.text=output.summary

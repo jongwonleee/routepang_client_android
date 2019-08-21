@@ -59,7 +59,7 @@ class WishlistMapFragment : Fragment(),OnMapReadyCallback {
             }
             else if(requestCode== RestrictionsManager.RESULT_ERROR){
                 var status = Autocomplete.getStatusFromIntent(data!!)
-                Log.e(ContentValues.TAG,status.statusMessage)
+                Log.e(ContentValues.TAG,status.statusMessage!!)
             }
         }
     }

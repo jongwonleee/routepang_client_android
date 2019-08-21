@@ -6,18 +6,20 @@ import java.sql.Timestamp;
 
 public class Article{
 
-    private long articleId;
+    public long articleId;
 
-    private long locationId;
+    public long locationId;
 
-    private long customerId;
+    public long customerId;
 
-    private String image;
+    public String image;
 
-    private String summary;
+    public String summary;
 
-    private String link;
+    public String link;
 
-    private Timestamp reg_date;
+    public String favicon_url;
+
+    public Timestamp reg_date;
 
 }

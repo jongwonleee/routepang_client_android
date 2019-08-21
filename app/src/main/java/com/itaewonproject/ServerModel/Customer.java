@@ -2,12 +2,12 @@ package com.itaewonproject.ServerModel;
 
 public class Customer {
 
-    private long customerId;
+    public long customerId;
 
-    private String account;
+    public String account;
 
-    private String password;
+    public String password;
 
-    private String name;
+    public String name;
 
 }
