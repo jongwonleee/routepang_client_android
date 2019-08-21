@@ -39,13 +39,13 @@ class HttpClient {
 
     private fun setBuilder(builder: Builder) {
         this.builder = builder
+
     }
 
     fun request() {
         val conn = connection
         setHeader(conn)
         setBody(conn)
-        Log.i("request",conn!!.url.toString())
         httpStatusCode = getStatusCode(conn!!)
         body = readStream(conn)
         conn.disconnect()

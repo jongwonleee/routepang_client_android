@@ -9,6 +9,10 @@ class Article{
     var ref_icon_url=""
     var link=""
     var article_id=0
+
+    constructor(article:com.itaewonproject.ServerModel.Article){
+
+    }
     constructor(img_url: String,summary:String,ref_icon_url:String,article_id:Int,link:String){
         this.img_url=img_url
         this.summary=summary

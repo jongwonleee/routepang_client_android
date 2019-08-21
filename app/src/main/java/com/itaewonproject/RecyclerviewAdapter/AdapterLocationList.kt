@@ -73,7 +73,7 @@ class AdapterLocationList(val context: Context, var output:ArrayList<Location>) 
             })
         }
         fun bind(output: Location){
-            this.title.text=output.title
+            this.title.text=output.name
             this.rating.rating=output.rating
             this.placeId=output.placeId
             this.imageCategory.setImageBitmap(APIs.getCategoryImage(output.category))

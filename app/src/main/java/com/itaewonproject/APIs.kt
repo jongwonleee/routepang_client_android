@@ -23,6 +23,9 @@ import android.content.ContentValues
 import android.icu.text.CaseMap
 import android.os.Build
 import com.itaewonproject.ServerResult.Folder
+import com.vividsolutions.jts.geom.Coordinate
+import com.vividsolutions.jts.geom.GeometryFactory
+import com.vividsolutions.jts.geom.Point
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -30,6 +33,7 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.sql.Timestamp
 import java.time.LocalDateTime
+import javax.net.ssl.HttpsURLConnection
 
 
 object APIs{
@@ -302,11 +306,24 @@ object APIs{
     class TaskAPI1: AsyncTask<Map<String, String>, Integer, String>() {
         val ip = "localhost"
         override fun doInBackground(vararg p0: Map<String, String>?): String {
-
-            val http = HttpClient.Builder("POST", "http://$ip:9090/getLocationList") //포트번호,서블릿주소
+            /*var url = URL( "http://ec2-52-78-225-101.ap-northeast-2.compute.amazonaws.com:9090/getLocationByCoordinate")
+            var con = url.openConnection() as HttpsURLConnection
+            con.requestMethod="GET"
+            con.setRequestProperty("Content-Type","application/x-www-form-urlencoded")
+            con.connectTimeout=5000
+            con.readTimeout=5000
+            con.doInput=true
+            con.doOutput=true
+            var os = con.outputStream
+            var map:MutableMap<String,Point> = mutableMapOf(Pair("coordinates", GeometryFactory().createPoint(Coordinate(123.33333,23.44444444))))
+            os.write(map.toString().toByteArray(charset("UTF-8")))
+            os.flush()
+            os.close()
+            var responseCode = con.responseCode*/
+           val http = HttpClient.Builder("POST", "http://ec2-52-78-225-101.ap-northeast-2.compute.amazonaws.com:9090/getLocationByCoordinate") //포트번호,서블릿주소
 
             // Parameter 를 전송한다.
-            http.addAllParameters(p0[0]!!)
+            http.addAllParameters(mutableMapOf(Pair("coordinates", GeometryFactory().createPoint(Coordinate(123.33333,23.44444444)).toString())))
 
             Log.i("!!http Request URL",http.url)
 
@@ -322,7 +339,6 @@ object APIs{
             val statusCode = post.httpStatusCode
 
             // 응답 본문 가져오기
-
             return post.body
         }
 

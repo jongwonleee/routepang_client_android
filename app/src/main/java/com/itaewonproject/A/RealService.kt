@@ -93,6 +93,8 @@ class RealService : Service() {
 
                 override fun onAnimationEnd(p0: Animator?) {
                     floatyView.alpha=0f
+                    windowManager.removeView(floatyView)
+                    Log.i("windowManager","removed View")
                 }
 
                 override fun onAnimationCancel(p0: Animator?) {
@@ -104,10 +106,6 @@ class RealService : Service() {
                 }
 
             })
-            animator.doOnEnd {
-                windowManager.removeView(floatyView)
-                Log.i("windowManager","removed View")
-            }
             animator.start()
 
         }
@@ -176,14 +174,17 @@ class RealService : Service() {
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-            0,
+             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
         )
-
         params.gravity = Gravity.TOP//Gravity.CENTER or Gravity.START
         params.x = 0
         params.y = 0
         val interceptorLayout = object : FrameLayout(this) {
+
+            override fun dispatchGenericMotionEvent(event: MotionEvent?): Boolean {
+                return super.dispatchGenericMotionEvent(event)
+            }
 
             override fun dispatchKeyEvent(event: KeyEvent): Boolean {
 
@@ -193,8 +194,7 @@ class RealService : Service() {
                     // Check if the HOME button is pressed
                     if (event.getKeyCode() === KeyEvent.KEYCODE_BACK) {
 
-                        Log.v("!!!", "BACK Button Pressed")
-
+                        removeRunner()
                         // As we've taken action, we'll return true to prevent other apps from consuming the event as well
                         return true
                     }
