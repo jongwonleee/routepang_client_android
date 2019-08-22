@@ -12,6 +12,7 @@ import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.APIs
+import com.itaewonproject.B_Mypage.API.API1
 import com.itaewonproject.R
 import com.itaewonproject.RecyclerviewAdapter.AdapterArticleList
 import com.itaewonproject.ServerResult.Article
@@ -19,16 +20,17 @@ import com.itaewonproject.ServerResult.Article
 
 class ReviewFragment : Fragment() {
     private lateinit var recyclerView:RecyclerView
-    private lateinit var list:ArrayList<com.itaewonproject.ServerModel.Article>
+    private lateinit var list:ArrayList<com.itaewonproject.ServerResult.Article>
 
     private fun setListViewOption(view:View){
-        list = APIs.API2("")
+        list = API1().getByCustomerId(1)
+        Log.i("list","${list[0].summary}")
         recyclerView = view.findViewById(R.id.review_RecyclerView) as RecyclerView
         val adapter = AdapterArticleList(view.context, list)
 
         adapter.setOnItemClickClickListener(object: AdapterArticleList.onItemClickListener {
             override fun onItemClick(v: View, position: Int) {
-                var intent = Intent(Intent.ACTION_VIEW, Uri.parse(list[position].link))
+                var intent = Intent(Intent.ACTION_VIEW, Uri.parse(list[position].link.linkUrl))
                 startActivity(intent)
             }
         })

@@ -8,8 +8,24 @@ import android.animation.ObjectAnimator
 import android.content.Intent
 import android.view.animation.DecelerateInterpolator
 import android.text.Editable
+import android.util.Log
+import com.google.android.gms.common.api.Status
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import com.itaewonproject.A.API.API3
+import com.itaewonproject.A.API.API4
 import com.itaewonproject.APIs
 import com.itaewonproject.R
+import com.itaewonproject.RatioTransformation
+import com.itaewonproject.ServerModel.Article
+import com.itaewonproject.ServerModel.Link
+import com.squareup.picasso.Picasso
+import java.sql.Timestamp
+import java.util.*
 
 
 class LinkShareActivity : AppCompatActivity() {
@@ -26,6 +42,9 @@ class LinkShareActivity : AppCompatActivity() {
     lateinit var textRating:TextView
     lateinit var textSeekMax:TextView
     lateinit var textUsedTime:TextView
+    lateinit var buttonSend:Button
+
+    lateinit var link: Link
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +63,34 @@ class LinkShareActivity : AppCompatActivity() {
             textLink.text= Editable.Factory.getInstance().newEditable(url)
             textLink.isEnabled=false
         }
+        Places.initialize(applicationContext,"AIzaSyCQBy7WzSBK-kamsMKt6Yk1XpxirVKiW8A")
+        var placesClient = Places.createClient(this) as PlacesClient
+        val autoCompleteSupportFragment = supportFragmentManager.findFragmentById(R.id.autocomplete_location_search) as AutocompleteSupportFragment
+        autoCompleteSupportFragment.setPlaceFields(
+            Arrays.asList(
+                Place.Field.ID,
+                Place.Field.NAME,
+                Place.Field.LAT_LNG))
+
+
+
+        autoCompleteSupportFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+            override fun onPlaceSelected(place: Place) {
+                // TODO: Get info about the selected place.
+                if (place.latLng != null) {
+                  /*  mMap.clear()
+                    Log.i("!!",place.name)
+                    mMap.addMarker(APIs.getMarkerOption(con,place.latLng!!))
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(place.latLng))
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(15f))*/
+                }
+            }
+
+            override fun onError(status: Status) {
+                // TODO: Handle the error.
+            }
+        })
+        link = Link()
     }
 
     private fun initActivity(){
@@ -59,12 +106,32 @@ class LinkShareActivity : AppCompatActivity() {
         textRating=findViewById(R.id.text_rating) as TextView
         textSeekMax=findViewById(R.id.text_seekMax) as TextView
         textUsedTime=findViewById(R.id.text_used_time) as TextView
+        buttonSend=findViewById(R.id.button_send)as Button
+
+        buttonSend.setOnClickListener({
+            link = API4().postByLink(textLink.text.toString())
+            Picasso.with(applicationContext)
+                .load(link.image)
+                .into(image)
+            summary.text=link.summary
+        })
 
         buttonCancel.setOnClickListener({
             finish()
         })
         buttonOk.setOnClickListener({
-
+            var article = Article()
+            article.customerId=1
+            article.image="image"
+            link.linkId=1
+            link.favicon="favi"
+            link.linkUrl="https://www.instagram.com/p/BtliYCdBVvs/"
+            link.summary="Gracias a todos los medios que ayer acudieron a la presentación de “Rafael Amargo en DIONISIO”. Y por supuesto, gracias a la…"
+            link.image="image"
+            article.link=link
+            article.locationId=1
+            article.summary="Gracias a todos los medios que ayer acudieron a la presentación de “Rafael Amargo en DIONISIO”. Y por supuesto, gracias a la…"
+            API3().postByCustomerId(article)
         })
         layoutRating.visibility= View.GONE
         checkVisited.setOnClickListener({

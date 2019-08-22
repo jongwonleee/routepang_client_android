@@ -76,8 +76,8 @@ class AdapterLocationList(val context: Context, var output:ArrayList<Location>) 
             this.title.text=output.name
             this.rating.rating=output.rating
             this.placeId=output.placeId
-            this.imageCategory.setImageBitmap(APIs.getCategoryImage(output.category))
-            this.usedTime.text="평균 소요 시간: ${APIs.secToString(output.usedTime)}"
+            this.imageCategory.setImageBitmap(APIs.getCategoryImage(output.cate))
+            this.usedTime.text="평균 소요 시간: ${APIs.secToString(output.used.toInt())}"
             this.articleCount.text="관련 게시물: ${output.articleCount} 건"
 
             val adapter = AdapterImageList(itemView.context, output.imgUrl)

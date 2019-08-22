@@ -93,7 +93,7 @@ class AdapterRouteEdit(val context: Context, var edits:ArrayList<Location>, var 
         fun bind(pos:Int){
             var edit = edits[pos]
             title.text = edit.name
-            usedTime.text= "약 ${APIs.secToString(edit.usedTime)}"
+            usedTime.text= "약 ${APIs.secToString(edit.used.toInt())}"
             if(pos==0) {
                 lineUp.visibility=View.INVISIBLE
                 lineDown.visibility=View.VISIBLE
@@ -104,7 +104,7 @@ class AdapterRouteEdit(val context: Context, var edits:ArrayList<Location>, var 
                 lineUp.visibility=View.VISIBLE
                 lineDown.visibility=View.VISIBLE
             }
-            category.setImageBitmap(APIs.getCategoryImage(edit.category))
+            category.setImageBitmap(APIs.getCategoryImage(edit.cate))
             if(editMode){
                 drag.visibility=View.VISIBLE
             }else

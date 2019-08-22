@@ -10,7 +10,7 @@ import com.itaewonproject.R
 import com.itaewonproject.RatioTransformation
 import com.squareup.picasso.Picasso
 
-class AdapterImageList(val context: Context, var images:ArrayList<String>) : RecyclerView.Adapter<AdapterImageList.ViewHolder>() {
+class AdapterImageList(val context: Context, var images:ArrayList<String>?) : RecyclerView.Adapter<AdapterImageList.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)
@@ -22,7 +22,12 @@ class AdapterImageList(val context: Context, var images:ArrayList<String>) : Rec
     }
 
     override fun getItemCount(): Int {
-        return images.size
+        if (images != null) {
+            return images!!.size
+        }else
+        {
+            return 0
+        }
     }
 
    /* fun setImage(images:ArrayList<Bitmap>){
@@ -39,7 +44,7 @@ class AdapterImageList(val context: Context, var images:ArrayList<String>) : Rec
             //img.setImageBitmap(APIs.BitmapFromURL(url,300,300))
             //img.setImageBitmap(images[pos])
             Picasso.with(itemView.context)
-                .load(images[pos])
+                .load(images!![pos])
                 .transform(RatioTransformation(300))
                 .into(img)
         }

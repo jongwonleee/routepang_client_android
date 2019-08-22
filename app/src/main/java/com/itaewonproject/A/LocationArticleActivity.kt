@@ -7,12 +7,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.Window
+import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.*
+import com.itaewonproject.A.API.API2
 import com.itaewonproject.RecyclerviewAdapter.AdapterArticleList
 import com.itaewonproject.ServerResult.Article
 import com.itaewonproject.ServerResult.Location
@@ -30,25 +32,31 @@ class LocationArticleActivity : AppCompatActivity() {
     private lateinit var info:TextView
     private lateinit var usedTime:TextView
     private lateinit var title:TextView
-    private var list = ArrayList<com.itaewonproject.ServerModel.Article>()
+    private lateinit var buttonAddBasket:ImageView
+    private var list = ArrayList<com.itaewonproject.ServerResult.Article>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.requestWindowFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_location_article)
 
         location = intent.getSerializableExtra("Location") as Location
-        //placeId = Location.placeId
-        placeId="ChIJN1t_tDeuEmsRUsoyG83frY4"//Google 호주지점
+        placeId = location.placeId
+        //placeId="ChIJN1t_tDeuEmsRUsoyG83frY4"//Google 호주지점
 
         rating = findViewById(R.id.ratingBar2) as RatingBar
         info = findViewById(R.id.text_info) as TextView
         usedTime=findViewById(R.id.text_used_time) as TextView
         title = findViewById(R.id.title_location) as TextView
+        buttonAddBasket = findViewById(R.id.button_addBucket) as ImageView
         Log.i("!!!","${location.name}")
         title.text=location.name
-        usedTime.text="예상 소요시간: ${APIs.secToString(location.usedTime)}"
+        usedTime.text="예상 소요시간: ${APIs.secToString(location.used.toInt())}"
         rating.rating=location.rating
 
+
+        buttonAddBasket.setOnClickListener({
+            com.itaewonproject.B_Mypage.API.API2().addBasketByLocation(1,location)
+        })
 
         setListViewOption()
         jsonParsing(WebParser.getInfo(placeId))
@@ -56,13 +64,13 @@ class LocationArticleActivity : AppCompatActivity() {
 
     private fun setListViewOption(){
         recyclerView = findViewById(R.id.recyclerview_article_list) as RecyclerView
-        list = APIs.API2(placeId)
+        list = API2().getByLocationId(location.locationId)
 
         val adapter = AdapterArticleList(this, list)
 
         adapter.setOnItemClickClickListener(object: AdapterArticleList.onItemClickListener {
             override fun onItemClick(v: View, position: Int) {
-                var intent = Intent(Intent.ACTION_VIEW, Uri.parse(list[position].link))
+                var intent = Intent(Intent.ACTION_VIEW, Uri.parse(list[position].link.linkUrl))
                 startActivity(intent)
             }
 

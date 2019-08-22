@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
+import com.itaewonproject.A.API.API1
 import com.itaewonproject.APIs
 import com.itaewonproject.RecyclerviewAdapter.AdapterLocationList
 import com.itaewonproject.ServerResult.Location
@@ -26,7 +27,7 @@ class LocationListActivity: AppCompatActivity(),OnMapReadyCallback,Serializable 
     private lateinit var buttonAdd:Button
     private lateinit var buttonSort:Button
     private var list=ArrayList<Location>()
-    private var zoom=15f
+    private var zoom=20f
     private val context = this
     private lateinit var adapter: AdapterLocationList
 
@@ -38,7 +39,7 @@ class LocationListActivity: AppCompatActivity(),OnMapReadyCallback,Serializable 
         StrictMode.setThreadPolicy(policy)
 
         latlng=intent.getParcelableExtra("LatLng")
-        zoom = intent.getFloatExtra("Altitude",15f)
+        zoom = intent.getFloatExtra("Altitude",20f)
         val mapFragment = fragmentManager.findFragmentById(R.id.map) as MapFragment
         mapFragment.getMapAsync(this)
 
@@ -100,7 +101,7 @@ class LocationListActivity: AppCompatActivity(),OnMapReadyCallback,Serializable 
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap=googleMap
-        list = APIs.API1(latlng.longitude, latlng.latitude, zoom)
+        list = API1().getByLatLng(latlng, zoom)
 
        var markerOptions = MarkerOptions()
         markerOptions.position(latlng)

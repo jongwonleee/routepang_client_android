@@ -19,22 +19,23 @@ import java.io.Serializable
  */
 class Location:Serializable{
     var name=""
-    var imgUrl: ArrayList<String>
+    var imgUrl= arrayListOf<String>()
     var rating=0f
     var placeId=""
     var latitude=0.0
     var longitude=0.0
-    var category =0
+    var cate =0
+    var category = ""
     var articleCount=0
-    var usedTime=0
+    var used=0.0
     var locationId:Long=0
     var address=""
     constructor(location:com.itaewonproject.ServerModel.Location){
         imgUrl=ArrayList()
         name=location.name
         address=location.address
-        latitude = location.coordinates.x
-        longitude = location.coordinates.y
+        latitude = location.latitude
+        longitude = location.longitude
         locationId = location.locationId
         placeId = location.placeId
     }
@@ -42,24 +43,28 @@ class Location:Serializable{
         var ret = com.itaewonproject.ServerModel.Location()
         ret.name = name
         ret.address = address
-        ret.coordinates = getPoint()
+        ret.articleCount=articleCount
         ret.locationId=locationId
         ret.placeId=placeId
+        ret.category="FOOD"
+        ret.used=used
+        ret.latitude=latitude
+        ret.longitude=longitude
         return ret
     }
-    constructor(name:String, urls:ArrayList<String>, rating:Float, placeId:String,latitude:Double,longitude:Double,usedTime:Int,category: Int,articleCount:Int){
+    /*constructor(name:String, urls:ArrayList<String>, rating:Float, placeId:String,latitude:Double,longitude:Double,usedTime:Int,category: Int,articleCount:Int){
         this.name=name
         this.imgUrl=urls
         this.rating=rating
         this.placeId=placeId
         this.latitude=latitude
         this.longitude=longitude
-        this.usedTime=usedTime
+        this.used=usedTime
         this.category=category
         this.articleCount=articleCount
     }
-
-    fun latlng():LatLng{return LatLng(latitude,longitude)}
+*/
+    fun latlng():LatLng{return LatLng(longitude,latitude)}
     fun getPoint(): Point {
         return GeometryFactory().createPoint(Coordinate(latitude,longitude))
     }

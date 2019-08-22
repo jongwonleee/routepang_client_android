@@ -1,6 +1,5 @@
 package com.itaewonproject.A
 
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -10,7 +9,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
-import com.itaewonproject.B_Landing.LandingPageActivity
+import com.itaewonproject.B_Landing.LoginActivity
 import com.itaewonproject.R
 
 class RestartService : Service() {
@@ -28,7 +27,7 @@ class RestartService : Service() {
         builder.setSmallIcon(R.mipmap.ic_launcher)
         builder.setContentTitle(null)
         builder.setContentText(null)
-        val notificationIntent = Intent(this, LandingPageActivity::class.java)
+        val notificationIntent = Intent(this, LoginActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
         builder.setContentIntent(pendingIntent)
 

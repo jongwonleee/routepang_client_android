@@ -20,12 +20,15 @@ import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.itaewonproject.APIs
 import com.itaewonproject.R
+import com.itaewonproject.ServerResult.Location
 import java.util.*
 
 class WishlistMapFragment : Fragment(),OnMapReadyCallback {
 
     private lateinit var mMap:GoogleMap
     private lateinit var mapView:MapView
+    lateinit var list:ArrayList<Location>
+
     private lateinit var autoCompleteButton: ImageView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,6 +37,7 @@ class WishlistMapFragment : Fragment(),OnMapReadyCallback {
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
 
+        list = (parentFragment as WishlistFragment).list
         Places.initialize(activity!!.applicationContext,"AIzaSyCQBy7WzSBK-kamsMKt6Yk1XpxirVKiW8A")
         var placesClient = Places.createClient(context!!) as PlacesClient
         var intent = Autocomplete.IntentBuilder(
@@ -83,12 +87,12 @@ class WishlistMapFragment : Fragment(),OnMapReadyCallback {
         MapsInitializer.initialize(this.activity)
         mMap=googleMap
 
-        mMap.setOnMapClickListener(GoogleMap.OnMapClickListener(){
+        /*mMap.setOnMapClickListener(GoogleMap.OnMapClickListener(){
             mMap.clear()
             //mMap.addMarker(it)
             mMap.animateCamera(CameraUpdateFactory.newLatLng(it))
 
-        })
+        })*/
         /*mMap.setOnMarkerClickListener { it: Marker? ->
             var intent = Intent(this, LocationListActivity::class.java)
 
@@ -100,6 +104,13 @@ class WishlistMapFragment : Fragment(),OnMapReadyCallback {
 
             return@setOnMarkerClickListener false
         }*/
+        mMap.clear()
+        for(l in list){
+            mMap.addMarker(APIs.getMarkerOption(context!!,l.latlng()))
+        }
+        if(list.size>0){
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(list[0].latlng(),20f))
+        }
 
     }
 

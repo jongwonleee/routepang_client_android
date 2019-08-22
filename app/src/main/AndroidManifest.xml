@@ -49,15 +49,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <service
-                android:name=".A.ClipboardMonitorService"
-                android:label="Clipboard Monitor"
-                android:stopWithTask="false"
-                android:enabled="true"
-                android:exported="false"/>
-        <activity android:name=".B_Landing.LandingPageActivity">
-
-        </activity>
         <activity android:name=".B_Landing.SignInActivity">
         </activity>
         <activity android:name=".B_Landing.LoginActivity">

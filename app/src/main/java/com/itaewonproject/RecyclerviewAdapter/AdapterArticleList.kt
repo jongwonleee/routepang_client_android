@@ -15,7 +15,7 @@ import com.itaewonproject.RatioTransformation
 import com.squareup.picasso.Picasso
 import java.lang.invoke.ConstantCallSite
 
-class AdapterArticleList(val context: Context, var output:ArrayList<com.itaewonproject.ServerModel.Article>) : RecyclerView.Adapter<AdapterArticleList.ViewHolder>() {
+class AdapterArticleList(val context: Context, var output:ArrayList<com.itaewonproject.ServerResult.Article>) : RecyclerView.Adapter<AdapterArticleList.ViewHolder>() {
 
     private lateinit var listener: onItemClickListener
 
@@ -80,17 +80,17 @@ class AdapterArticleList(val context: Context, var output:ArrayList<com.itaewonp
                 }
             })
         }
-        fun bind(output: com.itaewonproject.ServerModel.Article){
+        fun bind(output: com.itaewonproject.ServerResult.Article){
             articleId=output.articleId
             Picasso.with(itemView.context)
-                .load(output.image)
+                .load(output.link.image)
                 .into(imgSmall)
             Picasso.with(itemView.context)
-                .load(output.image)
+                .load(output.link.image)
                 .into(imgBig)
 
             Picasso.with(itemView.context)
-                .load(output.favicon_url)
+                .load(output.link.favicon)
                 .transform(RatioTransformation(100))
                 .into(buttonRef)
             summary.text=output.summary

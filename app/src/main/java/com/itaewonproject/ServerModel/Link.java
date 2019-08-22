@@ -1,9 +1,9 @@
 package com.itaewonproject.ServerModel;
 public class Link {
 
-    public long id;
+    public long linkId;
 
-    public String link;
+    public String linkUrl;
 
     public String favicon;
 

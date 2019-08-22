@@ -11,18 +11,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.A.LocationArticleActivity
 import com.itaewonproject.APIs
+import com.itaewonproject.B_Mypage.API.API2
 import com.itaewonproject.R
 import com.itaewonproject.RecyclerviewAdapter.AdapterLocationList
 import com.itaewonproject.ServerResult.Location
 
 class WishlistListFragment : Fragment() {
     private lateinit var recyclerView:RecyclerView
-    private lateinit var list:ArrayList<Location>
+    lateinit var list:ArrayList<Location>
 
     private fun setListViewOption(view:View){
-        list = APIs.API1(0.00,0.00,15f)
         Log.i("!!w","wish list shown")
-
+        list = (parentFragment as WishlistFragment).list
         recyclerView = view.findViewById(R.id.wishlist_RecyclerView) as RecyclerView
         val adapter = AdapterLocationList(view.context, list)
 

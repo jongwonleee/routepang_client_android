@@ -1,29 +1,26 @@
 package com.itaewonproject.ServerResult
 
-import android.graphics.Bitmap
-import java.net.URL
 
-class Article{
-    var img_url =""
-    var summary=""
-    var ref_icon_url=""
-    var link=""
-    var article_id=0
+import com.itaewonproject.ServerModel.Link
+import java.sql.Timestamp
 
-    constructor(article:com.itaewonproject.ServerModel.Article){
 
-    }
-    constructor(img_url: String,summary:String,ref_icon_url:String,article_id:Int,link:String){
-        this.img_url=img_url
-        this.summary=summary
-        this.ref_icon_url=ref_icon_url
-        this.article_id=article_id
-        this.link=link
-    }
-    /*fun getImage(): Bitmap {
-        return APIs.BitmapFromURL(img_url,300,300)
-    }
-    fun getRefIcon():Bitmap{
-        return APIs.BitmapFromURL(ref_icon_url,100,100)
-    }*/
+class Article {
+
+    var articleId: Long = 0
+
+    var locationId: Long = 0
+
+    var customerId: Long = 0
+
+    var image: String=""
+
+    var summary: String?=""
+
+    var link: Link=Link()
+
+    var favicon_url: String=""
+
+    var reg_date: Timestamp? = null
+
 }
