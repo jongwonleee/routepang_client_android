@@ -13,6 +13,8 @@ build:
         - pwd
         - "cp app/mock-google-services.json app/google-services.json"
         - ./gradlew assembleDebug
+        # - ./gradlew build
+        # - ./gradlew test
 
     tags:
         - android
@@ -22,7 +24,9 @@ test:
     
     before_script:
         - "cp app/mock-google-services.json app/google-services.json"
-
+  #     - export ANDROID_HOME=$PWD/.android
+   #     - export PATH=$PATH:$PWD/.android/platform-tools/
+    
     script:
         - ./gradlew -Pci --console=plain :app:testDebug
         - ./gradlew build
