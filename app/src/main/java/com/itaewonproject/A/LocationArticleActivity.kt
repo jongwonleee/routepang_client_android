@@ -59,7 +59,8 @@ class LocationArticleActivity : AppCompatActivity() {
         })
 
         setListViewOption()
-        jsonParsing(WebParser.getInfo(placeId))
+        var webParser = WebParser
+        jsonParsing(webParser.getInfo(placeId))
     }
 
     private fun setListViewOption(){

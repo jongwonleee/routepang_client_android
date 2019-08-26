@@ -22,7 +22,7 @@ abstract class API<T:Any>{
     abstract var param:String
     var statusCode=0
     init{
-        domain = "http://ec2-52-78-225-101.ap-northeast-2.compute.amazonaws.com:9090/"
+        domain = "http://ec2-13-125-246-249.ap-northeast-2.compute.amazonaws.com:9090/"
     }
 
     fun getUrl(param:String):String{

@@ -18,6 +18,7 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.itaewonproject.A.API.API3
 import com.itaewonproject.A.API.API4
+import com.itaewonproject.A.API.LinkManager
 import com.itaewonproject.APIs
 import com.itaewonproject.R
 import com.itaewonproject.RatioTransformation
@@ -43,25 +44,30 @@ class LinkShareActivity : AppCompatActivity() {
     lateinit var textSeekMax:TextView
     lateinit var textUsedTime:TextView
     lateinit var buttonSend:Button
-
+    lateinit var buttonRef:ImageButton
     lateinit var link: Link
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_link_share)
+        link = Link()
+
 
         initActivity()
-        /*if (Intent.ACTION_SEND == intent.action && intent.type != null) {
-            if ("text/plain" == intent.type) {
-                val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)    // 가져온 인텐트의 텍스트 정보
-                textLink.text= Editable.Factory.getInstance().newEditable(sharedText)
-                textLink.isEnabled=false
-            }
-        }*/
+
         if (intent.getStringExtra(Intent.EXTRA_TEXT) != null) {
             var url = intent.getStringExtra(Intent.EXTRA_TEXT)
             textLink.text= Editable.Factory.getInstance().newEditable(url)
             textLink.isEnabled=false
+            link.linkUrl=url
+            link = LinkManager().LinkApi(link)
+            Picasso.with(applicationContext)
+                .load(link.image)
+                .into(image)
+            Picasso.with(applicationContext)
+                .load(link.favicon)
+                .into(buttonRef)
+            summary.text=link.summary
         }
         Places.initialize(applicationContext,"AIzaSyCQBy7WzSBK-kamsMKt6Yk1XpxirVKiW8A")
         var placesClient = Places.createClient(this) as PlacesClient
@@ -90,12 +96,11 @@ class LinkShareActivity : AppCompatActivity() {
                 // TODO: Handle the error.
             }
         })
-        link = Link()
     }
 
     private fun initActivity(){
         textLink = findViewById(R.id.text_link) as EditText
-        image=findViewById(R.id.imageView) as ImageView
+        image=findViewById(R.id.image_article) as ImageView
         summary=findViewById(R.id.text_summary) as TextView
         checkVisited = findViewById(R.id.checked_visited) as CheckedTextView
         layoutRating= findViewById(R.id.layout_rating) as LinearLayout
@@ -107,12 +112,17 @@ class LinkShareActivity : AppCompatActivity() {
         textSeekMax=findViewById(R.id.text_seekMax) as TextView
         textUsedTime=findViewById(R.id.text_used_time) as TextView
         buttonSend=findViewById(R.id.button_send)as Button
+        buttonRef=findViewById(R.id.imageButton_ref)as ImageButton
 
         buttonSend.setOnClickListener({
-            link = API4().postByLink(textLink.text.toString())
+            link.linkUrl=textLink.text.toString()
+            link = LinkManager().LinkApi(link)
             Picasso.with(applicationContext)
                 .load(link.image)
                 .into(image)
+            Picasso.with(applicationContext)
+                .load(link.favicon)
+                .into(buttonRef)
             summary.text=link.summary
         })
 
@@ -122,16 +132,12 @@ class LinkShareActivity : AppCompatActivity() {
         buttonOk.setOnClickListener({
             var article = Article()
             article.customerId=1
-            article.image="image"
-            link.linkId=1
-            link.favicon="favi"
-            link.linkUrl="https://www.instagram.com/p/BtliYCdBVvs/"
-            link.summary="Gracias a todos los medios que ayer acudieron a la presentación de “Rafael Amargo en DIONISIO”. Y por supuesto, gracias a la…"
-            link.image="image"
+            article.image=link.image
             article.link=link
             article.locationId=1
-            article.summary="Gracias a todos los medios que ayer acudieron a la presentación de “Rafael Amargo en DIONISIO”. Y por supuesto, gracias a la…"
+            article.summary=link.summary
             API3().postByCustomerId(article)
+            finish()
         })
         layoutRating.visibility= View.GONE
         checkVisited.setOnClickListener({
@@ -143,6 +149,7 @@ class LinkShareActivity : AppCompatActivity() {
                 layoutRating.visibility=View.GONE
             }
         })
+
         rating.max=5
         rating.setOnRatingBarChangeListener { ratingBar: RatingBar, fl: Float, b: Boolean ->
             textRating.text="${fl}"

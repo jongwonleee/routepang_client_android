@@ -34,13 +34,13 @@ class AdapterImageList(val context: Context, var images:ArrayList<String>?) : Re
         this.images=images
         notifyDataSetChanged()
     }*/
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : BaseViewHolder(itemView) {
         private var img:ImageView
         init{
             img = itemView.findViewById(R.id.imageView) as ImageView
 
         }
-        fun bind(pos:Int){
+        override fun bind(pos:Int){
             //img.setImageBitmap(APIs.BitmapFromURL(url,300,300))
             //img.setImageBitmap(images[pos])
             Picasso.with(itemView.context)

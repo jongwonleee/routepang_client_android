@@ -20,7 +20,7 @@ class AdapterArticleList(val context: Context, var output:ArrayList<com.itaewonp
     private lateinit var listener: onItemClickListener
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(output[position])
+        holder.bind(position)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -42,7 +42,9 @@ class AdapterArticleList(val context: Context, var output:ArrayList<com.itaewonp
     }
 
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : BaseViewHolder(itemView) {
+
+
         private var summary: TextView
         private var imgSmall:ImageView
         private var imgBig:ImageView
@@ -80,7 +82,8 @@ class AdapterArticleList(val context: Context, var output:ArrayList<com.itaewonp
                 }
             })
         }
-        fun bind(output: com.itaewonproject.ServerResult.Article){
+        override fun bind(pos:Int){
+            var output = output[pos]
             articleId=output.articleId
             Picasso.with(itemView.context)
                 .load(output.link.image)

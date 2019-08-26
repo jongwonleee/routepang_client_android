@@ -21,7 +21,7 @@ class AdapterLocationList(val context: Context, var output:ArrayList<Location>) 
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(output[position])
+        holder.bind(position)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -47,7 +47,7 @@ class AdapterLocationList(val context: Context, var output:ArrayList<Location>) 
     }
 
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : BaseViewHolder(itemView) {
         var title: TextView
         var imgList: RecyclerView
         var rating:RatingBar
@@ -72,7 +72,8 @@ class AdapterLocationList(val context: Context, var output:ArrayList<Location>) 
                 }
             })
         }
-        fun bind(output: Location){
+        override fun bind(pos:Int){
+            var output = output[pos]
             this.title.text=output.name
             this.rating.rating=output.rating
             this.placeId=output.placeId
