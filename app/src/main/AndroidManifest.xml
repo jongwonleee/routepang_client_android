@@ -3,7 +3,7 @@
           package="com.itaewonproject">
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but you must specify either coarse or fine
+         Google Maps Android WebConnectStrategy v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -28,20 +28,20 @@
             android:usesCleartextTraffic="true">
 
         <service
-                android:name=".A.RealService"
+                android:name=".linkshare.ClipboardListener"
                 android:enabled="true"
                 android:exported="true" />
 
         <service
-                android:name=".A.RestartService"
+                android:name=".linkshare.RestartService"
                 android:enabled="true"
                 android:exported="true"
                 android:stopWithTask="false"/>
 
-        <receiver android:name=".A.AlarmRecever"/>
+        <receiver android:name=".linkshare.AlarmReceiver"/>
 
         <receiver
-                android:name=".A.RebootRecever"
+                android:name=".linkshare.RebootReceiver"
                 android:enabled="true"
                 android:exported="false"
                 android:process=":remote">
@@ -49,19 +49,19 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <activity android:name=".B_Landing.SignInActivity">
+        <activity android:name=".landingpage.SignInActivity">
         </activity>
-        <activity android:name=".B_Landing.LoginActivity">
+        <activity android:name=".landingpage.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".B_Mypage.MypageActivity">
+        <activity android:name=".mypage.MypageActivity">
 
         </activity>
-        <activity android:name=".A.LinkShareActivity">
+        <activity android:name=".linkshare.LinkShareActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
 
@@ -70,15 +70,20 @@
                 <data android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
-        <activity android:name=".A.LocationArticleActivity">
+        <activity android:name=".search.ArticleActivity">
         </activity>
-        <activity android:name=".A.LocationListActivity">
+        <activity android:name=".search.LocationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
+             The WebConnectStrategy key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
-             Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is used to
+             Note that the WebConnectStrategy key is linked to the encryption key used to sign the APK.
+             You need a different WebConnectStrategy key for each encryption key, including the release key that is used to
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
@@ -86,8 +91,6 @@
                 android:name="com.google.android.geo.API_KEY"
                 android:value="@string/google_maps_key"/>
 
-        <activity android:name=".A.LocationSelectActivity">
-        </activity>
     </application>
 
 </manifest>

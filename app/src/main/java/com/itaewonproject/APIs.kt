@@ -1,6 +1,5 @@
 package com.itaewonproject
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -14,24 +13,11 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.google.gson.reflect.TypeToken
-import com.itaewonproject.ServerResult.Article
-import com.itaewonproject.ServerResult.Location
-import com.itaewonproject.ServerResult.Route
+import com.itaewonproject.model.receiver.Location
+import com.itaewonproject.model.receiver.Route
 import java.io.IOException
-import android.content.ContentValues
-import android.os.Build
-import com.itaewonproject.ServerResult.Folder
-import com.vividsolutions.jts.geom.Coordinate
-import com.vividsolutions.jts.geom.GeometryFactory
-import com.vividsolutions.jts.geom.Point
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.MalformedURLException
-import java.net.URL
+import com.itaewonproject.model.receiver.Folder
 import java.sql.Timestamp
-import java.time.LocalDateTime
-import javax.net.ssl.HttpsURLConnection
 
 
 object APIs{
@@ -164,7 +150,7 @@ object APIs{
         return arr
     }
 
-    fun API2(placeID:String):ArrayList<com.itaewonproject.ServerModel.Article>{
+    fun API2(placeID:String):ArrayList<com.itaewonproject.model.sender.Article>{
        var ref = listOf<String>("https://facebookbrand.com/wp-content/themes/fb-branding/assets/images/fb-logo.png?v2",
             "https://instagram-brand.com/wp-content/uploads/2016/11/Instagram_AppIcon_Aug2017.png?w=300")
         var link = listOf<String>("http://www.facebook.com","http://www.instagram.com")
@@ -248,10 +234,10 @@ object APIs{
 
         taskAPI2.execute()
         apiResult = taskAPI2.get()
-        var arr = ArrayList<com.itaewonproject.ServerModel.Article>()
+        var arr = ArrayList<com.itaewonproject.model.sender.Article>()
         var gson = Gson()
         try{
-            arr.addAll(gson.fromJson<ArrayList<com.itaewonproject.ServerModel.Article>>(apiResult, object : TypeToken <ArrayList<com.itaewonproject.ServerModel.Article>>(){}.type))
+            arr.addAll(gson.fromJson<ArrayList<com.itaewonproject.model.sender.Article>>(apiResult, object : TypeToken <ArrayList<com.itaewonproject.model.sender.Article>>(){}.type))
         }catch(e:JsonParseException)
         {
             e.printStackTrace()

@@ -3,11 +3,10 @@ package com.itaewonproject
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.google.gson.reflect.TypeToken
-import com.itaewonproject.ServerResult.Location
+import com.itaewonproject.model.receiver.Location
 import org.junit.Test
 
 import org.junit.Assert.*
-import java.util.concurrent.ExecutionException
 
 /**
  * Example local unit test, which will execute on the development machine (host).
