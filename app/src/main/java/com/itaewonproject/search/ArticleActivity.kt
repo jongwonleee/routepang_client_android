@@ -36,7 +36,7 @@ class ArticleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.requestWindowFeature(Window.FEATURE_ACTION_BAR);
-        setContentView(R.layout.activity_location_article)
+        setContentView(R.layout.activity_article_list)
 
         location = intent.getSerializableExtra("Location") as Location
         placeId = location.placeId
@@ -62,18 +62,22 @@ class ArticleActivity : AppCompatActivity() {
         jsonParsing(GoogleInfo().getByPlaceId(placeId))
     }
 
-    inner class GoogleInfo: WebConnectStrategy() {
+    inner class GoogleInfo : WebConnectStrategy() {
         override var param=""
         override var method: String = "GET"
         override var inner: String ="maps/api/place/details/"
+        override lateinit var mockData: String
         private val key="AIzaSyD_d8P1HxLWAdC0AEJvWKkujn8yNQmqbJE"
-
+        init{
+            mockData=""
+        }
         fun getByPlaceId(placeID:String):String{
             domain = "https://maps.googleapis.com/"
             param = "json?placeid=${placeID}&fields=name,rating,formatted_phone_number,opening_hours&key=${key}"
 
             var task = Task()
             task.execute()
+            Log.i("google info",task.get())
             return task.get()
         }
 

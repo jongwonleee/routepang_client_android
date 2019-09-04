@@ -21,6 +21,7 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.android.material.appbar.AppBarLayout
 import com.itaewonproject.player.LocationConnector
 import com.itaewonproject.APIs
+import com.itaewonproject.MarkerUtils
 import com.itaewonproject.adapter.AdapterLocationList
 import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.R
@@ -34,11 +35,11 @@ class LocationActivity: AppCompatActivity(),OnMapReadyCallback,Serializable {
     private lateinit var map:GoogleMap
     private lateinit var latlng:LatLng
     private lateinit var recyclerView: RecyclerView
-    private lateinit var buttonAdd:Button
     private lateinit var buttonSort:Button
     private lateinit var appBarLayout:AppBarLayout
     private lateinit var mapFragment:MapFragment
     private lateinit var centerLatlng:LatLng
+    private lateinit var markerUtils: MarkerUtils
     private var centerZoom:Float=0f
 
     private var list = ArrayList<Location>()
@@ -59,9 +60,17 @@ class LocationActivity: AppCompatActivity(),OnMapReadyCallback,Serializable {
         mapFragment = fragmentManager.findFragmentById(R.id.map) as MapFragment
         mapFragment.getMapAsync(this)
 
-        buttonAdd = findViewById(R.id.button_addLocationInfo) as Button
         buttonSort=findViewById(R.id.button_sortList) as Button
         appBarLayout=findViewById(R.id.appBar_layout) as AppBarLayout
+
+        appBarLayout.addOnOffsetChangedListener(object:AppBarLayout.OnOffsetChangedListener{
+            override fun onOffsetChanged(p0: AppBarLayout?, p1: Int) {
+                var meterPerPixel = 0.15654303392 * 1.8 * Math.cos(centerLatlng.latitude * Math.PI / 180) / Math.pow((2).toDouble(), centerZoom.toDouble())
+                map.moveCamera(CameraUpdateFactory.newLatLng(LatLng(centerLatlng.latitude-meterPerPixel*p1, centerLatlng.longitude)))
+                Log.i("!!!", "$p1")
+            }
+
+        })
 
         Places.initialize(applicationContext,"AIzaSyCQBy7WzSBK-kamsMKt6Yk1XpxirVKiW8A")
         var placesClient = Places.createClient(this) as PlacesClient
@@ -77,14 +86,9 @@ class LocationActivity: AppCompatActivity(),OnMapReadyCallback,Serializable {
             override fun onPlaceSelected(place: Place) {
                 // TODO: Get info about the selected place.
                 if (place.latLng != null) {
-                    map.clear()
-                    Log.i("!!",place.id)
-                    map.addMarker(APIs.getMarkerOption(context,place.latLng!!))
                     map.moveCamera(CameraUpdateFactory.newLatLng(place.latLng))
                     map.animateCamera(CameraUpdateFactory.zoomTo(15f))
-                    appBarLayout.setExpanded(false,true)
-
-
+                    mapSearching()
                 }
             }
 
@@ -92,24 +96,13 @@ class LocationActivity: AppCompatActivity(),OnMapReadyCallback,Serializable {
                 // TODO: Handle the error.
             }
         })
-
-        buttonAdd.setOnClickListener({
-            var intent = Intent(context, LinkShareActivity::class.java)
-            startActivity(intent)
-        })
-
-
     }
 
     private fun setListViewOption(){
         recyclerView = findViewById(R.id.recyclerView_locationList) as RecyclerView
-        for(oll in list)
+        for(l in list)
         {
-            Log.i("!!",oll.latlng().toString())
-            var markerOptions =MarkerOptions()
-            markerOptions.position(oll.latlng())
-            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-            map.addMarker(markerOptions)
+            markerUtils.addLocationMarker(l,false)
         }
         Log.i("!!!","1")
 
@@ -144,41 +137,29 @@ class LocationActivity: AppCompatActivity(),OnMapReadyCallback,Serializable {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map=googleMap
-        list = LocationConnector().getByLatLng(latlng, zoom)
+        markerUtils= MarkerUtils(map,context)
+        list = arrayListOf()
 
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng,zoom))
 
-        map.setOnCameraIdleListener {
-            //map.addMarker(APIs.getMarkerOption(con,map.cameraPosition.target))
-            //Log.i("!!!")
-        }
-
         map.setOnMapClickListener {
-            list = LocationConnector().getByLatLng(map.cameraPosition.target, map.cameraPosition.zoom)
-            adapter.output = list
-            for(l in list){
-                map.addMarker(APIs.getMarkerOption(context, l.latlng()))
-            }
-            adapter.notifyDataSetChanged()
-            centerLatlng = map.cameraPosition.target
-            centerZoom=map.cameraPosition.zoom
-            appBarLayout.setExpanded(false)
-
+            mapSearching()
+            markerUtils.changeSelectedMarker(null,false)
         }
-        appBarLayout.addOnOffsetChangedListener(object:AppBarLayout.OnOffsetChangedListener{
-            override fun onOffsetChanged(p0: AppBarLayout?, p1: Int) {
-                var meterPerPixel = 0.15654303392 * 1.8 * Math.cos(centerLatlng.latitude * Math.PI / 180) / Math.pow((2).toDouble(), centerZoom.toDouble())
-                map.moveCamera(CameraUpdateFactory.newLatLng(LatLng(centerLatlng.latitude-meterPerPixel*p1, centerLatlng.longitude)))
-                Log.i("!!!", "$p1")
-            }
 
-        })
-        map.setOnMarkerClickListener {
-            return@setOnMarkerClickListener false
-        }
         setListViewOption()
-
-
+    }
+    private fun mapSearching(){
+        list = LocationConnector().getByLatLng(map.cameraPosition.target, map.cameraPosition.zoom)
+        adapter.output = list
+        map.clear()
+        for(l in list){
+            markerUtils.addLocationMarker(l,false)
+        }
+        adapter.notifyDataSetChanged()
+        centerLatlng = map.cameraPosition.target
+        centerZoom=map.cameraPosition.zoom
+        appBarLayout.setExpanded(false)
     }
 
 

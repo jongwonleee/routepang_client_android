@@ -12,10 +12,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.maps.model.LatLng
 import com.itaewonproject.APIs
 import com.itaewonproject.R
 import com.itaewonproject.adapter.AdapterRouteEdit
 import com.itaewonproject.model.receiver.Location
+import com.itaewonproject.player.LocationConnector
 
 class RouteEditFragment : Fragment(),AdapterRouteEdit.OnStartDragListener  {
 
@@ -35,7 +37,7 @@ class RouteEditFragment : Fragment(),AdapterRouteEdit.OnStartDragListener  {
     var editMode=false
 
     private fun setListViewOption(view:View){
-        list = APIs.API1(12.333333,123.333333,14f)
+        list = LocationConnector().getByLatLng(LatLng(41.374902, 2.170370),14f)
 
         adapter = AdapterRouteEdit(view.context, list,this)
         var callback = EditItemTouchHelperCallback(adapter)

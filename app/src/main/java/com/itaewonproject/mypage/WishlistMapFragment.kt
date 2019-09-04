@@ -13,22 +13,24 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.Marker
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.itaewonproject.APIs
+import com.itaewonproject.MarkerUtils
 import com.itaewonproject.R
 import com.itaewonproject.model.receiver.Location
 import java.util.*
 
 class WishlistMapFragment : Fragment(),OnMapReadyCallback {
 
-    private lateinit var mMap:GoogleMap
+    private lateinit var map:GoogleMap
     private lateinit var mapView:MapView
     lateinit var list:ArrayList<Location>
-
+    lateinit var markerUtils: MarkerUtils
     private lateinit var autoCompleteButton: ImageView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,11 +56,9 @@ class WishlistMapFragment : Fragment(),OnMapReadyCallback {
             {
                 var place  = Autocomplete.getPlaceFromIntent(data!!)
                 if (place.latLng != null) {
-                    mMap.clear()
-                    Log.i("!!",place.name)
-                    mMap.addMarker(APIs.getMarkerOption(context!!,place.latLng!!))
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(place.latLng))
-                    mMap.animateCamera(CameraUpdateFactory.zoomTo(15f))
+                    map.clear()
+                    map.moveCamera(CameraUpdateFactory.newLatLng(place.latLng))
+                    map.animateCamera(CameraUpdateFactory.zoomTo(15f))
                 }
             }
             else if(requestCode== RestrictionsManager.RESULT_ERROR){
@@ -85,31 +85,18 @@ class WishlistMapFragment : Fragment(),OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         MapsInitializer.initialize(this.activity)
-        mMap=googleMap
+        map=googleMap
+        markerUtils = MarkerUtils(map,context!!)
+        map.clear()
+        map.setOnMapClickListener {
+            markerUtils.changeSelectedMarker(null,false)
+        }
 
-        /*mMap.setOnMapClickListener(GoogleMap.OnMapClickListener(){
-            mMap.clear()
-            //mMap.addMarker(it)
-            mMap.animateCamera(CameraUpdateFactory.newLatLng(it))
-
-        })*/
-        /*mMap.setOnMarkerClickListener { it: Marker? ->
-            var intent = Intent(this, LocationActivity::class.java)
-
-            if (it != null) {
-                intent.putExtra("LatLng",it.position);
-                intent.putExtra("Altitude",mMap.cameraPosition.zoom)
-            }
-            startActivity(intent)
-
-            return@setOnMarkerClickListener false
-        }*/
-        mMap.clear()
         for(l in list){
-            mMap.addMarker(APIs.getMarkerOption(context!!,l.latlng()))
+            markerUtils.addLocationMarker(l,false)
         }
         if(list.size>0){
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(list[0].latlng(),20f))
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(list[0].latlng(),20f))
         }
 
     }

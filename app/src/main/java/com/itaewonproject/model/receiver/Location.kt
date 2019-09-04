@@ -62,8 +62,9 @@ class Location:Serializable{
         this.articleCount=articleCount
     }
 */
-    fun latlng():LatLng{return LatLng(longitude,latitude)}
-    fun getPoint(): Point {
-        return GeometryFactory().createPoint(Coordinate(latitude,longitude))
+    inline fun latlng()= LatLng(longitude,latitude)
+
+    override fun hashCode(): Int {
+        return locationId.toInt()
     }
 }

@@ -18,7 +18,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class AdapterRouteEdit(val context: Context, var edits:ArrayList<Location>, var startDragListener:OnStartDragListener) :
-    RecyclerView.Adapter<AdapterRouteEdit.EditViewHolder>(),
+    RecyclerView.Adapter<BaseViewHolder>(),
     EditItemTouchHelperCallback.OnItemMoveListener {
     private lateinit var listener: onItemClickListener
     private var editMode=false
@@ -47,16 +47,23 @@ class AdapterRouteEdit(val context: Context, var edits:ArrayList<Location>, var 
         notifyDataSetChanged()
     }
 
-    override fun onBindViewHolder(holder: EditViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         holder.bind(position)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EditViewHolder {
-        return EditViewHolder((LayoutInflater.from(context).inflate(R.layout.list_route_edit, parent, false)))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+        if(viewType==0) return EditViewHolder((LayoutInflater.from(context).inflate(R.layout.list_route_edit, parent, false)))
+        else return AddViewHolder((LayoutInflater.from(context).inflate(R.layout.list_route_add, parent, false)))
+
     }
 
     override fun getItemCount(): Int {
-        return edits.size
+        return edits.size+1
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        if(position== edits.size) return 1
+        else return 0
     }
 
     interface onItemClickListener{
@@ -71,7 +78,7 @@ class AdapterRouteEdit(val context: Context, var edits:ArrayList<Location>, var 
         this.listener=listener
     }
 
-    inner class EditViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    inner class EditViewHolder(itemView: View) : BaseViewHolder(itemView){
 
         private var drag:ImageView
         private var title:TextView
@@ -90,7 +97,7 @@ class AdapterRouteEdit(val context: Context, var edits:ArrayList<Location>, var 
 
         }
 
-        fun bind(pos:Int){
+        override fun bind(pos:Int){
             var edit = edits[pos]
             title.text = edit.name
             usedTime.text= "약 ${APIs.secToString(edit.used.toInt())}"
@@ -113,13 +120,30 @@ class AdapterRouteEdit(val context: Context, var edits:ArrayList<Location>, var 
             }
 
             drag.setOnTouchListener({ view: View, motionEvent: MotionEvent ->
-                if(MotionEventCompat.getActionMasked(motionEvent)==MotionEvent.ACTION_DOWN){
+                if(motionEvent.actionMasked==MotionEvent.ACTION_DOWN){
                     startDragListener.OnStartDrag(this)
                 }
-                false
+                return@setOnTouchListener false
             })
         }
+    }
 
+    inner class AddViewHolder(itemView: View) :BaseViewHolder(itemView) {
+        private var buttonAdd: ImageView
+        init{
+            buttonAdd = itemView.findViewById(R.id.button_add) as ImageView
+        }
+        override fun bind(pos:Int){
+            if(editMode){
+                buttonAdd.visibility=View.VISIBLE
+            }else
+            {
+                buttonAdd.visibility=View.INVISIBLE
+            }
+            buttonAdd.setOnClickListener({
+
+            })
+        }
     }
 
 }

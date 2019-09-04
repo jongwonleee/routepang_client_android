@@ -124,7 +124,7 @@ class AdapterRouteList(val context: Context, folderArray:ArrayList<Folder>, var 
             }
 
             drag.setOnTouchListener({ view: View, motionEvent: MotionEvent ->
-                if(MotionEventCompat.getActionMasked(motionEvent)==MotionEvent.ACTION_DOWN){
+                if(motionEvent.actionMasked==MotionEvent.ACTION_DOWN){
                     startDragListener.OnStartDrag(this)
                 }
                 false
@@ -208,7 +208,7 @@ class AdapterRouteList(val context: Context, folderArray:ArrayList<Folder>, var 
 
 
             drag.setOnTouchListener({ view: View, motionEvent: MotionEvent ->
-                if(MotionEventCompat.getActionMasked(motionEvent)==MotionEvent.ACTION_DOWN){
+                if(motionEvent.actionMasked==MotionEvent.ACTION_DOWN){
                     startDragListener.OnStartDrag(this)
                 }
                 false
