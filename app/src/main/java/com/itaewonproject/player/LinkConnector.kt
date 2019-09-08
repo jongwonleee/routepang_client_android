@@ -8,6 +8,8 @@ import com.itaewonproject.JsonParser
 import com.itaewonproject.model.sender.Link
 
 class LinkConnector: WebConnectStrategy() {
+
+
     override var param=""
     override var method: String = "POST"
     override var inner: String ="link/postLink"
@@ -15,6 +17,18 @@ class LinkConnector: WebConnectStrategy() {
     init {
         offlineMock("https://www.instagram.com/p/BuEAfrTDuvRGi-rjsieqDz_s0mWVZYnaoHiJyY0/")
     }
+    override fun get(vararg params:Any): String {
+        param = ""
+        val url = params[0] as String
+        if(isOffline){
+            offlineMock(url)
+        }
+        var task = Task()
+        task.execute("[${Gson().toJson(url)}]")
+
+        return task.get()
+    }
+    /*
     fun postByLink(url:String): Link {
         param = ""
         if(isOffline){
@@ -25,7 +39,7 @@ class LinkConnector: WebConnectStrategy() {
 
         var result = task.get()
         return JsonParser().objectJsonParsing(result,Link::class.java)!!
-    }
+    }*/
 
     private fun offlineMock(url:String){
         var link = Link()

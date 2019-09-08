@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <ProgressBar
+                android:id="@+id/progressBar_rating"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:max="5"
+                android:progress="5"
+                android:progressDrawable="@drawable/circular_progressbar_up"
+                tools:layout_editor_absoluteX="51dp"
+                tools:layout_editor_absoluteY="47dp" />
+
+        <ProgressBar
+                android:id="@+id/progressBar_articleCount"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:max="10"
+                android:progress="5"
+                android:progressDrawable="@drawable/circular_progressbar_down"
+                app:layout_constraintBottom_toBottomOf="@+id/progressBar_rating"
+                app:layout_constraintEnd_toEndOf="@+id/progressBar_rating"
+                app:layout_constraintStart_toStartOf="@+id/progressBar_rating"
+                app:layout_constraintTop_toTopOf="@+id/progressBar_rating" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.model.LatLng
 import com.itaewonproject.APIs
+import com.itaewonproject.JsonParser
 import com.itaewonproject.R
 import com.itaewonproject.adapter.AdapterRouteEdit
 import com.itaewonproject.model.receiver.Location
@@ -37,7 +38,7 @@ class RouteEditFragment : Fragment(),AdapterRouteEdit.OnStartDragListener  {
     var editMode=false
 
     private fun setListViewOption(view:View){
-        list = LocationConnector().getByLatLng(LatLng(41.374902, 2.170370),14f)
+        list = JsonParser().listJsonParsing(LocationConnector().get(LatLng(41.374902, 2.170370),14f),Location::class.java)
 
         adapter = AdapterRouteEdit(view.context, list,this)
         var callback = EditItemTouchHelperCallback(adapter)

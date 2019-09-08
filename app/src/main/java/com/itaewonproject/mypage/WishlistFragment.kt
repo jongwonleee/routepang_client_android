@@ -8,10 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.viewpager.widget.ViewPager
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.tabs.TabLayout
+import com.itaewonproject.JsonParser
 import com.itaewonproject.player.BasketConnector
 import com.itaewonproject.R
 import com.itaewonproject.model.receiver.Location
+import com.itaewonproject.player.LocationConnector
 import com.itaewonproject.search.LocationActivity
 
 
@@ -27,7 +30,7 @@ class WishlistFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        list = BasketConnector().getByCustomerId(1)
+        list = JsonParser().listJsonParsing(BasketConnector().get((1).toLong()),Location::class.java)
         tabLayout = view.findViewById(R.id.tabLayout) as TabLayout
         viewPager = view.findViewById(R.id.viewPager) as ViewPager
         buttonSearch = view.findViewById(R.id.button_search) as LinearLayout

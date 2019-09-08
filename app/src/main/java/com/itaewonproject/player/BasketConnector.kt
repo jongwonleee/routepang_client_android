@@ -7,6 +7,8 @@ import com.itaewonproject.WebConnectStrategy
 import com.itaewonproject.model.receiver.Location
 
 class BasketConnector: WebConnectStrategy() {
+
+
     override var method: String = "GET"
     override var inner: String ="customer/getBasketListByCustomerId/"
     override var param=""
@@ -79,6 +81,19 @@ class BasketConnector: WebConnectStrategy() {
             ]
         """.trimIndent()
     }
+    override fun get(vararg params:Any): String {
+        val id = params[0] as Long
+        method="GET"
+        inner="customer/getBasketListByCustomerId/"
+        param = "$id"
+
+        var task = Task()
+        task.execute()
+
+        return task.get()
+
+    }/*
+
     fun getByCustomerId(id:Long):ArrayList<Location>{
         method="GET"
         inner="customer/getBasketListByCustomerId/"
@@ -92,7 +107,7 @@ class BasketConnector: WebConnectStrategy() {
 
         return JsonParser().listJsonParsing(result,Location::class.java)
     }
-
+*/
     fun addBasketByLocation(id:Long,location:Location){
         method="POST"
         inner="customer/addBasket/"

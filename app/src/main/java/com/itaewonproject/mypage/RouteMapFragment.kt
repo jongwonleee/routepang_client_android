@@ -20,6 +20,7 @@ import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.itaewonproject.APIs
+import com.itaewonproject.JsonParser
 import com.itaewonproject.MarkerUtils
 import com.itaewonproject.R
 import com.itaewonproject.model.receiver.Location
@@ -92,7 +93,7 @@ class RouteMapFragment : Fragment(),OnMapReadyCallback {
         MapsInitializer.initialize(this.activity)
         map=googleMap
         markerUtils = MarkerUtils(map,context!!)
-        list = LocationConnector().getByLatLng(LatLng(41.374902, 2.170370),14f)
+        list = JsonParser().listJsonParsing(LocationConnector().get(LatLng(41.374902, 2.170370),14f),Location::class.java)
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(list[0].latlng(),15f))
         for(l in list){
             markerUtils.addEditMarker(l,false)

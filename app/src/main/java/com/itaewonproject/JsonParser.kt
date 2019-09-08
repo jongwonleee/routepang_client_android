@@ -28,41 +28,4 @@ class JsonParser{
         }
         return arr
     }
-
-
-
-    fun locationJsonParsing(apiResult:String):ArrayList<Location>{
-        var arr = ArrayList<Location>()
-        var gson = Gson()
-        try{
-            arr.addAll(gson.fromJson(apiResult, object : TypeToken<ArrayList<Location>>(){}.type))
-        }catch(e: JsonParseException)
-        {
-            e.printStackTrace()
-        }
-        return arr
-    }
-    fun articleJsonParsing(apiResult:String):ArrayList<Article>{
-        var arr = ArrayList<Article>()
-        var gson = Gson()
-        try{
-            arr.addAll(gson.fromJson(apiResult, object : TypeToken<ArrayList<Article>>(){}.type))
-        }catch(e: JsonParseException)
-        {
-            e.printStackTrace()
-        }
-        return arr
-    }
-    fun linkJsonParsing(apiResult:String): Link {
-        var arr = Link()
-        var gson = Gson()
-        try{
-            Log.i("!!!'",apiResult)
-            arr = gson.fromJson(apiResult, object : TypeToken<Link>(){}.type)
-        }catch(e: JsonParseException)
-        {
-            e.printStackTrace()
-        }
-        return arr
-    }
 }

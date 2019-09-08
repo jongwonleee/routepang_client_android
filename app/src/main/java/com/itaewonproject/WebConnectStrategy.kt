@@ -2,12 +2,6 @@ package com.itaewonproject
 
 import android.os.AsyncTask
 import android.util.Log
-import com.google.gson.Gson
-import com.google.gson.JsonParseException
-import com.google.gson.reflect.TypeToken
-import com.itaewonproject.model.receiver.Article
-import com.itaewonproject.model.sender.Link
-import com.itaewonproject.model.receiver.Location
 
 /* jsonParsing 따로 객체화 시키기 : apiUtils
  * stretegy화. getResult method로 통일
@@ -21,12 +15,14 @@ abstract class WebConnectStrategy{
     var isOffline:Boolean
     var statusCode=0
 
+    abstract fun get(vararg params:Any):String
+
     init{
-        domain = "http://ec2-15-164-218-157.ap-northeast-2.compute.amazonaws.com:9090/"
+        domain = "http://ec2-13-209-48-48.ap-northeast-2.compute.amazonaws.com:9090/"
         isOffline=false
     }
 
-    //abstract fun getResult(params:List<Any>):Any
+
 
     private fun getUrl(param:String):String{
         return domain+inner+param
@@ -34,7 +30,7 @@ abstract class WebConnectStrategy{
 
 
 
-    inner class Task: AsyncTask<String, Integer, String>() {
+    inner class Task: AsyncTask<String, Int, String>() {
 
         override fun doInBackground(vararg p0: String?): String {
             if(isOffline) return mockData

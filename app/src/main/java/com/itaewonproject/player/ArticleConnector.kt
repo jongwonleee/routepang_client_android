@@ -9,6 +9,8 @@ import com.itaewonproject.model.sender.Link
 import java.sql.Timestamp
 
 class ArticleConnector: WebConnectStrategy() {
+
+
     override var param=""
     override var method: String = "GET"
     override var inner: String ="article/getArticleByLocationId/"
@@ -127,6 +129,17 @@ class ArticleConnector: WebConnectStrategy() {
         """.trimIndent()
     }
 
+    override fun get(vararg params:Any): String {
+        val id = params[0] as Long
+        param = "$id"
+
+        var task = Task()
+        task.execute()
+
+        return task.get()
+    }
+/*
+
 
     fun getByLocationId(id:Long):ArrayList<Article>{
         param = "$id"
@@ -139,6 +152,7 @@ class ArticleConnector: WebConnectStrategy() {
 
         return JsonParser().listJsonParsing(result,Article::class.java)
     }
+*/
 
     fun postByCustomerId(article: com.itaewonproject.model.sender.Article){
         method= "POST"

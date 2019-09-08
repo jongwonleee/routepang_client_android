@@ -21,6 +21,7 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.android.material.appbar.AppBarLayout
 import com.itaewonproject.player.LocationConnector
 import com.itaewonproject.APIs
+import com.itaewonproject.JsonParser
 import com.itaewonproject.MarkerUtils
 import com.itaewonproject.adapter.AdapterLocationList
 import com.itaewonproject.model.receiver.Location
@@ -150,7 +151,7 @@ class LocationActivity: AppCompatActivity(),OnMapReadyCallback,Serializable {
         setListViewOption()
     }
     private fun mapSearching(){
-        list = LocationConnector().getByLatLng(map.cameraPosition.target, map.cameraPosition.zoom)
+        list = JsonParser().listJsonParsing(LocationConnector().get(map.cameraPosition.target, map.cameraPosition.zoom),Location::class.java)
         adapter.output = list
         map.clear()
         for(l in list){

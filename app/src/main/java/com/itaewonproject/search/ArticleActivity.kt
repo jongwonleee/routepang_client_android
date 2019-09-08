@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.*
 import com.itaewonproject.player.ArticleConnector
 import com.itaewonproject.adapter.AdapterArticleList
+import com.itaewonproject.model.receiver.Article
 import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.player.BasketConnector
 import org.json.JSONArray
@@ -59,19 +60,12 @@ class ArticleActivity : AppCompatActivity() {
 
         setListViewOption()
 
-        jsonParsing(GoogleInfo().getByPlaceId(placeId))
+        jsonParsing(GoogleInfo().get(placeId))
     }
 
     inner class GoogleInfo : WebConnectStrategy() {
-        override var param=""
-        override var method: String = "GET"
-        override var inner: String ="maps/api/place/details/"
-        override lateinit var mockData: String
-        private val key="AIzaSyD_d8P1HxLWAdC0AEJvWKkujn8yNQmqbJE"
-        init{
-            mockData=""
-        }
-        fun getByPlaceId(placeID:String):String{
+        override fun get(vararg params:Any): String {
+            val placeID = params[0] as String
             domain = "https://maps.googleapis.com/"
             param = "json?placeid=${placeID}&fields=name,rating,formatted_phone_number,opening_hours&key=${key}"
 
@@ -81,10 +75,19 @@ class ArticleActivity : AppCompatActivity() {
             return task.get()
         }
 
+        override var param=""
+        override var method: String = "GET"
+        override var inner: String ="maps/api/place/details/"
+        override lateinit var mockData: String
+        private val key=getString(R.string.Web_key)
+        init{
+            mockData=""
+        }
+
     }
     private fun setListViewOption(){
         recyclerView = findViewById(R.id.recyclerview_article_list) as RecyclerView
-        list = ArticleConnector().getByLocationId(location.locationId)
+        list = JsonParser().listJsonParsing(ArticleConnector().get(location.locationId),Article::class.java)
 
         val adapter = AdapterArticleList(this, list)
 

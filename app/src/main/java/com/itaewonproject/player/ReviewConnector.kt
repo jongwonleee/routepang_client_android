@@ -10,6 +10,8 @@ import com.itaewonproject.model.sender.Link
 import java.sql.Timestamp
 
 class ReviewConnector: WebConnectStrategy() {
+
+
     override var method: String = "GET"
     override var inner: String ="article/getArticleByCustomerId/"
     override var param=""
@@ -131,18 +133,29 @@ class ReviewConnector: WebConnectStrategy() {
         Log.i("!!!",mockData)
     }
 
+    override fun get(vararg params:Any): String {
+        val id = params[0] as Long
+        param = "$id"
+
+        var task = Task()
+        task.execute()
+
+        return task.get()
+    }
+/*
+
     fun getByCustomerId(id:Long):ArrayList<Article>{
         param = "$id"
 
         var task = Task()
         task.execute()
 
-        Log.i("!@!","$statusCode")
         var result = task.get()
 
 
         return JsonParser().listJsonParsing(result,Article::class.java)//articleJsonParsing(result)
     }
+*/
 
 
 }
