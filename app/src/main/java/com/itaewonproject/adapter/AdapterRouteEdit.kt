@@ -14,31 +14,47 @@ import com.itaewonproject.APIs
 import com.itaewonproject.mypage.EditItemTouchHelperCallback
 import com.itaewonproject.R
 import com.itaewonproject.model.receiver.Location
+import com.itaewonproject.mypage.RouteEditFragment
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AdapterRouteEdit(val context: Context, var edits:ArrayList<Location>, var startDragListener:OnStartDragListener) :
+class AdapterRouteEdit(val context: Context,  val fragment:RouteEditFragment) :
     RecyclerView.Adapter<BaseViewHolder>(),
     EditItemTouchHelperCallback.OnItemMoveListener {
     private lateinit var listener: onItemClickListener
+    private var startDragListener:OnStartDragListener
     private var editMode=false
+    var list:ArrayList<Location>
+    init{
+        startDragListener=fragment
+        list = fragment.list
+    }
     override fun OnItemDrag(from: Int, to: Int,date:Date): Boolean {
         notifyDataSetChanged()
         return true
     }
 
+    override fun onViewAttachedToWindow(holder: BaseViewHolder) {
+        Log.i("!!!","onViewAttached")
+        super.onViewAttachedToWindow(holder)
+    }
+
+
+
     override fun OnItemMove(from: Int, to: Int): Boolean {
         Log.i("Moving","$from, $to")
-        Collections.swap(edits,from,to)
+        Collections.swap(list,from,to)
         notifyItemMoved(from,to)
+        fragment.list=list
         //onBindViewHolder(get)
         return true
     }
 
     override fun OnItemSwipe(pos: Int): Boolean {
-        Log.i("Removing","$pos, ${edits[pos].name}")
-        edits.removeAt(pos)
+        Log.i("Removing","$pos, ${list[pos].name}")
+        list.removeAt(pos)
         notifyItemRemoved(pos)
+        fragment.list=list
         return true
     }
 
@@ -58,11 +74,11 @@ class AdapterRouteEdit(val context: Context, var edits:ArrayList<Location>, var 
     }
 
     override fun getItemCount(): Int {
-        return edits.size+1
+        return list.size+1
     }
 
     override fun getItemViewType(position: Int): Int {
-        if(position== edits.size) return 1
+        if(position== list.size) return 1
         else return 0
     }
 
@@ -98,13 +114,13 @@ class AdapterRouteEdit(val context: Context, var edits:ArrayList<Location>, var 
         }
 
         override fun bind(pos:Int){
-            var edit = edits[pos]
+            var edit = list[pos]
             title.text = edit.name
             usedTime.text= "약 ${APIs.secToString(edit.used.toInt())}"
             if(pos==0) {
                 lineUp.visibility=View.INVISIBLE
                 lineDown.visibility=View.VISIBLE
-            }else if(pos==edits.size-1){
+            }else if(pos==list.size-1){
                 lineDown.visibility=View.INVISIBLE
                 lineUp.visibility=View.VISIBLE
             }else{

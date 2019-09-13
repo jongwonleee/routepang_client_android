@@ -90,8 +90,6 @@ class RoutesItemTouchHelperCallback (var adapter:AdapterRouteList): ItemTouchHel
         fun OnMerge(from:Int,to:Int, date: Date)
         fun OnShake(pos:Int, date: Date)
         fun OnItemSwipe(pos:Int):Boolean
-        //fun OnItemDrag(from:Int,to:Int,date:Date):Boolean
-
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {

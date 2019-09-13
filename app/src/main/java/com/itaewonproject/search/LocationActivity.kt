@@ -73,7 +73,7 @@ class LocationActivity: AppCompatActivity(),OnMapReadyCallback,Serializable {
 
         })
 
-        Places.initialize(applicationContext,"AIzaSyCQBy7WzSBK-kamsMKt6Yk1XpxirVKiW8A")
+        Places.initialize(applicationContext,context!!.getString(R.string.Web_key))
         var placesClient = Places.createClient(this) as PlacesClient
 
         val autoCompleteSupportFragment = supportFragmentManager.findFragmentById(R.id.autocomplete_location_search) as AutocompleteSupportFragment
@@ -145,7 +145,7 @@ class LocationActivity: AppCompatActivity(),OnMapReadyCallback,Serializable {
 
         map.setOnMapClickListener {
             mapSearching()
-            markerUtils.changeSelectedMarker(null,false)
+            markerUtils.changeSelectedMarker(null)
         }
 
         setListViewOption()

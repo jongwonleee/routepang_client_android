@@ -61,6 +61,12 @@ object APIs{
         if (sec % 3600 != 0 || sec==0) ret += "${(sec % 3600) / 60}분"
         return ret
     }
+    fun secToString(sec:Long):String {
+        var ret = ""
+        if(sec>=3600) ret+="${sec / 3600}시간"
+        if ((sec % 3600).toInt() != 0 || sec==(0 as Long)) ret += "${(sec % 3600) / 60}분"
+        return ret
+    }
 
     fun getCategoryImage(num:Int):Bitmap{
         var bmp = Bitmap.createBitmap(50,50,Bitmap.Config.ARGB_8888)

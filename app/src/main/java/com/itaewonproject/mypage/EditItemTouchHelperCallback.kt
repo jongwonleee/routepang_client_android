@@ -8,29 +8,20 @@ import java.util.*
 
 class EditItemTouchHelperCallback (var adapter: AdapterRouteEdit): ItemTouchHelper.Callback(){
     private var listener:OnItemMoveListener
-    private var mFrom:Int?=null
-    private var mTo:Int?=null
-    lateinit var movedTime: Date
-
+    var swipable=false
     init{
         listener = adapter
     }
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
         var dragFlag:Int =ItemTouchHelper.UP or ItemTouchHelper.DOWN
-        Log.i("!!","layout:${viewHolder.layoutPosition} adapter:${viewHolder.adapterPosition}")
-        //
-            return makeMovementFlags(dragFlag,ItemTouchHelper.LEFT)
+        return makeMovementFlags(dragFlag,ItemTouchHelper.LEFT)
 
-        //var swipeFlag = ItemTouchHelper.LEFT
     }
 
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
-        if (mFrom != null && mTo != null&& movedTime!=null)
-           listener.OnItemDrag(mFrom!!,mTo!!,movedTime!!)
-        mTo = null
-        mFrom = mTo
+
     }
 
     override fun onMove(
@@ -42,13 +33,6 @@ class EditItemTouchHelperCallback (var adapter: AdapterRouteEdit): ItemTouchHelp
             return false;
         }
 
-        // remember FIRST from position
-        if (mFrom == null)
-            mFrom = viewHolder.adapterPosition
-        mTo = target.adapterPosition
-        Log.i("onMove","$mFrom -> $mTo ")
-        movedTime= Date()
-        // Notify the adapter of the move
         return true
     }
 
@@ -69,7 +53,7 @@ class EditItemTouchHelperCallback (var adapter: AdapterRouteEdit): ItemTouchHelp
     }
 
     override fun isItemViewSwipeEnabled(): Boolean {
-        return false
+        return swipable
     }
 
     interface OnItemMoveListener{

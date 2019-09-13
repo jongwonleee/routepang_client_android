@@ -32,9 +32,10 @@ import com.google.maps.DirectionsApiRequest
 import com.google.maps.PendingResult
 import com.google.maps.internal.PolylineEncoding
 import com.google.maps.model.TravelMode
+import com.itaewonproject.mypage.RouteMapFragment
 
 
-class MarkerUtils(val map: GoogleMap,val con:Context){
+class RouteUtils(val map: GoogleMap, val fragment:RouteMapFragment){
     val mView:View
 /*    val layoutInfo:ConstraintLayout
     val buttonAdd:ImageView
@@ -48,15 +49,20 @@ class MarkerUtils(val map: GoogleMap,val con:Context){
     val articleCount:ProgressBar
     val latLoc = HashMap<LatLng,Location>()
     val latIndex = HashMap<LatLng,Int>()
+    var editMode=false
+        set(value){
+            field=value
+            if(value){
+                setList()
+            }else
+            {
+                addLine()
+            }
+        }
+    lateinit var geoApiContext:GeoApiContext
     var selectedMarker:Marker?
     init{
-        mView = LayoutInflater.from(con).inflate(R.layout.view_route_marker,null)
-       /* layoutInfo = mView.findViewById(R.id.layout_info) as ConstraintLayout
-        buttonAdd = mView.findViewById(R.id.button_add) as ImageView
-        name = mView.findViewById(R.id.name) as TextView
-        rating = mView.findViewById(R.id.rating) as RatingBar
-        category = mView.findViewById(R.id.category) as ImageView
-        marker=mView.findViewById(R.id.marker) as ImageView*/
+        mView = LayoutInflater.from(fragment.context).inflate(R.layout.view_route_marker,null)
         rating=mView.findViewById(R.id.progressBar_rating) as ProgressBar
         text = mView.findViewById(R.id.text) as CustomTextView
         image = mView.findViewById(R.id.image) as ImageView
@@ -65,49 +71,41 @@ class MarkerUtils(val map: GoogleMap,val con:Context){
         articleCount.max=20
         selectedMarker=null
         map.setOnMarkerClickListener {
-            if(it!=null && selectedMarker!=null){
-                if(selectedMarker!!.position == it.position){
-                    changeSelectedMarker(null)
-                    selectedMarker=null
-                }else
-                {
-                    changeSelectedMarker(it)
+            if(editMode){
+                if(it!=null && selectedMarker!=null){
+                    if(selectedMarker!!.position == it.position){
+                        /*changeSelectedMarker(null)
+                        selectedMarker=null*/
+
+                        fragment.list.removeAt(latIndex[it.position]!!)
+                        setList()
+                    }else
+                    {
+                        changeSelectedMarker(it!!)
+                    }
+                }else{
+                    changeSelectedMarker(it!!)
+
                 }
-            }else{
-                changeSelectedMarker(it)
-
             }
-            return@setOnMarkerClickListener true
+            return@setOnMarkerClickListener editMode
+
         }
-            
+        map.setOnMapClickListener({
+            changeSelectedMarker(null)
+        })
     }
 
-    fun addLocationMarker(location: Location, isSelected:Boolean):Marker{
-         val position = location.latlng()
-        /*rating.rating=location.rating
-        name.text=location.name
-        val markerImage = marker.drawable
-        val duffColorFilter  = PorterDuffColorFilter(getCategoryColor(location.cate), PorterDuff.Mode.SRC_ATOP)
-        markerImage.colorFilter=duffColorFilter
-        marker.setImageDrawable(markerImage)
-        buttonAdd.visibility=View.GONE
-        if(isSelected){
-            layoutInfo.visibility=View.VISIBLE
-        }else
-        {
-            layoutInfo.visibility=View.INVISIBLE
-        }*/
-        val markerOptions = MarkerOptions()
-        markerOptions.title(location.name)
-        markerOptions.position(position)
-        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(mView)))
-        val marker = map.addMarker(markerOptions)
-        latLoc.put(position,location)
-        return marker
+    fun setList(){
+        map.clear()
+        selectedMarker=null
+        var list = fragment.list
+        for(l in 0.. list.size-1){
+            addMarker(list[l],false,l)
+        }
     }
 
-
-    fun addEditMarker(location: Location, isSelected:Boolean,index:Int):Marker{
+    fun addMarker(location: Location, isSelected:Boolean,index:Int):Marker{
         val position = location.latlng()
         rating.progress=(location.rating*10).toInt()
         articleCount.progress= if(location.articleCount>10) 10 else location.articleCount
@@ -148,28 +146,29 @@ class MarkerUtils(val map: GoogleMap,val con:Context){
 
     fun changeSelectedMarker(marker:Marker?){
         if(selectedMarker!=null){
-            addLocationMarker(selectedMarker!!,false)
+            addEditMarker(selectedMarker!!,false)
             selectedMarker!!.remove()
         }
         if(marker!=null){
-            selectedMarker = addLocationMarker(marker,true)!!
+            selectedMarker = addEditMarker(marker,true)!!
             marker.remove()
         }
     }
 
-    fun setBoundary(list:ArrayList<Location>):LatLngBounds{
+    fun setBoundary(list:ArrayList<Location>){
         val bound = LatLngBounds.builder()
         for(l in list){
             bound.include(l.latlng())
         }
-        return bound.build()
+        map.moveCamera(CameraUpdateFactory.newLatLngBounds(bound.build(),100))
+
     }
 
-    private fun addLocationMarker(marker:Marker,isSelected: Boolean):Marker?{
+    private fun addEditMarker(marker:Marker,isSelected: Boolean):Marker?{
         if(latLoc.containsKey(marker.position)){
             val location = latLoc.get(marker.position)
             if(location!=null)
-                return addLocationMarker(location,isSelected)
+                return addMarker(location,isSelected,latIndex.get(marker.position)!!)
         }
         return null
     }
@@ -186,7 +185,7 @@ class MarkerUtils(val map: GoogleMap,val con:Context){
     }
     private fun createDrawableFromView(view: View):Bitmap{
         val displayMatrics = DisplayMetrics()
-        (con as Activity).windowManager.defaultDisplay.getMetrics(displayMatrics)
+        (fragment.context as Activity).windowManager.defaultDisplay.getMetrics(displayMatrics)
         view.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.MATCH_PARENT)
         view.measure(displayMatrics.widthPixels,displayMatrics.heightPixels)
         view.layout(0,0,displayMatrics.widthPixels,displayMatrics.heightPixels)
@@ -197,6 +196,71 @@ class MarkerUtils(val map: GoogleMap,val con:Context){
         return bitmap
     }
 
+    fun addLine(){
+        var list = fragment.list
 
+        geoApiContext = GeoApiContext.Builder().apiKey(fragment.context!!.getString(R.string.Web_key)).build()
+
+        val arrayPoints = arrayListOf<LatLng>()
+        for(l in list){
+            arrayPoints.add(l.latlng())
+        }
+        //calculateDirections(arrayPoints[0],arrayPoints[1])
+        for(i in 0.. arrayPoints.size-2){
+            calculateDirections(arrayPoints[i],arrayPoints[i+1])
+        }
+        //calculateDirectionList(list)
+
+    }
+
+
+    private fun calculateDirections(origin:LatLng,dest:LatLng) {
+        Log.d(TAG, "calculateDirections: calculating directions.")
+
+        val destination = com.google.maps.model.LatLng(dest.latitude, dest.longitude)
+        val directions = DirectionsApiRequest(geoApiContext)
+
+        directions.alternatives(true)
+        directions.mode(TravelMode.TRANSIT)
+        directions.origin(com.google.maps.model.LatLng(origin.latitude,origin.longitude))
+        Log.d(TAG, "calculateDirections: destination: $destination")
+        directions.destination(destination)
+            .setCallback(object : PendingResult.Callback<DirectionsResult> {
+                override fun onResult(result: DirectionsResult) {
+                    //                Log.d(TAG, "calculateDirections: routes: " + result.routes[0].toString());
+                    //                Log.d(TAG, "calculateDirections: duration: " + result.routes[0].legs[0].duration);
+                    //                Log.d(TAG, "calculateDirections: distance: " + result.routes[0].legs[0].distance);
+                    //                Log.d(TAG, "calculateDirections: geocodedWayPoints: " + result.geocodedWaypoints[0].toString());
+
+                    Log.d(TAG, "onResult: successfully retrieved directions.")
+                    addPolylinesToMap(result)
+                }
+
+                override fun onFailure(e: Throwable) {
+                    Log.e(TAG, "calculateDirections: Failed to get directions: " + e.message)
+
+                }
+            })
+    }
+
+
+    private fun addPolylinesToMap(result:DirectionsResult){
+        Handler(Looper.getMainLooper()).post(Runnable {
+            val polylineOptions = PolylineOptions()
+            polylineOptions.color(Color.argb(96,255,0,0))
+            polylineOptions.width(15.0f)
+            polylineOptions.clickable(false)
+            polylineOptions.endCap(RoundCap())
+            for(route in result.routes){
+                val decodedPath  = PolylineEncoding.decode(route.overviewPolyline.encodedPath)
+                val list = arrayListOf<LatLng>()
+                for(path in decodedPath){
+                    list.add(LatLng(path.lat,path.lng))
+                }
+                polylineOptions.addAll(list)
+            }
+            map.addPolyline(polylineOptions)
+        })
+    }
 
 }

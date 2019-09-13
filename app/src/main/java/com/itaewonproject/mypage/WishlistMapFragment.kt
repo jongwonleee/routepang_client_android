@@ -40,7 +40,7 @@ class WishlistMapFragment : Fragment(),OnMapReadyCallback {
         mapView.getMapAsync(this)
 
         list = (parentFragment as WishlistFragment).list
-        Places.initialize(activity!!.applicationContext,"AIzaSyCQBy7WzSBK-kamsMKt6Yk1XpxirVKiW8A")
+        Places.initialize(activity!!.applicationContext,context!!.getString(R.string.Web_key))
         var placesClient = Places.createClient(context!!) as PlacesClient
         var intent = Autocomplete.IntentBuilder(
             AutocompleteActivityMode.OVERLAY,
@@ -89,7 +89,7 @@ class WishlistMapFragment : Fragment(),OnMapReadyCallback {
         markerUtils = MarkerUtils(map,context!!)
         map.clear()
         map.setOnMapClickListener {
-            markerUtils.changeSelectedMarker(null,false)
+            markerUtils.changeSelectedMarker(null)
         }
 
         for(l in list){

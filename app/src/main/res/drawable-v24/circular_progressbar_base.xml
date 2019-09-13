@@ -11,7 +11,7 @@
                     android:shape="ring"
                     android:thickness="5dp">
                 <solid
-                        android:color="#FFFF00"/>
+                        android:color="#AAAAAA"/>
             </shape>
         </rotate>
     </item>

@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
@@ -19,9 +20,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
-import com.itaewonproject.APIs
-import com.itaewonproject.JsonParser
-import com.itaewonproject.MarkerUtils
+import com.itaewonproject.*
 import com.itaewonproject.R
 import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.player.LocationConnector
@@ -32,23 +31,61 @@ class RouteMapFragment : Fragment(),OnMapReadyCallback {
     private lateinit var map:GoogleMap
     private lateinit var mapView:MapView
     private lateinit var autoCompleteButton:ImageView
-    private lateinit var buttonMap:ImageView
-    private lateinit var markerUtils: MarkerUtils
-    private lateinit var list:ArrayList<Location>
+    private lateinit var buttonEditList:ImageView
+    private lateinit var buttonEdit:ImageView
+    private lateinit var textTitle: TextView
+    private lateinit var editTitle: TextView
+    private lateinit var routeUtils: RouteUtils
+    lateinit var list:ArrayList<Location>
+    private var editMode=false
+
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if(isResumed && isVisibleToUser){
+            list = JsonParser().listJsonParsing(LocationConnector().get(LatLng(41.374902, 2.170370),14f),Location::class.java)
+            //map.moveCamera(CameraUpdateFactory.newLatLngZoom(list[0].latlng(),15f))
+            Log.i("!!!","isvisible now")
+            routeUtils.setList()
+            routeUtils.addLine()
+            routeUtils.setBoundary(list)
+
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mapView = view.findViewById(R.id.map) as MapView
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
+        buttonEdit = view.findViewById(R.id.image_edit)
+        textTitle = view.findViewById(R.id.text_title)
+        editTitle = view.findViewById(R.id.edit_title)
 
-        buttonMap = view.findViewById(R.id.image_map)
-        buttonMap.setOnClickListener({
-            (parentFragment as RouteFragment).toFragment(false)
+        buttonEdit.setOnClickListener({
+            editMode=!editMode
+                if(editMode){
+                    textTitle.visibility=View.INVISIBLE
+                    editTitle.visibility=View.VISIBLE
+                    buttonEditList.visibility=View.GONE
+                }else
+                {
+                    textTitle.visibility=View.VISIBLE
+                    editTitle.visibility=View.INVISIBLE
+                    buttonEditList.visibility=View.VISIBLE
+                    routeUtils.setBoundary(list)
+
+                }
+            routeUtils.editMode=editMode
+        })
+        textTitle.visibility=View.VISIBLE
+        editTitle.visibility=View.INVISIBLE
+        buttonEditList = view.findViewById(R.id.image_map)
+        buttonEditList.setOnClickListener({
+            if(!editMode)(parentFragment as RouteFragment).toFragment(false)
         })
 
         autoCompleteButton = view.findViewById(R.id.button_search) as ImageView
 
-        Places.initialize(activity!!.applicationContext,"AIzaSyCQBy7WzSBK-kamsMKt6Yk1XpxirVKiW8A")
+        Places.initialize(activity!!.applicationContext,context!!.getString(R.string.Web_key))
         var placesClient = Places.createClient(context!!) as PlacesClient
         var intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY,Arrays.asList(Place.Field.ID,Place.Field.NAME,Place.Field.LAT_LNG)).build(context!!)
        autoCompleteButton.setOnClickListener({
@@ -92,30 +129,7 @@ class RouteMapFragment : Fragment(),OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         MapsInitializer.initialize(this.activity)
         map=googleMap
-        markerUtils = MarkerUtils(map,context!!)
-        list = JsonParser().listJsonParsing(LocationConnector().get(LatLng(41.374902, 2.170370),14f),Location::class.java)
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(list[0].latlng(),15f))
-        for(l in list){
-            markerUtils.addEditMarker(l,false)
-        }
-        markerUtils.addLine(list)
-        map.setOnMapClickListener(GoogleMap.OnMapClickListener(){
-            map.clear()
-            map.animateCamera(CameraUpdateFactory.newLatLng(it))
-            markerUtils.changeSelectedMarker(null,true)
-
-        })
-        /*map.setOnMarkerClickListener { it: Marker? ->
-            var intent = Intent(this, LocationActivity::class.java)
-
-            if (it != null) {
-                intent.putExtra("LatLng",it.position);
-                intent.putExtra("Altitude",map.cameraPosition.zoom)
-            }
-            startActivity(intent)
-
-            return@setOnMarkerClickListener false
-        }*/
+        routeUtils = RouteUtils(map,this)
 
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
