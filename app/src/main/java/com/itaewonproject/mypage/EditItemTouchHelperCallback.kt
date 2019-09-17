@@ -8,6 +8,7 @@ import java.util.*
 
 class EditItemTouchHelperCallback (var adapter: AdapterRouteEdit): ItemTouchHelper.Callback(){
     private var listener:OnItemMoveListener
+
     var swipable=false
     init{
         listener = adapter
@@ -21,6 +22,8 @@ class EditItemTouchHelperCallback (var adapter: AdapterRouteEdit): ItemTouchHelp
 
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
+        listener.OnItemDrag()
+
 
     }
 
@@ -45,6 +48,7 @@ class EditItemTouchHelperCallback (var adapter: AdapterRouteEdit): ItemTouchHelp
         x: Int,
         y: Int
     ) {
+
         listener.OnItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
     }
 
@@ -59,7 +63,7 @@ class EditItemTouchHelperCallback (var adapter: AdapterRouteEdit): ItemTouchHelp
     interface OnItemMoveListener{
         fun OnItemMove(from:Int,to:Int):Boolean
         fun OnItemSwipe(pos:Int):Boolean
-        fun OnItemDrag(from:Int,to:Int,date:Date):Boolean
+        fun OnItemDrag():Boolean
 
     }
 

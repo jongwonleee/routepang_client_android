@@ -13,6 +13,9 @@ class Folder(override var title: String,
     override var parIndex = -1
     init{
         //if (title.equals("")) title = routes[0].title
+        calculateDate()
+    }
+    fun calculateDate(){
         var old = routes[0].time
         var new = routes[0].time
         for(r in routes){

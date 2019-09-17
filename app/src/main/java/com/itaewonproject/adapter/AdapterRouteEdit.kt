@@ -34,7 +34,7 @@ class AdapterRouteEdit(val context: Context,  val fragment:RouteEditFragment) :
         stepList= arrayListOf()
         for(i in 0..list.size-1) stepList.add(listOf())
     }
-    override fun OnItemDrag(from: Int, to: Int,date:Date): Boolean {
+    override fun OnItemDrag(): Boolean {
         resetSteplist()
         notifyDataSetChanged()
         return true

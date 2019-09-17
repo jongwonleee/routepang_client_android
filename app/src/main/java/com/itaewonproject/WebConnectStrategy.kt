@@ -18,8 +18,8 @@ abstract class WebConnectStrategy{
     abstract fun get(vararg params:Any):String
 
     init{
-        domain = "http://ec2-15-164-210-69.ap-northeast-2.compute.amazonaws.com:9090/"
-        isOffline=false
+        domain = "http://ec2-13-209-42-105.ap-northeast-2.compute.amazonaws.com:9090/"
+        isOffline=true
     }
 
 

@@ -13,4 +13,5 @@ interface RouteListBase{
     fun getDate(time:Timestamp):String{
         return SimpleDateFormat("yyyy-mm-dd").format(time)
     }
+
 }

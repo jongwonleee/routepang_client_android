@@ -59,7 +59,7 @@ class HttpClient {
             setContentType(connection!!)
             setRequestMethod(connection)
 
-            connection.connectTimeout = 5000
+            connection.connectTimeout = 3000
             connection.doInput = true
         }
 

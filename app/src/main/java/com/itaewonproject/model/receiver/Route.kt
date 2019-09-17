@@ -11,4 +11,8 @@ class Route(override var title:String, override var location:String,
     init{
         date = getDate(time)
     }
+
+    override fun equals(other: Any?): Boolean {
+        return other is Route && id==other.id
+    }
 }
