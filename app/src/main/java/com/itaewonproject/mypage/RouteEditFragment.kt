@@ -32,6 +32,7 @@ import com.itaewonproject.R
 import com.itaewonproject.adapter.AdapterRouteEdit
 import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.player.LocationConnector
+import org.intellij.lang.annotations.Language
 
 class RouteEditFragment : Fragment(),AdapterRouteEdit.OnStartDragListener  {
 
@@ -61,6 +62,7 @@ class RouteEditFragment : Fragment(),AdapterRouteEdit.OnStartDragListener  {
             Log.i("!!!!","is visible now")
             list = JsonParser().listJsonParsing(LocationConnector().get(LatLng(41.374902, 2.170370),14f),Location::class.java)
             adapter.list=list
+            adapter.resetSteplist()
             adapter.notifyDataSetChanged()
             setEditMode()
         }
@@ -146,28 +148,29 @@ class RouteEditFragment : Fragment(),AdapterRouteEdit.OnStartDragListener  {
             durations+=l.used.toLong()
         }
         for(i in 0.. arrayPoints.size-2){
-            calculateDirections(arrayPoints[i],arrayPoints[i+1])
+            calculateDirections(arrayPoints[i],arrayPoints[i+1],i)
         }
 
 
     }
 
 
-    private fun calculateDirections(origin:LatLng,dest:LatLng) {
+    private fun calculateDirections(origin:LatLng,dest:LatLng,pos:Int) {
         val destination = com.google.maps.model.LatLng(dest.latitude, dest.longitude)
         val directions = DirectionsApiRequest(geoApiContext)
 
         directions.alternatives(true)
         directions.mode(TravelMode.TRANSIT)
         directions.origin(com.google.maps.model.LatLng(origin.latitude,origin.longitude))
+        directions.language("ko")
         directions.destination(destination)
             .setCallback(object : PendingResult.Callback<DirectionsResult> {
                 override fun onResult(result: DirectionsResult) {
-                    //Log.d(TAG, "calculateDirections: routes: " + result.routes[0].toString());
+                    Log.d(TAG, "calculateDirections: routes: " + result.routes[0].toString());
                     //Log.d(TAG, "calculateDirections: duration: " + result.routes[0].legs[0].duration.inSeconds);
                     //Log.d(TAG, "calculateDirections: distance: " + result.routes[0].legs[0].distance.inMeters);
-                    //Log.d(TAG, "calculateDirections: geocodedWayPoints: " + result.geocodedWaypoints[0].toString());
-                    setResult(result)
+                    Log.d(TAG, "calculateDirections: geocodedWayPoints: " + result.geocodedWaypoints[0].toString());
+                    setResult(result,pos)
                     Log.d(Constraints.TAG, "onResult: successfully retrieved directions.")
 
                 }
@@ -179,7 +182,7 @@ class RouteEditFragment : Fragment(),AdapterRouteEdit.OnStartDragListener  {
             })
     }
 
-    fun setResult(result: DirectionsResult){
+    fun setResult(result: DirectionsResult,pos:Int){
         Handler(Looper.getMainLooper()).post(Runnable {
             val route = result.routes[0]
             durations+=route.legs[0].duration.inSeconds
@@ -189,6 +192,10 @@ class RouteEditFragment : Fragment(),AdapterRouteEdit.OnStartDragListener  {
             if(distances>1000) {
                 textTotalMove.text = "%.1f km".format((distances.toFloat() / 1000))
             }else textTotalMove.text = "${distances}m"
+
+            adapter.stepList[pos]=result.routes[0].legs[0].steps.toList()
+            /*or(s in result.routes[0].legs[0].steps)
+                Log.i("!!!steps:",s.htmlInstructions)*/
         })
 
     }

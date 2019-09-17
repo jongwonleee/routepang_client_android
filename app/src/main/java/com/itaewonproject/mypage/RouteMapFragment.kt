@@ -36,13 +36,23 @@ class RouteMapFragment : Fragment(),OnMapReadyCallback {
     private lateinit var textTitle: TextView
     private lateinit var editTitle: TextView
     private lateinit var routeUtils: RouteUtils
-    lateinit var list:ArrayList<Location>
+    var list:ArrayList<Location>
+    var wishlist:ArrayList<Location>
     private var editMode=false
 
+
+    init{
+        list = arrayListOf()
+        wishlist= arrayListOf()
+    }
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         if(isResumed && isVisibleToUser){
-            list = JsonParser().listJsonParsing(LocationConnector().get(LatLng(41.374902, 2.170370),14f),Location::class.java)
+            val temp = JsonParser().listJsonParsing(LocationConnector().get(LatLng(41.374902, 2.170370),14f),Location::class.java)
+            for(i in 0 .. temp.size-1){
+                if(i<temp.size/2)list.add(temp[i])
+                else wishlist.add(temp[i])
+            }
             //map.moveCamera(CameraUpdateFactory.newLatLngZoom(list[0].latlng(),15f))
             Log.i("!!!","isvisible now")
             routeUtils.setList()

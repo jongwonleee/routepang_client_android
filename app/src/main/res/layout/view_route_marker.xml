@@ -76,5 +76,15 @@
                 app:textStrokeColor="#000000"
                 app:textStrokeWidth="7.0" />
 
+        <ImageView
+                android:id="@+id/image_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/text"
+                app:layout_constraintEnd_toEndOf="@+id/progressBar_articleCount"
+                app:layout_constraintStart_toStartOf="@+id/progressBar_articleCount"
+                app:layout_constraintTop_toTopOf="@+id/text"
+                app:srcCompat="@drawable/ic_clear_black_24dp" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

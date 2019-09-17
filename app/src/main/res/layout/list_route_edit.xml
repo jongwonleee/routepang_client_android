@@ -1,66 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_drag_handle_black_24dp"
-            android:id="@+id/image_drag"
-            app:layout_constraintBottom_toBottomOf="@+id/image_category"
-            app:layout_constraintTop_toTopOf="@+id/image_category" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp"/>
-
-    <TextView
-            android:id="@+id/text_title"
-            android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/background"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="TextView"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/image_drag"
-            app:layout_constraintStart_toEndOf="@+id/image_category"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.32999998" />
-
-    <TextView
-            android:id="@+id/text_used_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="약 3시간 15분 소요"
-            app:layout_constraintStart_toStartOf="@+id/text_title"
-            app:layout_constraintTop_toBottomOf="@+id/text_title" />
-    <View
-            android:layout_width="3dp"
-            android:background="#AAAAAA"
-            android:layout_height="0dp" android:id="@+id/line_down"
-            app:layout_constraintTop_toTopOf="@+id/image_category"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="@+id/image_category"
-            app:layout_constraintStart_toStartOf="@+id/image_category" android:layout_marginTop="8dp"/>
-    <View
-            android:layout_width="3dp"
-            android:background="#aaaaaa"
-            android:layout_height="0dp" android:id="@+id/line_up" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/image_category"
-            app:layout_constraintEnd_toEndOf="@+id/image_category"
-            app:layout_constraintStart_toStartOf="@+id/image_category"
-            android:layout_marginBottom="8dp"/>
-
-    <ImageView
-            android:id="@+id/image_category"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/tab_box_selector" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+                android:id="@+id/image_drag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/image_category"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/image_category"
+                app:srcCompat="@drawable/ic_drag_handle_black_24dp" />
+
+        <TextView
+                android:id="@+id/text_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="TextView"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/image_drag"
+                app:layout_constraintStart_toEndOf="@+id/image_category"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.32999998" />
+
+        <TextView
+                android:id="@+id/text_used_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="약 3시간 15분 소요"
+                app:layout_constraintStart_toStartOf="@+id/text_title"
+                app:layout_constraintTop_toBottomOf="@+id/text_title" />
+
+        <View
+                android:id="@+id/line_down"
+                android:layout_width="3dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:background="#AAAAAA"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/image_category"
+                app:layout_constraintStart_toStartOf="@+id/image_category"
+                app:layout_constraintTop_toTopOf="@+id/image_category" />
+
+        <View
+                android:id="@+id/line_up"
+                android:layout_width="3dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="8dp"
+                android:background="#aaaaaa"
+                app:layout_constraintBottom_toBottomOf="@+id/image_category"
+                app:layout_constraintEnd_toEndOf="@+id/image_category"
+                app:layout_constraintStart_toStartOf="@+id/image_category"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+                android:id="@+id/image_category"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/tab_box_selector" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_way"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+</LinearLayout>

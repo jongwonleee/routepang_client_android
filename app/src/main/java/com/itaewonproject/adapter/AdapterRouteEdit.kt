@@ -8,8 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.MotionEventCompat
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.maps.model.DirectionsStep
 import com.itaewonproject.APIs
 import com.itaewonproject.mypage.EditItemTouchHelperCallback
 import com.itaewonproject.R
@@ -24,14 +26,23 @@ class AdapterRouteEdit(val context: Context,  val fragment:RouteEditFragment) :
     private lateinit var listener: onItemClickListener
     private var startDragListener:OnStartDragListener
     private var editMode=false
+    var stepList:ArrayList<List<DirectionsStep>>
     var list:ArrayList<Location>
     init{
         startDragListener=fragment
         list = fragment.list
+        stepList= arrayListOf()
+        for(i in 0..list.size-1) stepList.add(listOf())
     }
     override fun OnItemDrag(from: Int, to: Int,date:Date): Boolean {
+        resetSteplist()
         notifyDataSetChanged()
         return true
+    }
+
+    fun resetSteplist(){
+        stepList= arrayListOf()
+        for(i in 0..list.size-1) stepList.add(listOf())
     }
 
     override fun onViewAttachedToWindow(holder: BaseViewHolder) {
@@ -44,6 +55,7 @@ class AdapterRouteEdit(val context: Context,  val fragment:RouteEditFragment) :
     override fun OnItemMove(from: Int, to: Int): Boolean {
         Log.i("Moving","$from, $to")
         Collections.swap(list,from,to)
+        resetSteplist()
         notifyItemMoved(from,to)
         fragment.list=list
         //onBindViewHolder(get)
@@ -53,6 +65,7 @@ class AdapterRouteEdit(val context: Context,  val fragment:RouteEditFragment) :
     override fun OnItemSwipe(pos: Int): Boolean {
         Log.i("Removing","$pos, ${list[pos].name}")
         list.removeAt(pos)
+        resetSteplist()
         notifyItemRemoved(pos)
         fragment.list=list
         return true
@@ -60,6 +73,7 @@ class AdapterRouteEdit(val context: Context,  val fragment:RouteEditFragment) :
 
     fun setEditMode(mode:Boolean){
         editMode=mode
+        resetSteplist()
         notifyDataSetChanged()
     }
 
@@ -68,18 +82,11 @@ class AdapterRouteEdit(val context: Context,  val fragment:RouteEditFragment) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        if(viewType==0) return EditViewHolder((LayoutInflater.from(context).inflate(R.layout.list_route_edit, parent, false)))
-        else return AddViewHolder((LayoutInflater.from(context).inflate(R.layout.list_route_add, parent, false)))
-
+        return EditViewHolder((LayoutInflater.from(context).inflate(R.layout.list_route_edit, parent, false)))
     }
 
     override fun getItemCount(): Int {
-        return list.size+1
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        if(position== list.size) return 1
-        else return 0
+        return list.size
     }
 
     interface onItemClickListener{
@@ -102,6 +109,10 @@ class AdapterRouteEdit(val context: Context,  val fragment:RouteEditFragment) :
         private var lineUp:View
         private var lineDown:View
         private var category:ImageView
+        private var background:ConstraintLayout
+        private var recyclerView:RecyclerView
+        private var showSteps=false
+        private var adapter:AdapterStepList
         init{
             drag = itemView.findViewById(R.id.image_drag) as ImageView
             title = itemView.findViewById(R.id.text_title) as TextView
@@ -109,8 +120,14 @@ class AdapterRouteEdit(val context: Context,  val fragment:RouteEditFragment) :
             lineDown=itemView.findViewById(R.id.line_down) as View
             lineUp=itemView.findViewById(R.id.line_up) as View
             category=itemView.findViewById(R.id.image_category) as ImageView
-
-
+            background=itemView.findViewById(R.id.background) as ConstraintLayout
+            recyclerView=itemView.findViewById(R.id.recyclerView_way) as RecyclerView
+            showSteps=false
+            recyclerView.visibility=View.GONE
+            adapter= AdapterStepList(context,listOf())
+            val linearLayoutManager= LinearLayoutManager(context)
+            recyclerView.layoutManager= linearLayoutManager!!
+            recyclerView.adapter=adapter
         }
 
         override fun bind(pos:Int){
@@ -130,9 +147,13 @@ class AdapterRouteEdit(val context: Context,  val fragment:RouteEditFragment) :
             category.setImageBitmap(APIs.getCategoryImage(edit.cate))
             if(editMode){
                 drag.visibility=View.VISIBLE
+                showSteps=false
+                recyclerView.visibility=View.GONE
+                background.isClickable=false
             }else
             {
                 drag.visibility=View.INVISIBLE
+                background.isClickable=true
             }
 
             drag.setOnTouchListener({ view: View, motionEvent: MotionEvent ->
@@ -141,23 +162,18 @@ class AdapterRouteEdit(val context: Context,  val fragment:RouteEditFragment) :
                 }
                 return@setOnTouchListener false
             })
-        }
-    }
-
-    inner class AddViewHolder(itemView: View) :BaseViewHolder(itemView) {
-        private var buttonAdd: ImageView
-        init{
-            buttonAdd = itemView.findViewById(R.id.button_add) as ImageView
-        }
-        override fun bind(pos:Int){
-            if(editMode){
-                buttonAdd.visibility=View.VISIBLE
-            }else
-            {
-                buttonAdd.visibility=View.INVISIBLE
-            }
-            buttonAdd.setOnClickListener({
-
+            background.setOnClickListener({
+                showSteps= !showSteps
+                if(showSteps){
+                    adapter.list = stepList[pos]
+                    adapter.notifyDataSetChanged()
+                    recyclerView.visibility=View.VISIBLE
+                    Log.i("!!!","${stepList[pos].toString()}")
+                }
+                else
+                {
+                    recyclerView.visibility=View.GONE
+                }
             })
         }
     }

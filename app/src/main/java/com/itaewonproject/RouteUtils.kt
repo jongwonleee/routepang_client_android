@@ -36,7 +36,7 @@ import com.itaewonproject.mypage.RouteMapFragment
 
 
 class RouteUtils(val map: GoogleMap, val fragment:RouteMapFragment){
-    val mView:View
+    val view:View
 /*    val layoutInfo:ConstraintLayout
     val buttonAdd:ImageView
     val name:TextView
@@ -46,27 +46,33 @@ class RouteUtils(val map: GoogleMap, val fragment:RouteMapFragment){
     val rating:ProgressBar
     val text:CustomTextView
     val image:ImageView
+    val imageAdd:ImageView
     val articleCount:ProgressBar
     val latLoc = HashMap<LatLng,Location>()
     val latIndex = HashMap<LatLng,Int>()
+    val latWishlist = HashMap<LatLng,Int>()
     var editMode=false
         set(value){
             field=value
             if(value){
                 setList()
+                setWishList()
             }else
             {
+                removeWishList()
                 addLine()
             }
         }
-    lateinit var geoApiContext:GeoApiContext
+    var geoApiContext:GeoApiContext
     var selectedMarker:Marker?
     init{
-        mView = LayoutInflater.from(fragment.context).inflate(R.layout.view_route_marker,null)
-        rating=mView.findViewById(R.id.progressBar_rating) as ProgressBar
-        text = mView.findViewById(R.id.text) as CustomTextView
-        image = mView.findViewById(R.id.image) as ImageView
-        articleCount = mView.findViewById(R.id.progressBar_articleCount) as ProgressBar
+        geoApiContext = GeoApiContext.Builder().apiKey(fragment.context!!.getString(R.string.Web_key)).build()
+        view = LayoutInflater.from(fragment.context).inflate(R.layout.view_route_marker,null)
+        rating=view.findViewById(R.id.progressBar_rating) as ProgressBar
+        text = view.findViewById(R.id.text) as CustomTextView
+        image = view.findViewById(R.id.image) as ImageView
+        imageAdd=view.findViewById(R.id.image_add) as ImageView
+        articleCount = view.findViewById(R.id.progressBar_articleCount) as ProgressBar
         rating.max=100
         articleCount.max=20
         selectedMarker=null
@@ -74,22 +80,23 @@ class RouteUtils(val map: GoogleMap, val fragment:RouteMapFragment){
             if(editMode){
                 if(it!=null && selectedMarker!=null){
                     if(selectedMarker!!.position == it.position){
-                        /*changeSelectedMarker(null)
-                        selectedMarker=null*/
-
-                        fragment.list.removeAt(latIndex[it.position]!!)
+                        if(latWishlist.contains(it.position)){
+                            val addLocation = fragment.wishlist[latWishlist[it.position]!!]
+                            fragment.wishlist.removeAt(latWishlist[it.position]!!)
+                            fragment.list.add(addLocation)
+                        }else
+                        {
+                            val deleteLocation = fragment.wishlist[latIndex[it.position]!!]
+                            fragment.list.removeAt(latIndex[it.position]!!)
+                            fragment.wishlist.add(deleteLocation)
+                        }
                         setList()
-                    }else
-                    {
-                        changeSelectedMarker(it!!)
-                    }
-                }else{
+                        setWishList()
+                    }else changeSelectedMarker(it!!)
+                } else
                     changeSelectedMarker(it!!)
-
-                }
             }
             return@setOnMarkerClickListener editMode
-
         }
         map.setOnMapClickListener({
             changeSelectedMarker(null)
@@ -101,44 +108,46 @@ class RouteUtils(val map: GoogleMap, val fragment:RouteMapFragment){
         selectedMarker=null
         var list = fragment.list
         for(l in 0.. list.size-1){
-            addMarker(list[l],false,l)
+            addMarker(list[l],false,l,false)
         }
     }
 
-    fun addMarker(location: Location, isSelected:Boolean,index:Int):Marker{
+    fun setWishList(){
+        setList()
+        var list = fragment.wishlist
+        for(l in 0.. list.size-1){
+            addMarker(list[l],false,l,true)
+        }
+    }
+
+    fun removeWishList(){
+        setList()
+        addLine()
+    }
+
+    fun addMarker(location: Location, isSelected:Boolean,index:Int,isWishlist:Boolean):Marker{
         val position = location.latlng()
         rating.progress=(location.rating*10).toInt()
         articleCount.progress= if(location.articleCount>10) 10 else location.articleCount
         Log.i("isSelected","$isSelected")
         if(isSelected){
-            text.text = "-"
+            imageAdd.setImageResource(if(isWishlist)R.drawable.ic_add_black_24dp else R.drawable.ic_clear_black_24dp)
+            imageAdd.visibility=View.VISIBLE
+            text.text=""
         }else
         {
-            text.text=(index+1).toString()
+            imageAdd.visibility=View.INVISIBLE
+            text.text=if(isWishlist) "" else(index+1).toString()
         }
 
-       /* rating.rating=location.rating
-        name.text=location.name
-        val markerImage = marker.drawable
-        val duffColorFilter  = PorterDuffColorFilter(getCategoryColor(location.cate), PorterDuff.Mode.SRC_ATOP)
-        markerImage.colorFilter=duffColorFilter
-        marker.setImageDrawable(markerImage)
-        buttonAdd.visibility=View.VISIBLE
-        if(isSelected){
-            layoutInfo.visibility=View.VISIBLE
-            buttonAdd.visibility=View.VISIBLE
-        }else
-        {
-            layoutInfo.visibility=View.INVISIBLE
-            buttonAdd.visibility=View.INVISIBLE
-        }*/
         val markerOptions = MarkerOptions()
         markerOptions.title(location.name)
         markerOptions.position(position)
-        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(mView)))
+        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFroview(view)))
         val marker = map.addMarker(markerOptions)
+        if(isWishlist) latWishlist.put(position,index)
+        else latIndex.put(position,index)
         latLoc.put(position,location)
-        latIndex.put(position,index)
         return marker
     }
 
@@ -168,7 +177,9 @@ class RouteUtils(val map: GoogleMap, val fragment:RouteMapFragment){
         if(latLoc.containsKey(marker.position)){
             val location = latLoc.get(marker.position)
             if(location!=null)
-                return addMarker(location,isSelected,latIndex.get(marker.position)!!)
+                if(latWishlist.containsKey(marker.position))
+                    return addMarker(location,isSelected,latWishlist.get(marker.position)!!,true)
+                else return addMarker(location,isSelected,latIndex.get(marker.position)!!,false)
         }
         return null
     }
@@ -183,7 +194,7 @@ class RouteUtils(val map: GoogleMap, val fragment:RouteMapFragment){
         }
         return color
     }
-    private fun createDrawableFromView(view: View):Bitmap{
+    private fun createDrawableFroview(view: View):Bitmap{
         val displayMatrics = DisplayMetrics()
         (fragment.context as Activity).windowManager.defaultDisplay.getMetrics(displayMatrics)
         view.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.MATCH_PARENT)
@@ -199,7 +210,6 @@ class RouteUtils(val map: GoogleMap, val fragment:RouteMapFragment){
     fun addLine(){
         var list = fragment.list
 
-        geoApiContext = GeoApiContext.Builder().apiKey(fragment.context!!.getString(R.string.Web_key)).build()
 
         val arrayPoints = arrayListOf<LatLng>()
         for(l in list){
