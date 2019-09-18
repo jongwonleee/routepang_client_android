@@ -41,6 +41,13 @@ class AdapterRouteList(val context: Context, folderArray:ArrayList<Folder>) :
         (holder as BaseViewHolder).bind(position)
     }
 
+    fun removeRoutes(){
+        this.folder.removeChecked()
+        this.folder.setList()
+        isChecked.clear()
+        notifyDataSetChanged()
+    }
+
     fun folderChecked(){
         val checkedList = isChecked.toMutableList()
         var folder:Folder?=null
@@ -95,7 +102,7 @@ class AdapterRouteList(val context: Context, folderArray:ArrayList<Folder>) :
 
     interface onItemClickListener {
         fun onItemClick(v: View, position: Int)
-        fun onItemLongClick(isEmpty:Boolean)
+        fun onItemLongClick(size:Int)
     }
 
     fun setOnItemClickClickListener(listener: onItemClickListener) {
@@ -138,7 +145,7 @@ class AdapterRouteList(val context: Context, folderArray:ArrayList<Folder>) :
                     isChecked.add(list[pos])
                     viewChecked.visibility=View.VISIBLE
                 }
-                listener.onItemLongClick((isChecked.size>=2))
+                listener.onItemLongClick(isChecked.size)
                 return@setOnLongClickListener true
             })
             if (folder.isOpened(pos)) {
@@ -195,7 +202,7 @@ class AdapterRouteList(val context: Context, folderArray:ArrayList<Folder>) :
                     isChecked.add(list[pos])
                     viewChecked.visibility=View.VISIBLE
                 }
-                listener.onItemLongClick((isChecked.size>=2))
+                listener.onItemLongClick(isChecked.size)
                 return@setOnLongClickListener true
             })
             itemView.setOnClickListener({

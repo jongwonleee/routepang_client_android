@@ -12,6 +12,7 @@ build:
     script:
         - pwd
         - "cp app/mock-google-services.json app/google-services.json"
+	- "cp app/mock-strings.xml app/src/main/res/values/strings.xml"
         - ./gradlew assembleDebug
         # - ./gradlew build
         # - ./gradlew test
@@ -24,6 +25,7 @@ test:
     
     before_script:
         - "cp app/mock-google-services.json app/google-services.json"
+	- "cp app/mock-strings.xml app/src/main/res/values/strings.xml"
   #     - export ANDROID_HOME=$PWD/.android
    #     - export PATH=$PATH:$PWD/.android/platform-tools/
     

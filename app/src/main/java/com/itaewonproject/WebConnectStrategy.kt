@@ -19,7 +19,7 @@ abstract class WebConnectStrategy{
 
     init{
         domain = "http://ec2-13-209-42-105.ap-northeast-2.compute.amazonaws.com:9090/"
-        isOffline=true
+        isOffline=false
     }
 
 

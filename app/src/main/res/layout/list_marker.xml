@@ -1,77 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <View
+            android:id="@+id/line_left"
+            android:layout_width="0dp"
+            android:layout_height="3dp"
+            android:layout_marginEnd="16dp"
+            android:background="#AAAAAA"
+            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout4"
+            app:layout_constraintEnd_toEndOf="@+id/constraintLayout4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/constraintLayout4" />
+
+    <View
+            android:id="@+id/line_right"
+            android:layout_width="0dp"
+            android:layout_height="3dp"
+            android:layout_marginStart="16dp"
+            android:background="#AAAAAA"
+            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/constraintLayout4"
+            app:layout_constraintTop_toTopOf="@+id/constraintLayout4" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout4"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/marker_list_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layout_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/tab_box_selector"
-                android:padding="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
+        <ImageView
+                android:id="@+id/image"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="7dp"
+                android:layout_marginBottom="7dp"
+                app:layout_constraintBottom_toBottomOf="@+id/progressBar_articleCount"
+                app:layout_constraintEnd_toEndOf="@+id/progressBar_articleCount"
+                app:layout_constraintStart_toStartOf="@+id/progressBar_articleCount"
+                app:layout_constraintTop_toTopOf="@+id/progressBar_articleCount"
+                tools:srcCompat="@tools:sample/avatars" />
+
+        <ProgressBar
+                android:id="@+id/progressBar_base"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:progress="100"
+                android:progressDrawable="@drawable/circular_progressbar_base"
+                app:layout_constraintBottom_toBottomOf="@+id/progressBar_articleCount"
+                app:layout_constraintEnd_toEndOf="@+id/progressBar_articleCount"
+                app:layout_constraintStart_toStartOf="@+id/progressBar_articleCount"
+                app:layout_constraintTop_toTopOf="@+id/progressBar_articleCount" />
+
+        <ProgressBar
+                android:id="@+id/progressBar_rating"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:max="10"
+                android:progress="4"
+                android:progressDrawable="@drawable/circular_progressbar_up"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                    android:id="@+id/category"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_bookmark_border_black_24dp" />
+        <ProgressBar
+                android:id="@+id/progressBar_articleCount"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:max="10"
+                android:progress="4"
+                android:progressDrawable="@drawable/circular_progressbar_down"
+                android:scaleY="-1"
+                app:layout_constraintBottom_toBottomOf="@+id/progressBar_rating"
+                app:layout_constraintEnd_toEndOf="@+id/progressBar_rating"
+                app:layout_constraintStart_toStartOf="@+id/progressBar_rating"
+                app:layout_constraintTop_toTopOf="@+id/progressBar_rating" />
 
-            <RatingBar
-                    android:id="@+id/rating"
-                    style="@style/Widget.AppCompat.RatingBar.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clickable="false"
-                    android:progressTint="#FFFF00"
-                    app:layout_constraintStart_toEndOf="@+id/category"
-                    app:layout_constraintTop_toTopOf="@+id/category" />
-
-            <TextView
-                    android:id="@+id/name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:maxLines="3"
-                    android:text="TextView"
-                    app:layout_constraintBottom_toBottomOf="@+id/category"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/category"
-                    app:layout_constraintTop_toBottomOf="@+id/rating" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <ImageView
-                android:id="@+id/marker"
+        <com.itaewonproject.CustomTextView
+                android:id="@+id/text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/layout_info"
-                app:layout_constraintEnd_toEndOf="@+id/layout_info"
-                app:layout_constraintStart_toStartOf="@+id/layout_info"
-                app:layout_constraintTop_toBottomOf="@+id/layout_info"
-                app:srcCompat="@drawable/ic_place_black_24dp" />
+                android:text="1"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="@+id/image"
+                app:layout_constraintEnd_toEndOf="@+id/image"
+                app:layout_constraintStart_toStartOf="@+id/image"
+                app:layout_constraintTop_toTopOf="@+id/image"
+                app:textStroke="true"
+                app:textStrokeColor="#000000"
+                app:textStrokeWidth="7.0" />
 
         <ImageView
-                android:id="@+id/button_add"
+                android:id="@+id/image_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/tab_box_selector"
-                app:layout_constraintBottom_toTopOf="@+id/layout_info"
-                app:layout_constraintEnd_toEndOf="@+id/layout_info"
-                app:layout_constraintTop_toTopOf="@+id/layout_info"
-                app:srcCompat="@drawable/ic_add_black_24dp" />
+                app:layout_constraintBottom_toBottomOf="@+id/text"
+                app:layout_constraintEnd_toEndOf="@+id/progressBar_articleCount"
+                app:layout_constraintStart_toStartOf="@+id/progressBar_articleCount"
+                app:layout_constraintTop_toTopOf="@+id/text"
+                app:srcCompat="@drawable/ic_clear_black_24dp" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</FrameLayout>
+    <TextView
+            android:id="@+id/text_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text="TextView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,14 +23,17 @@ class RouteListFragment: Fragment(){
     private lateinit var list:ArrayList<Folder>
     private lateinit var adapter:AdapterRouteList
     private lateinit var buttonMakeFolder:ImageView
+    private lateinit var buttonDelete:ImageView
 
     private fun setListViewOption(view:View){
         list = APIs.B_API1(1)
         adapter = AdapterRouteList(view.context,list)
         adapter.setOnItemClickClickListener(object: AdapterRouteList.onItemClickListener {
-            override fun onItemLongClick(isFoldable:Boolean) {
-                if(isFoldable) buttonMakeFolder.visibility=View.VISIBLE
-                else buttonMakeFolder.visibility=View.INVISIBLE
+            override fun onItemLongClick(size:Int) {
+                if(size>1) buttonMakeFolder.visibility=View.VISIBLE
+                else buttonMakeFolder.visibility=View.GONE
+                if(size>0) buttonDelete.visibility=View.VISIBLE
+                else buttonDelete.visibility=View.GONE
 
             }
 
@@ -49,11 +52,20 @@ class RouteListFragment: Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         buttonMakeFolder = view.findViewById(R.id.image_makeFolder) as ImageView
+        buttonDelete =view.findViewById(R.id.image_delete) as ImageView
         recyclerView = view.findViewById(R.id.route_RecyclerView) as RecyclerView
-        buttonMakeFolder.visibility=View.INVISIBLE
+        
+        buttonMakeFolder.visibility=View.GONE
+        buttonDelete.visibility=View.GONE
         buttonMakeFolder.setOnClickListener({
             adapter.folderChecked()
-            buttonMakeFolder.visibility=View.INVISIBLE
+            buttonMakeFolder.visibility=View.GONE
+            buttonDelete.visibility=View.GONE
+        })
+        buttonDelete.setOnClickListener({
+            adapter.removeRoutes()
+            buttonMakeFolder.visibility=View.GONE
+            buttonDelete.visibility=View.GONE
         })
         setListViewOption(view)
     }
