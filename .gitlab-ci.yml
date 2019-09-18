@@ -12,7 +12,7 @@ build:
     script:
         - pwd
         - "cp app/mock-google-services.json app/google-services.json"
-	- "cp app/mock-strings.xml app/src/main/res/values/strings.xml"
+        - "cp app/mock-strings.xml app/src/main/res/values/strings.xml"
         - ./gradlew assembleDebug
         # - ./gradlew build
         # - ./gradlew test
