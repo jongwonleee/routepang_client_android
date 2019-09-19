@@ -77,12 +77,12 @@
             android:background="@drawable/tab_box_selector"
             android:padding="10dp"
             android:src="@drawable/places_ic_search"
-            app:layout_constraintBottom_toTopOf="@+id/list_layout"
+            app:layout_constraintBottom_toTopOf="@+id/layout_markerList"
             app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.cardview.widget.CardView
-            android:id="@+id/list_layout"
-            android:layout_width="match_parent"
+            android:id="@+id/layout_markerList"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
@@ -97,7 +97,7 @@
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView_marker"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="8dp" />
     </androidx.cardview.widget.CardView>
 

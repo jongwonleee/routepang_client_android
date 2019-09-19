@@ -4,33 +4,28 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 
-class TabPagerAdapter(fm: FragmentManager, behavior: Int) : FragmentStatePagerAdapter(fm, behavior) {
-    var fragments: ArrayList<Fragment>
-    var titles:ArrayList<String>
-    private var count=0
+data class Page(val title: String, val fragment: Fragment)
 
-    init{
-        fragments = ArrayList<Fragment>()
-        titles = ArrayList<String>()
+
+class TabPagerAdapter(fm: FragmentManager, behavior: Int) : FragmentStatePagerAdapter(fm, behavior) {
+    var pages: ArrayList<Page> = arrayListOf()
+
+    init {
     }
 
     override fun getItem(position: Int): Fragment {
-        return fragments[position]
+        return pages[position].fragment
     }
 
-
-    fun addPage(fragment: Fragment,title:String){
-        fragments.add(fragment)
-        titles.add(title)
-        count++
+    fun addPage(fragment: Fragment, title: String) {
+        pages.add(Page(title, fragment))
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        return titles[position]
+        return pages[position].title
     }
 
     override fun getCount(): Int {
-        return count
+        return pages.size
     }
-
 }

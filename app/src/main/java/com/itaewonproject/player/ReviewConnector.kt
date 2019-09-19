@@ -3,30 +3,26 @@ package com.itaewonproject.player
 import android.util.Log
 import com.google.gson.Gson
 import com.itaewonproject.APIs
-import com.itaewonproject.JsonParser
 import com.itaewonproject.WebConnectStrategy
-import com.itaewonproject.model.receiver.Article
 import com.itaewonproject.model.sender.Link
-import java.sql.Timestamp
 
-class ReviewConnector: WebConnectStrategy() {
-
+class ReviewConnector : WebConnectStrategy() {
 
     override var method: String = "GET"
-    override var inner: String ="article/getArticleByCustomerId/"
-    override var param=""
+    override var inner: String = "article/getArticleByCustomerId/"
+    override var param = ""
     override lateinit var mockData: String
-    init{
+    init {
         val ref = listOf<String>("https://facebookbrand.com/wp-content/themes/fb-branding/assets/images/fb-logo.png?v2",
             "https://instagram-brand.com/wp-content/uploads/2016/11/Instagram_AppIcon_Aug2017.png?w=300")
-        val l1=Link()
-        val l2 =Link()
-        l1.linkUrl="http://www.instagram.com"
-        l1.image=APIs.bmp1
-        l2.linkUrl="http://www.facebook.com"
-        l2.image=APIs.bmp2
-        val link = listOf(Gson().toJson(l2),Gson().toJson(l1))
-        mockData="""
+        val l1 = Link()
+        val l2 = Link()
+        l1.linkUrl = "http://www.instagram.com"
+        l1.image = APIs.bmp1
+        l2.linkUrl = "http://www.facebook.com"
+        l2.image = APIs.bmp2
+        val link = listOf(Gson().toJson(l2), Gson().toJson(l1))
+        mockData = """
             [
                 {
                     "articleId":1,
@@ -130,10 +126,10 @@ class ReviewConnector: WebConnectStrategy() {
                 }
             ]
         """.trimIndent()
-        Log.i("!!!",mockData)
+        Log.i("!!!", mockData)
     }
 
-    override fun get(vararg params:Any): String {
+    override fun get(vararg params: Any): String {
         val id = params[0] as Long
         param = "$id"
 
@@ -156,6 +152,4 @@ class ReviewConnector: WebConnectStrategy() {
         return JsonParser().listJsonParsing(result,Article::class.java)//articleJsonParsing(result)
     }
 */
-
-
 }

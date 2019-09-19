@@ -9,36 +9,38 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
 public class LinkManager {
 
 
-
-    public Link LinkApi(Link param) {
+    public Link LinkApi(String url) {
         System.out.println("url req");
 
-        Link link = param;
-
         Task task = new Task();
-        task.execute(link);
+        task.execute(url);
 
         try{
-            link = task.get();
+            return task.get();
         }catch(ExecutionException e){
             e.printStackTrace();
         }catch (InterruptedException e){
             e.printStackTrace();
         }
 
-        return link;
+        assert false;
+        return null;
     }
 
-    class Task extends AsyncTask<Link, Integer, Link> {
+    class Task extends AsyncTask<String, Integer, Link> {
         @Override
-        protected Link doInBackground(Link... links) {
-            Link link = links[0];
-            String url = link.linkUrl;
+        protected Link doInBackground(String... urls) {
+            Link link = new Link();
+            assert urls.length == 1;
+            String url = urls[0];
+            link.linkUrl=url;
+
             try{
                 if(url.indexOf("https://") == -1)
                     url = "https://" + url;

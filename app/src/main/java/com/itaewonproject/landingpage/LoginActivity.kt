@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
@@ -16,19 +15,20 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import com.itaewonproject.R
 import com.itaewonproject.linkshare.ClipboardListener
 import com.itaewonproject.mypage.MypageActivity
-import com.itaewonproject.R
 
 class LoginActivity : AppCompatActivity() {
 
-    lateinit var editID:EditText
-    lateinit var editPW:EditText
-    lateinit var buttonLogin:Button
-    lateinit var buttonLoginKaKao:Button
-    lateinit var buttonSignin:Button
-    lateinit var checkAutoLogin:CheckBox
-    lateinit var clipboard:ClipboardManager
+    lateinit var editID: EditText
+    lateinit var editPW: EditText
+    lateinit var buttonLogin: Button
+    lateinit var buttonLoginKaKao: Button
+    lateinit var buttonSignin: Button
+    lateinit var checkAutoLogin: CheckBox
+    lateinit var clipboard: ClipboardManager
 
     lateinit var serviceIntent: Intent
 
@@ -38,28 +38,27 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         editID = findViewById(R.id.edit_id) as EditText
-        editPW=findViewById(R.id.edit_password) as EditText
+        editPW = findViewById(R.id.edit_password) as EditText
         buttonLogin = findViewById(R.id.button_login) as Button
-        buttonLoginKaKao =findViewById(R.id.button_create_kakao) as Button
+        buttonLoginKaKao = findViewById(R.id.button_create_kakao) as Button
         buttonSignin = findViewById(R.id.button_signin) as Button
         buttonLogin.setOnClickListener({
-            var intent = Intent(this,MypageActivity::class.java)
+            var intent = Intent(this, MypageActivity::class.java)
             startActivity(intent)
             finish()
         })
 
         buttonSignin.setOnClickListener({
-            var intent = Intent(this,SignInActivity::class.java)
+            var intent = Intent(this, SignInActivity::class.java)
             startActivity(intent)
         })
-
 
        getPermissions()
     }
 
     @TargetApi(Build.VERSION_CODES.M)
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun getPermissions(){
+    private fun getPermissions() {
         val pm = applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
         var isWhiteListing = false
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -76,10 +75,9 @@ class LoginActivity : AppCompatActivity() {
             serviceIntent = Intent(this, ClipboardListener::class.java)
             startService(serviceIntent)
         } else {
-            serviceIntent = ClipboardListener.serviceIntent!!//getInstance().getApplication();
+            serviceIntent = ClipboardListener.serviceIntent!! // getInstance().getApplication();
             Toast.makeText(applicationContext, "already", Toast.LENGTH_LONG).show()
         }
-
     }
 
     val REQUEST_CODE = 10101
@@ -105,7 +103,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_CODE) {
             if (Settings.canDrawOverlays(this)) {
-
             } else {
 
                 Toast.makeText(this, "Sorry. Can't draw overlays without permission...", Toast.LENGTH_SHORT).show()

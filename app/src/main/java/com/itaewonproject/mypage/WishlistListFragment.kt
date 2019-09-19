@@ -9,38 +9,37 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.itaewonproject.search.ArticleActivity
 import com.itaewonproject.R
 import com.itaewonproject.adapter.AdapterLocationList
 import com.itaewonproject.model.receiver.Location
+import com.itaewonproject.search.ArticleActivity
 
 class WishlistListFragment : Fragment() {
-    private lateinit var recyclerView:RecyclerView
-    lateinit var list:ArrayList<Location>
+    private lateinit var recyclerView: RecyclerView
+    lateinit var list: ArrayList<Location>
 
-    private fun setListViewOption(view:View){
-        Log.i("!!w","wish list shown")
+    private fun setListViewOption(view: View) {
+        Log.i("!!w", "wish list shown")
         list = (parentFragment as WishlistFragment).list
         recyclerView = view.findViewById(R.id.wishlist_RecyclerView) as RecyclerView
         val adapter = AdapterLocationList(view.context, list)
 
-        adapter.setOnItemClickClickListener(object: AdapterLocationList.onItemClickListener {
+        adapter.setOnItemClickClickListener(object : AdapterLocationList.onItemClickListener {
             override fun onItemClick(v: View, position: Int) {
                 var intent = Intent(context, ArticleActivity::class.java)
-                intent.putExtra("Location",adapter.output[position])
+                intent.putExtra("Location", adapter.output[position])
                 startActivity(intent)
             }
-
         })
 
-        recyclerView.adapter=adapter
+        recyclerView.adapter = adapter
 
-        val linearLayoutManager= LinearLayoutManager(view.context)
-        recyclerView.layoutManager= linearLayoutManager
+        val linearLayoutManager = LinearLayoutManager(view.context)
+        recyclerView.layoutManager = linearLayoutManager
         recyclerView.setHasFixedSize(true)
 
-        //var dividerItemDeco = DividerItemDecoration(activity!!.applicationContext,linearLayoutManager.orientation)
-        //recyclerView.addItemDecoration(dividerItemDeco)
+        // var dividerItemDeco = DividerItemDecoration(activity!!.applicationContext,linearLayoutManager.orientation)
+        // recyclerView.addItemDecoration(dividerItemDeco)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

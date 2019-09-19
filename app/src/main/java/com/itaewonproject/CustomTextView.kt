@@ -51,5 +51,3 @@ class CustomTextView : TextView {
         super.onDraw(canvas)
     }
 }
-
-

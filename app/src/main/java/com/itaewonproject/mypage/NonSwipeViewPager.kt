@@ -1,11 +1,11 @@
 package com.itaewonproject.mypage
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.view.MotionEvent;
+import android.content.Context
+import android.util.AttributeSet
+import android.view.MotionEvent
 import androidx.viewpager.widget.ViewPager
 
-class NonSwipeViewPager(context: Context, attrs: AttributeSet): ViewPager(context, attrs) {
+class NonSwipeViewPager(context: Context, attrs: AttributeSet) : ViewPager(context, attrs) {
     private var swipeEnabled = false
 
     override fun onTouchEvent(event: MotionEvent): Boolean {

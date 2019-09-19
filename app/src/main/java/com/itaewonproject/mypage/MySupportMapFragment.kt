@@ -1,13 +1,12 @@
 package com.itaewonproject.mypage
 
-import com.google.android.gms.maps.SupportMapFragment
 import android.os.Bundle
-import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import com.google.android.gms.maps.SupportMapFragment
 
-
-class MySupportMapFragment: SupportMapFragment() {
+class MySupportMapFragment : SupportMapFragment() {
     var mOriginalContentView: View? = null
     lateinit var mMapWrapperLayout: MapWrapperLayout
 

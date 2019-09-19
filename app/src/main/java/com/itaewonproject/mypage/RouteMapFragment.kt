@@ -12,7 +12,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
@@ -22,43 +25,53 @@ import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.itaewonproject.*
 import com.itaewonproject.R
+import com.itaewonproject.adapter.AdapterMarkerList
 import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.player.LocationConnector
 import java.util.*
 
-class RouteMapFragment : Fragment(),OnMapReadyCallback {
+class RouteMapFragment : Fragment(), OnMapReadyCallback {
 
-    private lateinit var map:GoogleMap
-    private lateinit var mapView:MapView
-    private lateinit var autoCompleteButton:ImageView
-    private lateinit var buttonEditList:ImageView
-    private lateinit var buttonEdit:ImageView
+    private lateinit var map: GoogleMap
+    private lateinit var mapView: MapView
+    private lateinit var autoCompleteButton: ImageView
+    private lateinit var buttonEditList: ImageView
+    private lateinit var buttonEdit: ImageView
     private lateinit var textTitle: TextView
     private lateinit var editTitle: TextView
     private lateinit var routeUtils: RouteUtils
-    var list:ArrayList<Location>
-    var wishlist:ArrayList<Location>
-    private var editMode=false
+    private lateinit var layoutMarkerList: CardView
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: AdapterMarkerList
 
+    var list: ArrayList<Location>
+    var wishlist: ArrayList<Location>
+    private var editMode = false
 
-    init{
+    init {
         list = arrayListOf()
-        wishlist= arrayListOf()
+        wishlist = arrayListOf()
     }
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
-        if(isResumed && isVisibleToUser){
-            val temp = JsonParser().listJsonParsing(LocationConnector().get(LatLng(41.374902, 2.170370),14f),Location::class.java)
-            for(i in 0 .. temp.size-1){
-                if(i<temp.size/2)list.add(temp[i])
-                else wishlist.add(temp[i])
+        if (isResumed && isVisibleToUser) {
+            val temp = JsonParser().listJsonParsing(LocationConnector().get(LatLng(41.374902, 2.170370), 14f), Location::class.java)
+            for (i in 0..temp.size - 1) {
+                // XXX:
+                if (i <temp.size / 2) {
+                    list.add(temp[i])
+                }
+                else {
+                    wishlist.add(temp[i])
+                }
             }
-            //map.moveCamera(CameraUpdateFactory.newLatLngZoom(list[0].latlng(),15f))
-            Log.i("!!!","isvisible now")
+            // map.moveCamera(CameraUpdateFactory.newLatLngZoom(list[0].latlng(),15f))
+
             routeUtils.setList()
             routeUtils.addLine()
             routeUtils.setBoundary(list)
-
+            adapter.list = list
+            adapter.notifyDataSetChanged()
         }
     }
 
@@ -66,57 +79,71 @@ class RouteMapFragment : Fragment(),OnMapReadyCallback {
         mapView = view.findViewById(R.id.map) as MapView
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
+        layoutMarkerList = view.findViewById(R.id.layout_markerList) as CardView
+        recyclerView = view.findViewById(R.id.recyclerView_marker) as RecyclerView
         buttonEdit = view.findViewById(R.id.image_edit)
         textTitle = view.findViewById(R.id.text_title)
         editTitle = view.findViewById(R.id.edit_title)
 
-        buttonEdit.setOnClickListener({
-            editMode=!editMode
-                if(editMode){
-                    textTitle.visibility=View.INVISIBLE
-                    editTitle.visibility=View.VISIBLE
-                    buttonEditList.visibility=View.GONE
-                }else
-                {
-                    textTitle.visibility=View.VISIBLE
-                    editTitle.visibility=View.INVISIBLE
-                    buttonEditList.visibility=View.VISIBLE
-                    routeUtils.setBoundary(list)
+        adapter = AdapterMarkerList(view.context,this)
+        recyclerView.adapter = adapter
 
+        val linearLayoutManager = LinearLayoutManager(view.context, RecyclerView.HORIZONTAL, false)
+        recyclerView.layoutManager = linearLayoutManager
+        recyclerView.setHasFixedSize(true)
+
+        buttonEdit.setOnClickListener({
+            editMode = !editMode
+            if (editMode) {
+                    layoutMarkerList.visibility = View.VISIBLE
+                    textTitle.visibility = View.INVISIBLE
+                    editTitle.visibility = View.VISIBLE
+                    buttonEditList.visibility = View.GONE
+                } else {
+                    layoutMarkerList.visibility = View.GONE
+                    textTitle.visibility = View.VISIBLE
+                    editTitle.visibility = View.INVISIBLE
+                    buttonEditList.visibility = View.VISIBLE
+                    routeUtils.setBoundary(list)
                 }
-            routeUtils.editMode=editMode
+            routeUtils.editMode = editMode
         })
-        textTitle.visibility=View.VISIBLE
-        editTitle.visibility=View.INVISIBLE
+        textTitle.visibility = View.VISIBLE
+        editTitle.visibility = View.INVISIBLE
+        layoutMarkerList.visibility = View.GONE
+
         buttonEditList = view.findViewById(R.id.image_map)
         buttonEditList.setOnClickListener({
-            if(!editMode)(parentFragment as RouteFragment).toFragment(false)
+            if (!editMode)(parentFragment as RouteFragment).toFragment(false)
         })
 
         autoCompleteButton = view.findViewById(R.id.button_search) as ImageView
 
-        Places.initialize(activity!!.applicationContext,context!!.getString(R.string.Web_key))
+        Places.initialize(activity!!.applicationContext, context!!.getString(R.string.Web_key))
         var placesClient = Places.createClient(context!!) as PlacesClient
-        var intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY,Arrays.asList(Place.Field.ID,Place.Field.NAME,Place.Field.LAT_LNG)).build(context!!)
+        var intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG)).build(context!!)
        autoCompleteButton.setOnClickListener({
-            startActivityForResult(intent,1)
+            startActivityForResult(intent, 1)
         })
     }
 
+    fun setAdapterList() {
+        adapter.list = list
+        adapter.notifyDataSetChanged()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(requestCode==1){
-            if(resultCode==RESULT_OK)
-            {
-                var place  = Autocomplete.getPlaceFromIntent(data!!)
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                var place = Autocomplete.getPlaceFromIntent(data!!)
                 if (place.latLng != null) {
                     map.clear()
                     map.moveCamera(CameraUpdateFactory.newLatLng(place.latLng))
                     map.animateCamera(CameraUpdateFactory.zoomTo(15f))
                 }
-            }
-            else if(requestCode==RESULT_ERROR){
+            } else if (requestCode == RESULT_ERROR) {
                 var status = Autocomplete.getStatusFromIntent(data!!)
-                Log.e(TAG,status.statusMessage)
+                Log.e(TAG, status.statusMessage)
             }
         }
     }
@@ -138,16 +165,15 @@ class RouteMapFragment : Fragment(),OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         MapsInitializer.initialize(this.activity)
-        map=googleMap
-        routeUtils = RouteUtils(map,this)
-
+        map = googleMap
+        routeUtils = RouteUtils(map, this)
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        var view=view
+        var view = view
         try {
             view = inflater.inflate(R.layout.fragment_route_map, container, false)
-        }catch (e: InflateException){
+        } catch (e: InflateException) {
             e.printStackTrace()
         }
         return view

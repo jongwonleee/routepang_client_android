@@ -9,8 +9,8 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
-import com.itaewonproject.landingpage.LoginActivity
 import com.itaewonproject.R
+import com.itaewonproject.landingpage.LoginActivity
 
 class RestartService : Service() {
 
@@ -45,7 +45,7 @@ class RestartService : Service() {
         val notification = builder.build()
         startForeground(9, notification)
 
-        /////////////////////////////////////////////////////////////////////
+        // ///////////////////////////////////////////////////////////////////
         val intent = Intent(this, ClipboardListener::class.java)
         startService(intent)
 
@@ -62,5 +62,4 @@ class RestartService : Service() {
     override fun onUnbind(intent: Intent): Boolean {
         return super.onUnbind(intent)
     }
-
 }

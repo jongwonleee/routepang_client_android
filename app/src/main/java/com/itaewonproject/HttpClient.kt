@@ -2,18 +2,11 @@
 package com.itaewonproject
 
 import android.util.Log
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.vividsolutions.jts.geom.Coordinate
-import com.vividsolutions.jts.geom.GeometryFactory
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 import java.io.OutputStream
 import java.net.*
-import java.util.HashMap
-
-
 
 class HttpClient {
 
@@ -38,7 +31,6 @@ class HttpClient {
 
         private fun setBuilder(builder: Builder) {
             this.builder = builder
-
         }
 
         fun request() {
@@ -46,11 +38,10 @@ class HttpClient {
             setHeader(conn)
             setBody(conn)
             httpStatusCode = getStatusCode(conn!!)
-            if(httpStatusCode== HttpURLConnection.HTTP_OK)
+            if (httpStatusCode == HttpURLConnection.HTTP_OK)
                 body = readStream(conn)
-            else
-            {
-                Log.i("httpError","$httpStatusCode, ${HttpURLConnection.HTTP_OK}, ${conn.responseCode}")
+            else {
+                Log.i("httpError", "$httpStatusCode, ${HttpURLConnection.HTTP_OK}, ${conn.responseCode}")
             }
             conn.disconnect()
         }
@@ -64,7 +55,7 @@ class HttpClient {
         }
 
         private fun setContentType(connection: HttpURLConnection) {
-            connection.setRequestProperty("Content-Type","application/json")
+            connection.setRequestProperty("Content-Type", "application/json")
         }
 
         private fun setRequestMethod(connection: HttpURLConnection) {
@@ -73,13 +64,12 @@ class HttpClient {
             } catch (e: ProtocolException) {
                 e.printStackTrace()
             }
-
         }
 
         private fun setBody(connection: HttpURLConnection?) {
 
             val parameter = builder!!.getParameters()
-            Log.i("setting body",parameter)
+            Log.i("setting body", parameter)
             if (parameter != null && parameter.length > 0) {
                 var outputStream: OutputStream? = null
                 try {
@@ -94,10 +84,8 @@ class HttpClient {
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
-
                 }
             }
-
         }
 
         private fun getStatusCode(connection: HttpURLConnection): Int {
@@ -105,9 +93,9 @@ class HttpClient {
                 return connection.responseCode
             } catch (e: IOException) {
                 e.printStackTrace()
-            } catch (e:Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
-            } catch (e: ConnectException){
+            } catch (e: ConnectException) {
                 e.printStackTrace()
             }
 
@@ -118,9 +106,9 @@ class HttpClient {
             var result = ""
             var reader: BufferedReader? = null
             try {
-                Log.i("inputS",connection.inputStream.toString())
+                Log.i("inputS", connection.inputStream.toString())
                 reader = BufferedReader(InputStreamReader(connection.inputStream))
-                for (line in reader.readLines()){
+                for (line in reader.readLines()) {
                     result += line
                 }
             } catch (e: IOException) {
@@ -130,13 +118,12 @@ class HttpClient {
                     reader?.close()
                 } catch (e: IOException) {
                 }
-
             }
 
             return result
         }
 
-        class Builder(method:String, val url:String) {
+        class Builder(method: String, val url: String) {
 
             private var parameters: String
             val method: String
@@ -146,10 +133,9 @@ class HttpClient {
     */
             init {
                 this.method = method
-                parameters=""
-                //this.parameters = HashMap()
+                parameters = ""
+                // this.parameters = HashMap()
             }
-
 
             fun setParameters(param: String?) {
                 if (param != null) {
@@ -157,16 +143,13 @@ class HttpClient {
                 }
             }
 
-            fun appendParameter(param: String){
+            fun appendParameter(param: String) {
                 this.parameters.plus(param)
             }
-
 
             fun getParameters(): String {
                 return parameters
             }
-
-
 
             /*private fun generateParameters(): String {
                 val parameters = StringBuffer()

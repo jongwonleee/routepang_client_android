@@ -21,5 +21,4 @@ class MapWrapperLayout(context: Context) : FrameLayout(context) {
     fun setOnDragListener(mOnDragListener: OnDragListener) {
         this.mOnDragListener = mOnDragListener
     }
-
 }

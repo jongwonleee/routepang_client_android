@@ -13,26 +13,26 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.maps.model.DirectionsStep
 import com.itaewonproject.APIs
-import com.itaewonproject.mypage.EditItemTouchHelperCallback
 import com.itaewonproject.R
 import com.itaewonproject.model.receiver.Location
+import com.itaewonproject.mypage.EditItemTouchHelperCallback
 import com.itaewonproject.mypage.RouteEditFragment
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AdapterRouteEdit(val context: Context,  val fragment:RouteEditFragment) :
+class AdapterRouteEdit(val context: Context, val fragment: RouteEditFragment) :
     RecyclerView.Adapter<BaseViewHolder>(),
     EditItemTouchHelperCallback.OnItemMoveListener {
     private lateinit var listener: onItemClickListener
-    private var startDragListener:OnStartDragListener
-    private var editMode=false
-    var stepList:ArrayList<List<DirectionsStep>>
-    var list:ArrayList<Location>
-    init{
-        startDragListener=fragment
+    private var startDragListener: OnStartDragListener
+    private var editMode = false
+    var stepList: ArrayList<List<DirectionsStep>>
+    var list: ArrayList<Location>
+    init {
+        startDragListener = fragment
         list = fragment.list
-        stepList= arrayListOf()
-        for(i in 0..list.size-1) stepList.add(listOf())
+        stepList = arrayListOf()
+        for (i in 0..list.size - 1) stepList.add(listOf())
     }
     override fun OnItemDrag(): Boolean {
         resetSteplist()
@@ -40,39 +40,37 @@ class AdapterRouteEdit(val context: Context,  val fragment:RouteEditFragment) :
         return true
     }
 
-    fun resetSteplist(){
-        stepList= arrayListOf()
-        for(i in 0..list.size-1) stepList.add(listOf())
+    fun resetSteplist() {
+        stepList = arrayListOf()
+        for (i in 0..list.size - 1) stepList.add(listOf())
     }
 
     override fun onViewAttachedToWindow(holder: BaseViewHolder) {
-        Log.i("!!!","onViewAttached")
+        Log.i("!!!", "onViewAttached")
         super.onViewAttachedToWindow(holder)
     }
 
-
-
     override fun OnItemMove(from: Int, to: Int): Boolean {
-        Log.i("Moving","$from, $to")
-        Collections.swap(list,from,to)
+        Log.i("Moving", "$from, $to")
+        Collections.swap(list, from, to)
         resetSteplist()
-        notifyItemMoved(from,to)
-        fragment.list=list
-        //onBindViewHolder(get)
+        notifyItemMoved(from, to)
+        fragment.list = list
+        // onBindViewHolder(get)
         return true
     }
 
     override fun OnItemSwipe(pos: Int): Boolean {
-        Log.i("Removing","$pos, ${list[pos].name}")
+        Log.i("Removing", "$pos, ${list[pos].name}")
         list.removeAt(pos)
         resetSteplist()
         notifyItemRemoved(pos)
-        fragment.list=list
+        fragment.list = list
         return true
     }
 
-    fun setEditMode(mode:Boolean){
-        editMode=mode
+    fun setEditMode(mode: Boolean) {
+        editMode = mode
         resetSteplist()
         notifyDataSetChanged()
     }
@@ -89,93 +87,89 @@ class AdapterRouteEdit(val context: Context,  val fragment:RouteEditFragment) :
         return list.size
     }
 
-    interface onItemClickListener{
-        fun onItemClick(v: View, position:Int)
+    interface onItemClickListener {
+        fun onItemClick(v: View, position: Int)
     }
 
-    interface OnStartDragListener{
-        fun OnStartDrag(viewHolder:RecyclerView.ViewHolder)
+    interface OnStartDragListener {
+        fun OnStartDrag(viewHolder: RecyclerView.ViewHolder)
     }
 
-    fun setOnItemClickClickListener(listener: onItemClickListener){
-        this.listener=listener
+    fun setOnItemClickClickListener(listener: onItemClickListener) {
+        this.listener = listener
     }
 
-    inner class EditViewHolder(itemView: View) : BaseViewHolder(itemView){
+    inner class EditViewHolder(itemView: View) : BaseViewHolder(itemView) {
 
-        private var drag:ImageView
-        private var title:TextView
-        private var usedTime:TextView
-        private var lineUp:View
-        private var lineDown:View
-        private var category:ImageView
-        private var background:ConstraintLayout
-        private var recyclerView:RecyclerView
-        private var showSteps=false
-        private var adapter:AdapterStepList
-        init{
+        private var drag: ImageView
+        private var title: TextView
+        private var usedTime: TextView
+        private var lineUp: View
+        private var lineDown: View
+        private var category: ImageView
+        private var background: ConstraintLayout
+        private var recyclerView: RecyclerView
+        private var showSteps = false
+        private var adapter: AdapterStepList
+        init {
             drag = itemView.findViewById(R.id.image_drag) as ImageView
             title = itemView.findViewById(R.id.text_title) as TextView
-            usedTime=itemView.findViewById(R.id.text_used_time) as TextView
-            lineDown=itemView.findViewById(R.id.line_down) as View
-            lineUp=itemView.findViewById(R.id.line_up) as View
-            category=itemView.findViewById(R.id.image_category) as ImageView
-            background=itemView.findViewById(R.id.background) as ConstraintLayout
-            recyclerView=itemView.findViewById(R.id.recyclerView_way) as RecyclerView
-            showSteps=false
-            recyclerView.visibility=View.GONE
-            adapter= AdapterStepList(context,listOf())
-            val linearLayoutManager= LinearLayoutManager(context)
-            recyclerView.layoutManager= linearLayoutManager!!
-            recyclerView.adapter=adapter
+            usedTime = itemView.findViewById(R.id.text_used_time) as TextView
+            lineDown = itemView.findViewById(R.id.line_down) as View
+            lineUp = itemView.findViewById(R.id.line_up) as View
+            category = itemView.findViewById(R.id.image_category) as ImageView
+            background = itemView.findViewById(R.id.background) as ConstraintLayout
+            recyclerView = itemView.findViewById(R.id.recyclerView_way) as RecyclerView
+            showSteps = false
+            recyclerView.visibility = View.GONE
+            adapter = AdapterStepList(context, listOf())
+            val linearLayoutManager = LinearLayoutManager(context)
+            recyclerView.layoutManager = linearLayoutManager!!
+            recyclerView.adapter = adapter
         }
 
-        override fun bind(pos:Int){
+        override fun bind(pos: Int) {
             var edit = list[pos]
             title.text = edit.name
-            usedTime.text= "약 ${APIs.secToString(edit.used.toInt())}"
-            if(pos==0) {
-                lineUp.visibility=View.INVISIBLE
-                lineDown.visibility=View.VISIBLE
-            }else if(pos==list.size-1){
-                lineDown.visibility=View.INVISIBLE
-                lineUp.visibility=View.VISIBLE
-            }else{
-                lineUp.visibility=View.VISIBLE
-                lineDown.visibility=View.VISIBLE
+            usedTime.text = "약 ${APIs.secToString(edit.used.toInt())}"
+            if (pos == 0) {
+                lineUp.visibility = View.INVISIBLE
+                lineDown.visibility = View.VISIBLE
+            } else if (pos == list.size - 1) {
+                lineDown.visibility = View.INVISIBLE
+                lineUp.visibility = View.VISIBLE
+            } else {
+                lineUp.visibility = View.VISIBLE
+                lineDown.visibility = View.VISIBLE
             }
             category.setImageBitmap(APIs.getCategoryImage(edit.cate))
-            if(editMode){
-                drag.visibility=View.VISIBLE
-                showSteps=false
-                recyclerView.visibility=View.GONE
-                background.isClickable=false
-            }else
-            {
-                drag.visibility=View.INVISIBLE
-                background.isClickable=true
+            if (editMode) {
+                drag.visibility = View.VISIBLE
+                showSteps = false
+                recyclerView.visibility = View.GONE
+                background.isClickable = false
+            } else {
+                drag.visibility = View.INVISIBLE
+                background.isClickable = true
             }
 
             drag.setOnTouchListener({ view: View, motionEvent: MotionEvent ->
-                if(motionEvent.actionMasked==MotionEvent.ACTION_DOWN){
+                if (motionEvent.actionMasked == MotionEvent.ACTION_DOWN) {
                     startDragListener.OnStartDrag(this)
                 }
                 return@setOnTouchListener false
             })
             background.setOnClickListener({
-                showSteps= !showSteps
-                if(showSteps){
+                showSteps = !showSteps
+                if (showSteps) {
                     adapter.list = stepList[pos]
                     adapter.notifyDataSetChanged()
-                    recyclerView.visibility=View.VISIBLE
-                    Log.i("!!!","${stepList[pos].toString()}")
-                }
-                else
-                {
-                    recyclerView.visibility=View.GONE
+                    recyclerView.visibility = View.VISIBLE
+                    Log.i("!!!", "${stepList[pos]}")
+                } else {
+                    recyclerView.visibility = View.GONE
                 }
             })
         }
     }
-
 }

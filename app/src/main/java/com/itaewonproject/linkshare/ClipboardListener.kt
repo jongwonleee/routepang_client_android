@@ -9,25 +9,24 @@ import android.app.Service
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.PixelFormat
 import android.os.Handler
 import android.os.IBinder
 import android.util.Log
-import android.widget.Toast
-import java.util.Calendar
-import java.util.regex.Pattern
-import android.widget.FrameLayout
-import android.graphics.PixelFormat
-import com.itaewonproject.R
 import android.view.*
 import android.widget.Button
-
+import android.widget.FrameLayout
+import android.widget.Toast
+import com.itaewonproject.R
+import java.util.Calendar
+import java.util.regex.Pattern
 
 class ClipboardListener : Service() {
 
-    private lateinit var windowManager:WindowManager
-    private lateinit var floatyView:View
-    private lateinit var params:WindowManager.LayoutParams
-    private lateinit var  cm :ClipboardManager
+    private lateinit var windowManager: WindowManager
+    private lateinit var floatyView: View
+    private lateinit var params: WindowManager.LayoutParams
+    private lateinit var cm: ClipboardManager
     private var isRunning = true
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -39,70 +38,66 @@ class ClipboardListener : Service() {
         cm.addPrimaryClipChangedListener {
             val p = Pattern.compile("^(https?):\\/\\/([^:\\/\\s]+)(:([^\\/]*))?((\\/[^\\s/\\/]+)*)?\\/?([^#\\s\\?]*)(\\?([^#\\s]*))?(#(\\w*))?$")
             if (p.matcher(cm.primaryClip!!.getItemAt(0).text).matches()) {
-                isRunning=true
+                isRunning = true
                 windowManager.addView(floatyView, params)
 
-                val animator = ObjectAnimator.ofFloat(floatyView,View.ALPHA,1f)
-                animator.duration=500
-                animator.addListener(object:Animator.AnimatorListener{
+                val animator = ObjectAnimator.ofFloat(floatyView, View.ALPHA, 1f)
+                animator.duration = 500
+                animator.addListener(object : Animator.AnimatorListener {
                     override fun onAnimationRepeat(p0: Animator?) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
                     }
 
                     override fun onAnimationEnd(p0: Animator?) {
-                        floatyView.alpha=1.0f
+                        floatyView.alpha = 1.0f
                     }
 
                     override fun onAnimationCancel(p0: Animator?) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
                     }
 
                     override fun onAnimationStart(p0: Animator?) {
-                        floatyView.alpha=0f
+                        floatyView.alpha = 0f
                     }
-
                 })
                 animator.start()
 
                 Handler().postDelayed(Runnable {
                     removeRunner()
-                },5500)
+                }, 5500)
             }
         }
 
         return Service.START_NOT_STICKY
     }
 
-    fun removeRunner(){
-        if(isRunning) {
-            isRunning=false
-            val animator = ObjectAnimator.ofFloat(floatyView,View.ALPHA,0f)
-            animator.duration=500
-            animator.addListener(object:Animator.AnimatorListener{
+    fun removeRunner() {
+        if (isRunning) {
+            isRunning = false
+            val animator = ObjectAnimator.ofFloat(floatyView, View.ALPHA, 0f)
+            animator.duration = 500
+            animator.addListener(object : Animator.AnimatorListener {
                 override fun onAnimationRepeat(p0: Animator?) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
                 }
 
                 override fun onAnimationEnd(p0: Animator?) {
-                    floatyView.alpha=0f
+                    floatyView.alpha = 0f
                     windowManager.removeView(floatyView)
-                    Log.i("windowManager","removed View")
+                    Log.i("windowManager", "removed View")
                 }
 
                 override fun onAnimationCancel(p0: Animator?) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
                 }
 
                 override fun onAnimationStart(p0: Animator?) {
-                    floatyView.alpha=1.0f
+                    floatyView.alpha = 1.0f
                 }
-
             })
             animator.start()
-
         }
     }
-
 
     override fun onDestroy() {
 
@@ -111,7 +106,6 @@ class ClipboardListener : Service() {
         Thread.currentThread().interrupt()
 
         super.onDestroy()
-
     }
 
     override fun onTaskRemoved(rootIntent: Intent) {
@@ -161,7 +155,7 @@ class ClipboardListener : Service() {
              WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
         )
-        params.gravity = Gravity.TOP//Gravity.CENTER or Gravity.START
+        params.gravity = Gravity.TOP // Gravity.CENTER or Gravity.START
         params.x = 0
         params.y = 0
         val interceptorLayout = object : FrameLayout(this) {
@@ -193,7 +187,7 @@ class ClipboardListener : Service() {
         var buttonOk = floatyView.findViewById(R.id.button_ok) as Button
         buttonOk.setOnClickListener({
             var intent = Intent(this, LinkShareActivity::class.java)
-            intent.putExtra(Intent.EXTRA_TEXT,cm.primaryClip!!.getItemAt(0).text)
+            intent.putExtra(Intent.EXTRA_TEXT, cm.primaryClip!!.getItemAt(0).text)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             removeRunner()
 
@@ -204,5 +198,4 @@ class ClipboardListener : Service() {
     companion object {
         var serviceIntent: Intent? = null
     }
-
 }

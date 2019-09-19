@@ -3,17 +3,14 @@ package com.itaewonproject.adapter
 import android.content.Context
 import android.graphics.Color
 import android.text.Editable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.toDrawable
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.R
 import com.itaewonproject.model.receiver.Folder
@@ -23,7 +20,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class AdapterRouteList(val context: Context, folderArray:ArrayList<Folder>) :
+class AdapterRouteList(val context: Context, folderArray: ArrayList<Folder>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private lateinit var listener: onItemClickListener
@@ -41,29 +38,29 @@ class AdapterRouteList(val context: Context, folderArray:ArrayList<Folder>) :
         (holder as BaseViewHolder).bind(position)
     }
 
-    fun removeRoutes(){
+    fun removeRoutes() {
         this.folder.removeChecked()
         this.folder.setList()
         isChecked.clear()
         notifyDataSetChanged()
     }
 
-    fun folderChecked(){
+    fun folderChecked() {
         val checkedList = isChecked.toMutableList()
-        var folder:Folder?=null
-        for(l in checkedList){
-            if(l.type==1){
-                folder=l as Folder
+        var folder: Folder? = null
+        for (l in checkedList) {
+            if (l.type == 1) {
+                folder = l as Folder
                 checkedList.remove(l)
                 break
             }
         }
-        if(folder==null) {
+        if (folder == null) {
             folder = Folder("새로운 폴더", "바르셀로나", -1, arrayListOf(checkedList[0] as Route))
             checkedList.removeAt(0)
         }
-        for(l in checkedList){
-            if(l.type==1)
+        for (l in checkedList) {
+            if (l.type == 1)
                 folder.routes.addAll((l as Folder).routes)
             else folder.routes.add((l as Route))
         }
@@ -102,7 +99,7 @@ class AdapterRouteList(val context: Context, folderArray:ArrayList<Folder>) :
 
     interface onItemClickListener {
         fun onItemClick(v: View, position: Int)
-        fun onItemLongClick(size:Int)
+        fun onItemLongClick(size: Int)
     }
 
     fun setOnItemClickClickListener(listener: onItemClickListener) {
@@ -114,14 +111,13 @@ class AdapterRouteList(val context: Context, folderArray:ArrayList<Folder>) :
         private var location: TextView
         private var updated: TextView
         private var background: ConstraintLayout
-        private var viewChecked:View
+        private var viewChecked: View
         init {
             title = itemView.findViewById(R.id.text_title) as TextView
             location = itemView.findViewById(R.id.text_location) as TextView
             updated = itemView.findViewById(R.id.text_updated) as TextView
             background = itemView.findViewById(R.id.background) as ConstraintLayout
-            viewChecked=itemView.findViewById(R.id.view_checked) as View
-
+            viewChecked = itemView.findViewById(R.id.view_checked) as View
         }
 
         override fun bind(pos: Int) {
@@ -133,17 +129,16 @@ class AdapterRouteList(val context: Context, folderArray:ArrayList<Folder>) :
                 listener.onItemClick(itemView, pos)
             })
 
-            if(isChecked.contains(list[pos])) viewChecked.visibility=View.VISIBLE
-            else viewChecked.visibility=View.INVISIBLE
+            if (isChecked.contains(list[pos])) viewChecked.visibility = View.VISIBLE
+            else viewChecked.visibility = View.INVISIBLE
 
             itemView.setOnLongClickListener({
-                if(isChecked.contains(list[pos])){
+                if (isChecked.contains(list[pos])) {
                     isChecked.remove(list[pos])
-                    viewChecked.visibility=View.INVISIBLE
-                }else
-                {
+                    viewChecked.visibility = View.INVISIBLE
+                } else {
                     isChecked.add(list[pos])
-                    viewChecked.visibility=View.VISIBLE
+                    viewChecked.visibility = View.VISIBLE
                 }
                 listener.onItemLongClick(isChecked.size)
                 return@setOnLongClickListener true
@@ -163,8 +158,7 @@ class AdapterRouteList(val context: Context, folderArray:ArrayList<Folder>) :
         private var location: TextView
         private var updated: TextView
         private var background: ConstraintLayout
-        private var viewChecked:View
-
+        private var viewChecked: View
 
         init {
             folderImage = itemView.findViewById(R.id.image_folder) as ImageView
@@ -173,7 +167,7 @@ class AdapterRouteList(val context: Context, folderArray:ArrayList<Folder>) :
             location = itemView.findViewById(R.id.text_location) as TextView
             updated = itemView.findViewById(R.id.text_updated) as TextView
             background = itemView.findViewById(R.id.background) as ConstraintLayout
-            viewChecked=itemView.findViewById(R.id.view_checked) as View
+            viewChecked = itemView.findViewById(R.id.view_checked) as View
             editTitle.visibility = View.INVISIBLE
             textTitle.visibility = View.VISIBLE
         }
@@ -184,8 +178,8 @@ class AdapterRouteList(val context: Context, folderArray:ArrayList<Folder>) :
             editTitle.text = Editable.Factory.getInstance().newEditable(route.title)
             location.text = route.location
             updated.text = route.date
-            if(isChecked.contains(list[pos])) viewChecked.visibility=View.VISIBLE
-            else viewChecked.visibility=View.INVISIBLE
+            if (isChecked.contains(list[pos])) viewChecked.visibility = View.VISIBLE
+            else viewChecked.visibility = View.INVISIBLE
 
             if (folder.isOpened(pos)) {
                 background.background = Color.LTGRAY.toDrawable()
@@ -194,13 +188,12 @@ class AdapterRouteList(val context: Context, folderArray:ArrayList<Folder>) :
             }
 
             itemView.setOnLongClickListener({
-                if(isChecked.contains(list[pos])){
+                if (isChecked.contains(list[pos])) {
                     isChecked.remove(list[pos])
-                    viewChecked.visibility=View.INVISIBLE
-                }else
-                {
+                    viewChecked.visibility = View.INVISIBLE
+                } else {
                     isChecked.add(list[pos])
-                    viewChecked.visibility=View.VISIBLE
+                    viewChecked.visibility = View.VISIBLE
                 }
                 listener.onItemLongClick(isChecked.size)
                 return@setOnLongClickListener true
@@ -223,9 +216,9 @@ class AdapterRouteList(val context: Context, folderArray:ArrayList<Folder>) :
         }
     }
 
-    inner class FolderListManager(var folders: ArrayList<Folder>){
+    inner class FolderListManager(var folders: ArrayList<Folder>) {
         var opened = ArrayList<Boolean>()
-        var indexFolder = HashMap<Int,Folder>()
+        var indexFolder = HashMap<Int, Folder>()
         init {
             setList()
         }
@@ -234,7 +227,6 @@ class AdapterRouteList(val context: Context, folderArray:ArrayList<Folder>) :
             return opened[pos]
         }
 
-
         fun setList() {
             list.clear()
             opened.clear()
@@ -242,11 +234,10 @@ class AdapterRouteList(val context: Context, folderArray:ArrayList<Folder>) :
                 f.parIndex = -1
                 if (f.routes.size == 1) {
                     list.add(f.routes[0])
-                    indexFolder.put(list.size-1,f)
+                    indexFolder.put(list.size - 1, f)
                 } else {
                     list.add(f)
-                    indexFolder.put(list.size-1,f)
-
+                    indexFolder.put(list.size - 1, f)
                 }
                 if (f.opened) {
                     opened.add(true)
@@ -254,7 +245,7 @@ class AdapterRouteList(val context: Context, folderArray:ArrayList<Folder>) :
                         c.parIndex = list.indexOf(f)
                         list.add(c)
                         opened.add(true)
-                        indexFolder.put(list.size-1,f)
+                        indexFolder.put(list.size - 1, f)
                     }
                 } else
                     opened.add(false)
@@ -267,16 +258,15 @@ class AdapterRouteList(val context: Context, folderArray:ArrayList<Folder>) :
             setList()
         }
 
-        fun removeChecked(){
-            for(l in isChecked)
-                if(list.contains(l)) remove(list.indexOf(l))
+        fun removeChecked() {
+            for (l in isChecked)
+                if (list.contains(l)) remove(list.indexOf(l))
         }
 
         fun remove(pos: Int) {
             if (list[pos].parIndex == -1) {
                 folders.remove(indexFolder[pos]!!)
-            }else
-            {
+            } else {
                 val par = list[list[pos].parIndex] as Folder
                 folders[folders.indexOf(par)].routes.remove(list[pos] as Route)
             }
