@@ -16,13 +16,7 @@ import com.itaewonproject.model.receiver.Location
 import java.lang.Integer.min
 
 class MarkerUtils(val map: GoogleMap, val con: Context) {
-    val mView: View
-/*    val layoutInfo:ConstraintLayout
-    val buttonAdd:ImageView
-    val name:TextView
-    val rating:RatingBar
-    val category:ImageView
-    val marker:ImageView*/
+    val view: View
     val rating: ProgressBar
     val text: CustomTextView
     val image: ImageView
@@ -31,17 +25,11 @@ class MarkerUtils(val map: GoogleMap, val con: Context) {
     val latIndex = HashMap<LatLng, Int>()
     var selectedMarker: Marker?
     init {
-        mView = LayoutInflater.from(con).inflate(R.layout.view_route_marker, null)
-       /* layoutInfo = mView.findViewById(R.id.layout_info) as ConstraintLayout
-        buttonAdd = mView.findViewById(R.id.button_add) as ImageView
-        name = mView.findViewById(R.id.name) as TextView
-        rating = mView.findViewById(R.id.rating) as RatingBar
-        category = mView.findViewById(R.id.category) as ImageView
-        marker=mView.findViewById(R.id.marker) as ImageView*/
-        rating = mView.findViewById(R.id.progressBar_rating) as ProgressBar
-        text = mView.findViewById(R.id.text) as CustomTextView
-        image = mView.findViewById(R.id.image) as ImageView
-        articleCount = mView.findViewById(R.id.progressBar_articleCount) as ProgressBar
+        view = LayoutInflater.from(con).inflate(R.layout.view_route_marker, null)
+        rating = view.findViewById(R.id.progressBar_rating) as ProgressBar
+        text = view.findViewById(R.id.text) as CustomTextView
+        image = view.findViewById(R.id.image) as ImageView
+        articleCount = view.findViewById(R.id.progressBar_articleCount) as ProgressBar
         rating.max = 100
         articleCount.max = 20
         selectedMarker = null
@@ -61,24 +49,11 @@ class MarkerUtils(val map: GoogleMap, val con: Context) {
     }
 
     fun addLocationMarker(location: Location, isSelected: Boolean): Marker {
-         val position = location.latlng()
-        /*rating.rating=location.rating
-        name.text=location.name
-        val markerImage = marker.drawable
-        val duffColorFilter  = PorterDuffColorFilter(getCategoryColor(location.cate), PorterDuff.Mode.SRC_ATOP)
-        markerImage.colorFilter=duffColorFilter
-        marker.setImageDrawable(markerImage)
-        buttonAdd.visibility=View.GONE
-        if(isSelected){
-            layoutInfo.visibility=View.VISIBLE
-        }else
-        {
-            layoutInfo.visibility=View.INVISIBLE
-        }*/
+        val position = location.latlng()
         val markerOptions = MarkerOptions()
         markerOptions.title(location.name)
         markerOptions.position(position)
-        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(mView)))
+        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFroview(view)))
         val marker = map.addMarker(markerOptions)
         latLoc.put(position, location)
         return marker
@@ -113,7 +88,7 @@ class MarkerUtils(val map: GoogleMap, val con: Context) {
         val markerOptions = MarkerOptions()
         markerOptions.title(location.name)
         markerOptions.position(position)
-        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(mView)))
+        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFroview(view)))
         val marker = map.addMarker(markerOptions)
         latLoc.put(position, location)
         latIndex.put(position, index)
@@ -158,7 +133,7 @@ class MarkerUtils(val map: GoogleMap, val con: Context) {
         }
         return color
     }
-    private fun createDrawableFromView(view: View): Bitmap {
+    private fun createDrawableFroview(view: View): Bitmap {
         val displayMatrics = DisplayMetrics()
         (con as Activity).windowManager.defaultDisplay.getMetrics(displayMatrics)
         view.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT)

@@ -14,6 +14,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.*
@@ -26,11 +27,13 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.itaewonproject.*
 import com.itaewonproject.R
 import com.itaewonproject.adapter.AdapterMarkerList
+import com.itaewonproject.adapter.AdapterRouteEdit
 import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.player.LocationConnector
 import java.util.*
 
-class RouteMapFragment : Fragment(), OnMapReadyCallback {
+class RouteMapFragment : Fragment(), OnMapReadyCallback,AdapterMarkerList.OnStartDragListener {
+
 
     private lateinit var map: GoogleMap
     private lateinit var mapView: MapView
@@ -39,13 +42,17 @@ class RouteMapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var buttonEdit: ImageView
     private lateinit var textTitle: TextView
     private lateinit var editTitle: TextView
-    private lateinit var routeUtils: RouteUtils
     private lateinit var layoutMarkerList: CardView
     private lateinit var recyclerView: RecyclerView
+
     private lateinit var adapter: AdapterMarkerList
+    private lateinit var itemTouchHelper: ItemTouchHelper
+    private lateinit var callback: MarkerItemTouchHelperCallback
 
     var list: ArrayList<Location>
     var wishlist: ArrayList<Location>
+    lateinit var routeUtils: RouteUtils
+
     private var editMode = false
 
     init {
@@ -70,9 +77,25 @@ class RouteMapFragment : Fragment(), OnMapReadyCallback {
             routeUtils.setList()
             routeUtils.addLine()
             routeUtils.setBoundary(list)
+
             adapter.list = list
             adapter.notifyDataSetChanged()
         }
+    }
+
+    override fun OnStartDrag(viewHolder: RecyclerView.ViewHolder) {
+        itemTouchHelper.startDrag(viewHolder)
+    }
+
+    private fun setListViewOption(view: View){
+        adapter = AdapterMarkerList(view.context,this)
+        callback = MarkerItemTouchHelperCallback(adapter)
+        itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
+        recyclerView.adapter = adapter
+        val linearLayoutManager = LinearLayoutManager(view.context, RecyclerView.HORIZONTAL, false)
+        recyclerView.layoutManager = linearLayoutManager
+        recyclerView.setHasFixedSize(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -85,12 +108,7 @@ class RouteMapFragment : Fragment(), OnMapReadyCallback {
         textTitle = view.findViewById(R.id.text_title)
         editTitle = view.findViewById(R.id.edit_title)
 
-        adapter = AdapterMarkerList(view.context,this)
-        recyclerView.adapter = adapter
 
-        val linearLayoutManager = LinearLayoutManager(view.context, RecyclerView.HORIZONTAL, false)
-        recyclerView.layoutManager = linearLayoutManager
-        recyclerView.setHasFixedSize(true)
 
         buttonEdit.setOnClickListener({
             editMode = !editMode
@@ -120,11 +138,13 @@ class RouteMapFragment : Fragment(), OnMapReadyCallback {
         autoCompleteButton = view.findViewById(R.id.button_search) as ImageView
 
         Places.initialize(activity!!.applicationContext, context!!.getString(R.string.Web_key))
-        var placesClient = Places.createClient(context!!) as PlacesClient
+        Places.createClient(context!!)
         var intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG)).build(context!!)
        autoCompleteButton.setOnClickListener({
             startActivityForResult(intent, 1)
         })
+
+        setListViewOption(view)
     }
 
     fun setAdapterList() {

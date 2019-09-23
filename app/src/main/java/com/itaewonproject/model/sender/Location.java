@@ -1,13 +1,15 @@
 package com.itaewonproject.model.sender;
 
 
+import com.itaewonproject.LocationCategory;
+
+import org.locationtech.jts.geom.Point;
+
 public class Location {
 
     public long locationId;
 
-    public double longitude;
-
-    public double latitude;
+    public Point coordinates;
 
     public String placeId;
 
@@ -17,7 +19,7 @@ public class Location {
 
     public double used;
 
-    public String category;
+    public LocationCategory category;
 
     public int articleCount;
 

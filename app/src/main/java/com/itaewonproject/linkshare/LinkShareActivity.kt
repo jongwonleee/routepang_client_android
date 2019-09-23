@@ -60,7 +60,7 @@ class LinkShareActivity : AppCompatActivity() {
                 .into(buttonRef)
             summary.text = link.summary
         }
-        Places.initialize(applicationContext, getString(R.string.Web_key))  // FIXME:
+        Places.initialize(applicationContext, getString(R.string.Web_key))
         Places.createClient(this)
         val autoCompleteSupportFragment = supportFragmentManager.findFragmentById(R.id.autocomplete_location_search) as AutocompleteSupportFragment
         autoCompleteSupportFragment.setPlaceFields(

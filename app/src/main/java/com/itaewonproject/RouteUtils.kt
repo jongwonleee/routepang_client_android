@@ -109,6 +109,7 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
     }
 
     fun addMarker(location: Location, isSelected: Boolean, index: Int, isWishlist: Boolean): Marker {
+        Log.i("adding marker","${location.name} , latlng:${location.latlng()}")
         val position = location.latlng()
         rating.progress = (location.rating * 10).toInt()
         articleCount.progress = Math.min(10,location.articleCount)
@@ -148,7 +149,7 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
         for (l in list) {
             bound.include(l.latlng())
         }
-        map.moveCamera(CameraUpdateFactory.newLatLngBounds(bound.build(), 100))
+        if(list.size>0)map.moveCamera(CameraUpdateFactory.newLatLngBounds(bound.build(), 100))
     }
 
     private fun addEditMarker(marker: Marker, isSelected: Boolean): Marker? {
@@ -185,6 +186,7 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
         return bitmap
     }
 
+
     fun addLine() {
         var list = fragment.list
 
@@ -199,6 +201,7 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
         // calculateDirectionList(list)
     }
 
+    //FIXME:directions 저장해놓고 바뀔 시에만 하기
     private fun calculateDirections(origin: LatLng, dest: LatLng) {
         Log.d(TAG, "calculateDirections: calculating directions.")
 

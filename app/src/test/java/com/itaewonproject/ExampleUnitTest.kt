@@ -1,5 +1,6 @@
 package com.itaewonproject
 
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.google.gson.reflect.TypeToken
@@ -7,6 +8,10 @@ import com.itaewonproject.model.receiver.Location
 import org.junit.Test
 
 import org.junit.Assert.*
+import org.locationtech.jts.geom.Coordinate
+import org.locationtech.jts.geom.CoordinateSequence
+import org.locationtech.jts.geom.GeometryFactory
+import org.locationtech.jts.geom.Point
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -27,6 +32,13 @@ class ExampleUnitTest {
         assertEquals(num,n)
     }
 
+    @Test
+    fun test3(){
+        var c = GeometryFactory().createPoint()
+        c.coordinate
+        System.out.println(Gson().toJson(c))
+
+    }
    /* @Test
     fun test2(){
 

@@ -83,7 +83,7 @@ class BasketConnector : WebConnectStrategy() {
         val id = params[0] as Long
         method = "GET"
         inner = "customer/getBasketListByCustomerId/"
-        param = "$id"
+        param = "customerId=$id"
 
         var task = Task()
         task.execute()
@@ -108,7 +108,7 @@ class BasketConnector : WebConnectStrategy() {
     fun addBasketByLocation(id: Long, location: Location) {
         method = "POST"
         inner = "customer/addBasket/"
-        param = "$id"
+        param = "customerId=$id"
         var task = Task()
         task.execute(Gson().toJson(location.getServerModel()))
         task.get()

@@ -1,6 +1,9 @@
 package com.itaewonproject.model.receiver
 
+import android.util.Log
 import com.google.android.gms.maps.model.LatLng
+import com.itaewonproject.LocationCategory
+import org.locationtech.jts.geom.*
 import java.io.Serializable
 
 /*
@@ -16,10 +19,9 @@ class Location : Serializable {
     var imgUrl = arrayListOf<String>()
     var rating = 0f
     var placeId = ""
-    var latitude = 0.0
-    var longitude = 0.0
+    var coordinates =""
     var cate = 0
-    var category = ""
+    var category: LocationCategory? =null
     var articleCount = 0
     var used = 0.0
     var locationId: Long = 0
@@ -29,10 +31,11 @@ class Location : Serializable {
         imgUrl = ArrayList()
         name = location.name
         address = location.address
-        latitude = location.latitude
-        longitude = location.longitude
+        Log.i("getting serverModel","${location.coordinates}")
+        //coordinates = location.coordinates
         locationId = location.locationId
         placeId = location.placeId
+        category = location.category
     }
     fun getServerModel(): com.itaewonproject.model.sender.Location {
         var ret = com.itaewonproject.model.sender.Location()
@@ -41,25 +44,13 @@ class Location : Serializable {
         ret.articleCount = articleCount
         ret.locationId = locationId
         ret.placeId = placeId
-        ret.category = "FOOD"
+        ret.category = category
         ret.used = used
-        ret.latitude = latitude
-        ret.longitude = longitude
+        //ret.coordinates = coordinates
+
         return ret
     }
-    /*constructor(name:String, urls:ArrayList<String>, rating:Float, placeId:String,latitude:Double,longitude:Double,usedTime:Int,category: Int,articleCount:Int){
-        this.name=name
-        this.imgUrl=urls
-        this.rating=rating
-        this.placeId=placeId
-        this.latitude=latitude
-        this.longitude=longitude
-        this.used=usedTime
-        this.category=category
-        this.articleCount=articleCount
-    }
-*/
-    inline fun latlng() = LatLng(longitude, latitude)
+    inline fun latlng() = LatLng(coordinates.substring(coordinates.indexOf('(')+1,coordinates.indexOf(' ',coordinates.indexOf('(')+1)-1).toDouble(),coordinates.substring(coordinates.indexOf(' ',coordinates.indexOf('(')+1)+1,coordinates.indexOf(')')-1).toDouble())
 
     override fun hashCode(): Int {
         return locationId.toInt()

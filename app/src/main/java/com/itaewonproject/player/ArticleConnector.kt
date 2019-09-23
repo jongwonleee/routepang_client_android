@@ -128,7 +128,7 @@ class ArticleConnector : WebConnectStrategy() {
 
     override fun get(vararg params: Any): String {
         val id = params[0] as Long
-        param = "$id"
+        param = "locationId=$id"
 
         var task = Task()
         task.execute()
@@ -153,8 +153,8 @@ class ArticleConnector : WebConnectStrategy() {
 
     fun postByCustomerId(article: com.itaewonproject.model.sender.Article) {
         method = "POST"
-        inner = "article/postArticle/"
-        param = "customer_id=${article.customerId}&&link_id=${article.link.linkId}"
+        inner = "customer/postArticle/"
+        param = "customerId=${article.customerId}&&linkId=${article.link.linkId}"
         article.customerId = 1
         var task = Task()
         task.execute(Gson().toJson(article))

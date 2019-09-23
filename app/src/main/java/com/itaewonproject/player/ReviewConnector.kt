@@ -131,7 +131,7 @@ class ReviewConnector : WebConnectStrategy() {
 
     override fun get(vararg params: Any): String {
         val id = params[0] as Long
-        param = "$id"
+        param = "customerId=$id"
 
         var task = Task()
         task.execute()

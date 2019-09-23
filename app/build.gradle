@@ -9,7 +9,7 @@ android {
     buildToolsVersion "29.0.0"
     defaultConfig {
         applicationId "com.itaewonproject"
-        minSdkVersion 21
+        minSdkVersion 26
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -50,8 +50,9 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.12.1'
     implementation 'com.google.maps:google-maps-services:0.2.9'
     implementation 'org.slf4j:slf4j-nop:1.7.25'
-
+    implementation 'org.locationtech.jts:jts-core:1.16.1'
+/*
     api 'com.vividsolutions:jts-core:1.14.0'
-    api 'com.vividsolutions:jts-io:1.14.0'
+    api 'com.vividsolutions:jts-io:1.14.0'*/
 }
 apply plugin: 'com.google.gms.google-services'

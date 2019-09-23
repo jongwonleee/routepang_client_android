@@ -11,12 +11,36 @@ import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.CustomTextView
 import com.itaewonproject.R
 import com.itaewonproject.model.receiver.Location
+import com.itaewonproject.mypage.MarkerItemTouchHelperCallback
 import com.itaewonproject.mypage.RouteMapFragment
+import java.util.*
+import kotlin.collections.ArrayList
 
-class AdapterMarkerList(val context: Context, val fragment: RouteMapFragment) : RecyclerView.Adapter<AdapterMarkerList.ViewHolder>() {
+class AdapterMarkerList(val context: Context, val fragment: RouteMapFragment)
+    : RecyclerView.Adapter<AdapterMarkerList.ViewHolder>(),
+    MarkerItemTouchHelperCallback.OnItemMoveListener{
+
+    private var startDragListener: OnStartDragListener = fragment
 
     var list: ArrayList<Location> = arrayListOf()
         get() = fragment.list
+
+
+    override fun OnItemMove(from: Int, to: Int): Boolean {
+        Collections.swap(list,from,to)
+        notifyItemMoved(from,to)
+        return true
+    }
+
+    override fun OnItemDrag(): Boolean {
+        notifyDataSetChanged()
+        fragment.routeUtils.setWishList()
+        return true
+    }
+
+    interface OnStartDragListener {
+        fun OnStartDrag(viewHolder: RecyclerView.ViewHolder)
+    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)
@@ -52,6 +76,10 @@ class AdapterMarkerList(val context: Context, val fragment: RouteMapFragment) : 
             title = itemView.findViewById(R.id.text_title) as TextView
             rating.max = 100
             articleCount.max = 20
+            itemView.setOnLongClickListener({
+                startDragListener.OnStartDrag(this)
+                return@setOnLongClickListener true
+            })
         }
         override fun bind(pos: Int) {
             val location = list[pos]

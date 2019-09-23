@@ -55,8 +55,7 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         if (isVisibleToUser && isResumed) {
-            Log.i("!!!!", "is visible now")
-            list = JsonParser().listJsonParsing(LocationConnector().get(LatLng(41.374902, 2.170370), 14f), Location::class.java)
+            list = JsonParser().listJsonParsing(LocationConnector().get(LatLng(41.374902, 2.170370), 14f),Location::class.java)
             adapter.list = list
             adapter.resetSteplist()
             adapter.notifyDataSetChanged()

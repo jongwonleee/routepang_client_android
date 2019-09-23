@@ -27,7 +27,8 @@ class WishlistMapFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var map: GoogleMap
     private lateinit var mapView: MapView
-    lateinit var list: ArrayList<Location>
+    val list: ArrayList<Location>
+        get() = (parentFragment as WishlistFragment).list
     lateinit var markerUtils: MarkerUtils
     private lateinit var autoCompleteButton: ImageView
 
@@ -37,10 +38,8 @@ class WishlistMapFragment : Fragment(), OnMapReadyCallback {
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
 
-        // FIXME:
-        list = (parentFragment as WishlistFragment).list
         Places.initialize(activity!!.applicationContext, context!!.getString(R.string.Web_key))
-        var placesClient = Places.createClient(context!!) as PlacesClient
+        Places.createClient(context!!)
         var intent = Autocomplete.IntentBuilder(
             AutocompleteActivityMode.OVERLAY,
             Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG)).build(context!!)
@@ -50,7 +49,6 @@ class WishlistMapFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        // FIXME:
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 var place = Autocomplete.getPlaceFromIntent(data!!)
