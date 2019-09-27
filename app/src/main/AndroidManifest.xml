@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.itaewonproject">
+        package="com.itaewonproject">
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android WebConnectStrategy v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality.
     -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.GET_CLIPS"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_CLIPS" />
     <uses-permission android:name="android.permission.READ_CLIPS" />
     <uses-permission android:name="android.permission.WRITE_CLIPS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-
 
     <application
             android:allowBackup="true"
@@ -26,20 +25,25 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
+        <activity android:name=".landingpage.LoadingActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <service
                 android:name=".linkshare.ClipboardListener"
                 android:enabled="true"
                 android:exported="true" />
-
         <service
                 android:name=".linkshare.RestartService"
                 android:enabled="true"
                 android:exported="true"
-                android:stopWithTask="false"/>
+                android:stopWithTask="false" />
 
-        <receiver android:name=".linkshare.AlarmReceiver"/>
-
+        <receiver android:name=".linkshare.AlarmReceiver" />
         <receiver
                 android:name=".linkshare.RebootReceiver"
                 android:enabled="true"
@@ -49,31 +53,23 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <activity android:name=".landingpage.SignInActivity">
-        </activity>
+
+        <activity android:name=".landingpage.SignInActivity"></activity>
         <activity android:name=".landingpage.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-        <activity android:name=".mypage.MypageActivity">
 
         </activity>
+        <activity android:name=".mypage.MypageActivity"></activity>
         <activity android:name=".linkshare.LinkShareActivity">
             <intent-filter>
-                <action android:name="android.intent.action.SEND"/>
+                <action android:name="android.intent.action.SEND" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="text/plain"/>
+                <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-        <activity android:name=".search.ArticleActivity">
-        </activity>
-        <activity android:name=".search.LocationActivity">
-        </activity>
+        <activity android:name=".search.ArticleActivity"></activity>
+        <activity android:name=".search.LocationActivity"></activity>
         <!--
              The WebConnectStrategy key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -84,8 +80,7 @@
         -->
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
-                android:value="@string/google_maps_key"/>
-
+                android:value="@string/google_maps_key" />
     </application>
 
 </manifest>

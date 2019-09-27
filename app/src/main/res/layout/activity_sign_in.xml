@@ -7,67 +7,142 @@
         android:layout_height="match_parent"
         tools:context=".landingpage.SignInActivity">
 
-    <TextView
-            android:text="회원가입"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display2" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="parent" android:layout_marginStart="8dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="0.19999999"/>
-    <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:id="@+id/edit_id"
-            android:layout_marginTop="8dp"
-            android:inputType="textEmailAddress"
-            app:layout_constraintTop_toBottomOf="@+id/textView" android:layout_marginStart="8dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent" android:hint="ID"/>
-    <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:ems="10"
-            android:id="@+id/edit_password"
-            app:layout_constraintStart_toStartOf="@+id/edit_id" app:layout_constraintEnd_toEndOf="@+id/edit_id"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/edit_id" android:hint="password"/>
-    <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/edit_name"
-            app:layout_constraintStart_toStartOf="@+id/edit_id" app:layout_constraintEnd_toEndOf="@+id/edit_id"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/edit_password_check"
-            android:hint="이름"
-            app:layout_constraintHorizontal_bias="0.0"/>
-    <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:ems="10"
-            android:id="@+id/edit_password_check"
-            app:layout_constraintStart_toStartOf="@+id/edit_id" app:layout_constraintEnd_toEndOf="@+id/edit_id"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/edit_password"
-            android:hint="password 확인"
-            app:layout_constraintHorizontal_bias="0.0"/>
-    <Button
-            android:text="회원가입"
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/button_login_kakao"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/button_create"
-            app:layout_constraintStart_toStartOf="@+id/edit_password"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/login_box_yellow"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="@+id/edit_password"
-            app:layout_constraintTop_toBottomOf="@+id/edit_name" android:layout_marginTop="8dp"/>
-    <Button
-            android:text="카톡으로 회원가입"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/edit_password"
+            app:layout_constraintTop_toBottomOf="@+id/button_create">
+
+        <Button
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/login_box_yellow"
+                android:fontFamily="@font/notosanscjkkr_medium"
+                android:text="카카오톡 간편 회원가입"
+                style="?android:attr/borderlessButtonStyle"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+                android:id="@+id/imageView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textView7"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_kakao_talk_s" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="86dp"
+            android:textColor="#333333"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/notosanscjkkr_medium"
+            android:text="회원가입"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+            android:id="@+id/edit_id"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/button_create_kakao" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/button_create" app:layout_constraintStart_toStartOf="@+id/edit_password"
-            app:layout_constraintEnd_toEndOf="@+id/edit_password" app:layout_constraintHorizontal_bias="0.0"/>
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="39dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/login_box_grey"
+            android:ems="10"
+            android:fontFamily="@font/notosanscjkkr_regular"
+            android:hint="ID"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="20dp"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <EditText
+            android:id="@+id/edit_password"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:background="@drawable/login_box_grey"
+            android:ems="10"
+            android:hint="password"
+            android:inputType="textPassword"
+            android:paddingLeft="20dp"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:fontFamily="@font/notosanscjkkr_regular"
+            app:layout_constraintEnd_toEndOf="@+id/edit_id"
+            app:layout_constraintStart_toStartOf="@+id/edit_id"
+            app:layout_constraintTop_toBottomOf="@+id/edit_id" />
+
+    <EditText
+            android:id="@+id/edit_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:background="@drawable/login_box_grey"
+            android:ems="10"
+            android:hint="이름"
+            android:inputType="textPersonName"
+            android:paddingLeft="20dp"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:fontFamily="@font/notosanscjkkr_regular"
+            app:layout_constraintEnd_toEndOf="@+id/edit_id"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/edit_id"
+            app:layout_constraintTop_toBottomOf="@+id/edit_password_check" />
+
+    <EditText
+            android:id="@+id/edit_password_check"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:background="@drawable/login_box_grey"
+            android:ems="10"
+            android:hint="password 확인"
+            android:inputType="textPassword"
+            android:paddingLeft="20dp"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:fontFamily="@font/notosanscjkkr_regular"
+            app:layout_constraintEnd_toEndOf="@+id/edit_id"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/edit_id"
+            app:layout_constraintTop_toBottomOf="@+id/edit_password" />
+
+    <Button
+            android:id="@+id/button_create"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/login_box_darkgrey"
+            android:fontFamily="@font/notosanscjkkr_medium"
+            android:textSize="16sp"
+            android:text="회원가입"
+            android:textColor="#FFFFFF"
+            app:layout_constraintEnd_toEndOf="@+id/edit_password"
+            app:layout_constraintStart_toStartOf="@+id/edit_password"
+            app:layout_constraintTop_toBottomOf="@+id/edit_name" />
 </androidx.constraintlayout.widget.ConstraintLayout>

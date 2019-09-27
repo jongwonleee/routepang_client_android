@@ -22,7 +22,7 @@ class SignInActivity : AppCompatActivity() {
         editPWCheck = findViewById(R.id.edit_password_check) as EditText
         editName = findViewById(R.id.edit_name) as EditText
         buttonSignin = findViewById(R.id.button_create) as Button
-        buttonSigninKakao = findViewById(R.id.button_create_kakao) as Button
+        buttonSigninKakao = findViewById(R.id.button_login_kakao) as Button
         buttonSignin.setOnClickListener({
             finish()
         })

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true">
+        <vector xmlns:android="http://schemas.android.com/apk/res/android"
+                android:width="16dp"
+                android:height="16dp"
+                android:viewportWidth="16"
+                android:viewportHeight="16">
+            <path
+                    android:pathData="M10.458,5.686l-3.737,3.69 -1.018,-1.163a0.624,0.624 0,0 0,-0.938 0.821l1.454,1.662a0.623,0.623 0,0 0,0.907 0.034l4.208,-4.156a0.624,0.624 0,0 0,-0.876 -0.888M8,14.753A6.76,6.76 0,0 1,1.247 8,6.76 6.76,0 0,1 8,1.247 6.761,6.761 0,0 1,14.753 8,6.76 6.76,0 0,1 8,14.753zM8,0C3.589,0 0,3.589 0,8s3.589,8 8,8 8,-3.589 8,-8 -3.589,-8 -8,-8z"
+                    android:fillColor="#F862B8"
+                    android:fillType="evenOdd"/>
+        </vector>
+    </item>
+    <item android:state_checked="false">
+        <shape android:shape="ring"
+            android:thickness="1dp"
+            android:innerRadiusRatio="2.4"
+            android:useLevel="false">
+            <solid android:color="#f862b8"/>
+            <size android:width="16dp"
+                    android:height="16dp"/>
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="ring"
+                android:thickness="1dp"
+                android:innerRadiusRatio="2.4"
+                android:useLevel="false">
+            <solid android:color="#f862b8" />
+            <size android:width="16dp"
+                android:height="16dp"/>
+        </shape>
+    </item>
+</selector>
