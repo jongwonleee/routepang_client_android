@@ -4,6 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/pink_background"
         tools:context=".landingpage.LoadingActivity">
 
     <LinearLayout
@@ -34,6 +35,7 @@
                 android:textSize="18sp"
                 android:gravity="center"
                 android:textAlignment="center"
+                android:textColor="#FFFFFF"
                 android:text="원하는 정보를 루팡!\n나만의 루트가 팡팡!"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
     </LinearLayout>

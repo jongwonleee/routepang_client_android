@@ -12,20 +12,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
-import com.itaewonproject.MarkerUtils
+import com.itaewonproject.*
 import com.itaewonproject.R
 import com.itaewonproject.model.receiver.Location
 import java.util.*
 
-class WishlistMapFragment : Fragment(), OnMapReadyCallback {
+class WishlistMapFragment : Fragment(), MyLocationSetting {
 
-    private lateinit var map: GoogleMap
     private lateinit var mapView: MapView
     val list: ArrayList<Location>
         get() = (parentFragment as WishlistFragment).list
@@ -37,6 +38,13 @@ class WishlistMapFragment : Fragment(), OnMapReadyCallback {
         autoCompleteButton = view.findViewById(R.id.button_search) as ImageView
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
+
+        con = context!!
+        mGoogleApiClient = GoogleApiClient.Builder(context!!)
+            .addConnectionCallbacks(this)
+            .addOnConnectionFailedListener(this)
+            .addApi(LocationServices.API)
+            .build()
 
         Places.initialize(activity!!.applicationContext, context!!.getString(R.string.Web_key))
         Places.createClient(context!!)
@@ -53,9 +61,9 @@ class WishlistMapFragment : Fragment(), OnMapReadyCallback {
             if (resultCode == Activity.RESULT_OK) {
                 var place = Autocomplete.getPlaceFromIntent(data!!)
                 if (place.latLng != null) {
-                    map.clear()
-                    map.moveCamera(CameraUpdateFactory.newLatLng(place.latLng))
-                    map.animateCamera(CameraUpdateFactory.zoomTo(15f))
+                    map!!.clear()
+                    map!!.moveCamera(CameraUpdateFactory.newLatLng(place.latLng))
+                    map!!.animateCamera(CameraUpdateFactory.zoomTo(15f))
                 }
             } else if (requestCode == RestrictionsManager.RESULT_ERROR) {
                 var status = Autocomplete.getStatusFromIntent(data!!)
@@ -64,10 +72,6 @@ class WishlistMapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    override fun onResume() {
-        mapView.onResume()
-        super.onResume()
-    }
 
     override fun onDestroy() {
         mapView.onDestroy()
@@ -82,9 +86,12 @@ class WishlistMapFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         MapsInitializer.initialize(this.activity)
         map = googleMap
-        markerUtils = MarkerUtils(map, context!!)
-        map.clear()
-        map.setOnMapClickListener {
+        mMoveMapByAPI=true
+        setMapReady()
+
+        markerUtils = MarkerUtils(map!!, context!!)
+        map!!.clear()
+        map!!.setOnMapClickListener {
             markerUtils.changeSelectedMarker(null)
         }
 
@@ -92,7 +99,7 @@ class WishlistMapFragment : Fragment(), OnMapReadyCallback {
             markerUtils.addLocationMarker(l, false)
         }
         if (list.size> 0) {
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(list[0].latlng(), 20f))
+            map!!.moveCamera(CameraUpdateFactory.newLatLngZoom(list[0].latlng(), 20f))
         }
     }
 
@@ -105,5 +112,53 @@ class WishlistMapFragment : Fragment(), OnMapReadyCallback {
             e.printStackTrace()
         }
         return view
+    }
+
+    override fun onStart() {
+        if(mGoogleApiClient != null && mGoogleApiClient!!.isConnected== false){
+
+            Log.d(TAG, "onStart: mGoogleApiClient connect");
+            mGoogleApiClient!!.connect();
+        }
+
+        super.onStart();
+    }
+
+    override fun onResume() {
+        mapView.onResume()
+        super.onResume();
+        mMoveMapByAPI=true
+        if (mGoogleApiClient!!.isConnected()) {
+
+            Log.d(TAG, "onResume : call startLocationUpdates");
+            if (!mRequestingLocationUpdates) startLocationUpdates();
+        }
+
+
+        //앱 정보에서 퍼미션을 허가했는지를 다시 검사해봐야 한다.
+        /*if (askPermissionOnceAgain) {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                askPermissionOnceAgain = false;
+
+                checkPermissions();
+            }
+        }  */
+    }
+
+    override fun onStop() {
+        if (mRequestingLocationUpdates) {
+
+            Log.d(TAG, "onStop : call stopLocationUpdates");
+            stopLocationUpdates();
+        }
+
+        if ( mGoogleApiClient!!.isConnected()) {
+
+            Log.d(TAG, "onStop : mGoogleApiClient disconnect");
+            mGoogleApiClient!!.disconnect();
+        }
+
+        super.onStop();
     }
 }

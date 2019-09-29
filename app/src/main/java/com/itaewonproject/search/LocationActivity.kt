@@ -1,6 +1,8 @@
 package com.itaewonproject.search
 
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
@@ -10,7 +12,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.Status
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
@@ -19,8 +24,7 @@ import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.material.appbar.AppBarLayout
-import com.itaewonproject.JsonParser
-import com.itaewonproject.MarkerUtils
+import com.itaewonproject.*
 import com.itaewonproject.R
 import com.itaewonproject.adapter.AdapterLocationList
 import com.itaewonproject.model.receiver.Location
@@ -29,9 +33,10 @@ import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
 
-class LocationActivity : AppCompatActivity(), OnMapReadyCallback, Serializable {
+class LocationActivity : AppCompatActivity(),  Serializable,MyLocationSetting{
 
-    private lateinit var map: GoogleMap
+
+
     private lateinit var latlng: LatLng
     private lateinit var recyclerView: RecyclerView
     private lateinit var buttonSort: Button
@@ -50,11 +55,19 @@ class LocationActivity : AppCompatActivity(), OnMapReadyCallback, Serializable {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location_list)
 
+
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build() as StrictMode.ThreadPolicy
         StrictMode.setThreadPolicy(policy)
 
         latlng = LatLng(37.576110, 126.976819)
         centerLatlng = latlng
+
+        con = this
+        mGoogleApiClient = GoogleApiClient.Builder(this)
+            .addConnectionCallbacks(this)
+            .addOnConnectionFailedListener(this)
+            .addApi(LocationServices.API)
+            .build()
 
         mapFragment = fragmentManager.findFragmentById(R.id.map) as MapFragment
         mapFragment.getMapAsync(this)
@@ -62,13 +75,7 @@ class LocationActivity : AppCompatActivity(), OnMapReadyCallback, Serializable {
         buttonSort = findViewById(R.id.button_sortList) as Button
         appBarLayout = findViewById(R.id.appBar_layout) as AppBarLayout
 
-        appBarLayout.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener {
-            override fun onOffsetChanged(p0: AppBarLayout?, p1: Int) {
-                val mapPhoneRatio = 0.15654303392
-                var meterPerPixel = mapPhoneRatio * 1.8 * Math.cos(centerLatlng.latitude * Math.PI / 180) / Math.pow((2).toDouble(), centerZoom.toDouble())
-                map.moveCamera(CameraUpdateFactory.newLatLng(LatLng(centerLatlng.latitude - meterPerPixel*p1, centerLatlng.longitude)))
-            }
-        })
+
 
         Places.initialize(applicationContext, context!!.getString(R.string.Web_key))
         Places.createClient(this)
@@ -84,8 +91,8 @@ class LocationActivity : AppCompatActivity(), OnMapReadyCallback, Serializable {
             override fun onPlaceSelected(place: Place) {
                 // TODO: Get info about the selected place.
                 if (place.latLng != null) {
-                    map.moveCamera(CameraUpdateFactory.newLatLng(place.latLng))
-                    map.animateCamera(CameraUpdateFactory.zoomTo(15f))
+                    map!!.moveCamera(CameraUpdateFactory.newLatLng(place.latLng))
+                    map!!.animateCamera(CameraUpdateFactory.zoomTo(15f))
                     mapSearching()
                 }
             }
@@ -132,28 +139,75 @@ class LocationActivity : AppCompatActivity(), OnMapReadyCallback, Serializable {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        markerUtils = MarkerUtils(map, context)
+        markerUtils = MarkerUtils(map!!, context)
         list = arrayListOf()
 
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, zoom))
+        appBarLayout.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener {
+            override fun onOffsetChanged(p0: AppBarLayout?, p1: Int) {
+                val mapPhoneRatio = 0.15654303392
+                var meterPerPixel = mapPhoneRatio * 1.8 * Math.cos(centerLatlng.latitude * Math.PI / 180) / Math.pow((2).toDouble(), centerZoom.toDouble())
+                map!!.moveCamera(CameraUpdateFactory.newLatLng(LatLng(centerLatlng.latitude - meterPerPixel*p1, centerLatlng.longitude)))
+            }
+        })
+        mMoveMapByAPI=true
+        setMapReady()
+        //map!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, zoom))
 
-        map.setOnMapClickListener {
+        map!!.setOnMapClickListener {
             mapSearching()
             markerUtils.changeSelectedMarker(null)
         }
 
         setListViewOption()
     }
+
     private fun mapSearching() {
-        list = JsonParser().listJsonParsing(LocationConnector().get(map.cameraPosition.target, map.cameraPosition.zoom), Location::class.java)
+        list = JsonParser().listJsonParsing(LocationConnector().get(map!!.cameraPosition.target, map!!.cameraPosition.zoom), Location::class.java)
         adapter.output = list
-        map.clear()
+        map!!.clear()
         for (l in list) {
             markerUtils.addLocationMarker(l, false)
         }
         adapter.notifyDataSetChanged()
-        centerLatlng = map.cameraPosition.target
-        centerZoom = map.cameraPosition.zoom
+        centerLatlng = map!!.cameraPosition.target
+        centerZoom = map!!.cameraPosition.zoom
         appBarLayout.setExpanded(false)
+    }
+
+    override fun onStart() {
+        if(mGoogleApiClient != null && mGoogleApiClient!!.isConnected== false){
+
+            Log.d(TAG, "onStart: mGoogleApiClient connect");
+            mGoogleApiClient!!.connect();
+        }
+
+        super.onStart();
+    }
+
+    override fun onResume() {
+        super.onResume();
+
+        if (mGoogleApiClient!!.isConnected()) {
+
+            Log.d(TAG, "onResume : call startLocationUpdates");
+            if (!mRequestingLocationUpdates) startLocationUpdates();
+        }
+
+    }
+
+    override fun onStop() {
+        if (mRequestingLocationUpdates) {
+
+            Log.d(TAG, "onStop : call stopLocationUpdates");
+            stopLocationUpdates();
+        }
+
+        if ( mGoogleApiClient!!.isConnected()) {
+
+            Log.d(TAG, "onStop : mGoogleApiClient disconnect");
+            mGoogleApiClient!!.disconnect();
+        }
+
+        super.onStop();
     }
 }

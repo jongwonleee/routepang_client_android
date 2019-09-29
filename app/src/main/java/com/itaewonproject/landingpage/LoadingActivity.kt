@@ -5,6 +5,7 @@ import android.annotation.TargetApi
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Paint
 import android.net.Uri
 import android.os.Build
@@ -13,6 +14,7 @@ import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
 import android.text.Html
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -23,15 +25,31 @@ class LoadingActivity : AppCompatActivity() {
 
     private lateinit var slogan:TextView
     lateinit var clipboard: ClipboardManager
+    lateinit var sharedPreferences: SharedPreferences
+
+    private var isAutoLogin = false
 
     lateinit var serviceIntent: Intent
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loading)
         slogan = findViewById(R.id.text_slogan) as TextView
-        slogan.paintFlags=slogan.paintFlags or Paint.FAKE_BOLD_TEXT_FLAG
-        slogan.text= Html.fromHtml("원하는 정보만 <b>루팡!</b><br>나만의 루트가 <b>팡팡!</b>")
+        sharedPreferences = getSharedPreferences("autoLogin", Context.MODE_PRIVATE)
+        slogan.text= Html.fromHtml("원하는 정보만 <b>루팡!</b><br>나만의 루트가 <b>팡팡!</b>",Html.FROM_HTML_MODE_LEGACY)
 
+        isAutoLogin = sharedPreferences.getBoolean("autoLoginCheck",false)
+        if(isAutoLogin){
+            val id = sharedPreferences.getString("autoLoginID","")
+            val pw = sharedPreferences.getString("autoLoginPW","")
+            Log.i("autoLoginMode","auto Login as $id")
+        }
+
+        //FIXME 나중에 로그인 완성되면 삭제
+        slogan.setOnClickListener({
+            val intent = Intent(this,LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        })
         getPermissions()
     }
 
@@ -75,9 +93,12 @@ class LoadingActivity : AppCompatActivity() {
             startActivityForResult(intent, REQUEST_CODE)
         }else
         {
-            val intent = Intent(this,LoginActivity::class.java)
-            startActivity(intent)
-            finish()
+            if(!isAutoLogin){
+                val intent = Intent(this,LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+
         }
     }
 

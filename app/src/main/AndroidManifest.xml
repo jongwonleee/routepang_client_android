@@ -25,6 +25,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
+        <activity android:name=".landingpage.IdFindActivity"></activity>
         <activity android:name=".landingpage.LoadingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -54,11 +55,9 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".landingpage.SignInActivity"></activity>
-        <activity android:name=".landingpage.LoginActivity">
-
-        </activity>
-        <activity android:name=".mypage.MypageActivity"></activity>
+        <activity android:name=".landingpage.SignInActivity" />
+        <activity android:name=".landingpage.LoginActivity"></activity>
+        <activity android:name=".mypage.MypageActivity" />
         <activity android:name=".linkshare.LinkShareActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -68,8 +67,8 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-        <activity android:name=".search.ArticleActivity"></activity>
-        <activity android:name=".search.LocationActivity"></activity>
+        <activity android:name=".search.ArticleActivity" />
+        <activity android:name=".search.LocationActivity" />
         <!--
              The WebConnectStrategy key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

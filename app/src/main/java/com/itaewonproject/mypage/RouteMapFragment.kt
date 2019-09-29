@@ -4,6 +4,7 @@ import android.app.Activity.RESULT_OK
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.RestrictionsManager.RESULT_ERROR
+import android.location.LocationListener
 import android.os.Bundle
 import android.util.Log
 import android.view.InflateException
@@ -17,6 +18,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
@@ -32,7 +36,7 @@ import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.player.LocationConnector
 import java.util.*
 
-class RouteMapFragment : Fragment(), OnMapReadyCallback,AdapterMarkerList.OnStartDragListener {
+class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLocationSetting {
 
 
     private lateinit var map: GoogleMap
@@ -108,6 +112,12 @@ class RouteMapFragment : Fragment(), OnMapReadyCallback,AdapterMarkerList.OnStar
         textTitle = view.findViewById(R.id.text_title)
         editTitle = view.findViewById(R.id.edit_title)
 
+        con = context!!
+        mGoogleApiClient = GoogleApiClient.Builder(context!!)
+            .addConnectionCallbacks(this)
+            .addOnConnectionFailedListener(this)
+            .addApi(LocationServices.API)
+            .build()
 
 
         buttonEdit.setOnClickListener({
@@ -168,11 +178,6 @@ class RouteMapFragment : Fragment(), OnMapReadyCallback,AdapterMarkerList.OnStar
         }
     }
 
-    override fun onResume() {
-        mapView.onResume()
-        super.onResume()
-    }
-
     override fun onDestroy() {
         mapView.onDestroy()
         super.onDestroy()
@@ -185,11 +190,15 @@ class RouteMapFragment : Fragment(), OnMapReadyCallback,AdapterMarkerList.OnStar
 
     override fun onMapReady(googleMap: GoogleMap) {
         MapsInitializer.initialize(this.activity)
+
         map = googleMap
         routeUtils = RouteUtils(map, this)
+
+
+        mMoveMapByAPI=false
+        setMapReady()
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         var view = view
         try {
             view = inflater.inflate(R.layout.fragment_route_map, container, false)
@@ -197,5 +206,45 @@ class RouteMapFragment : Fragment(), OnMapReadyCallback,AdapterMarkerList.OnStar
             e.printStackTrace()
         }
         return view
+    }
+
+
+
+    override fun onStart() {
+        if(mGoogleApiClient != null && mGoogleApiClient!!.isConnected== false){
+
+            Log.d(com.itaewonproject.TAG, "onStart: mGoogleApiClient connect");
+            mGoogleApiClient!!.connect();
+        }
+
+        super.onStart();
+    }
+
+    override fun onResume() {
+        mapView.onResume()
+        super.onResume();
+        mMoveMapByAPI=true
+        if (mGoogleApiClient!!.isConnected()) {
+
+            Log.d(com.itaewonproject.TAG, "onResume : call startLocationUpdates");
+            if (!mRequestingLocationUpdates) startLocationUpdates();
+        }
+
+    }
+
+    override fun onStop() {
+        if (mRequestingLocationUpdates) {
+
+            Log.d(com.itaewonproject.TAG, "onStop : call stopLocationUpdates");
+            stopLocationUpdates();
+        }
+
+        if ( mGoogleApiClient!!.isConnected()) {
+
+            Log.d(com.itaewonproject.TAG, "onStop : mGoogleApiClient disconnect");
+            mGoogleApiClient!!.disconnect();
+        }
+
+        super.onStop();
     }
 }

@@ -88,14 +88,9 @@ class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewon
 
             Picasso.with(itemView.context)
                 .load(output.link.favicon)
-                .transform(RatioTransformation(100))
+                .transform(RatioTransformation(200))
                 .into(buttonRef)
             summary.text = output.summary
-            // buttonRef.setImageBitmap(output.getRefIcon())
-            /*buttonRef.setOnClickListener(View.OnClickListener {
-                var intent = Intent(Intent.ACTION_VIEW, Uri.parse(output.link))
-                (itemView.parent as Context).startActivity(intent)
-            })*/
         }
     }
 }
