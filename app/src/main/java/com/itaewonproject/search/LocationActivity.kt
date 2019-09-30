@@ -29,6 +29,12 @@ import com.itaewonproject.R
 import com.itaewonproject.adapter.AdapterLocationList
 import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.player.LocationConnector
+import com.itaewonproject.MyLocationSetting.Companion.TAG
+import com.itaewonproject.MyLocationSetting.Companion.con
+import com.itaewonproject.MyLocationSetting.Companion.mGoogleApiClient
+import com.itaewonproject.MyLocationSetting.Companion.mMoveMapByAPI
+import com.itaewonproject.MyLocationSetting.Companion.mRequestingLocationUpdates
+import com.itaewonproject.MyLocationSetting.Companion.map
 import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
@@ -141,7 +147,7 @@ class LocationActivity : AppCompatActivity(),  Serializable,MyLocationSetting{
         map = googleMap
         markerUtils = MarkerUtils(map!!, context)
         list = arrayListOf()
-
+        map!!.cameraPosition.zoom
         appBarLayout.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener {
             override fun onOffsetChanged(p0: AppBarLayout?, p1: Int) {
                 val mapPhoneRatio = 0.15654303392

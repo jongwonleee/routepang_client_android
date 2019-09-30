@@ -1,7 +1,6 @@
 package com.itaewonproject.mypage
 
 import android.app.Activity.RESULT_OK
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.RestrictionsManager.RESULT_ERROR
 import android.location.LocationListener
@@ -34,6 +33,12 @@ import com.itaewonproject.adapter.AdapterMarkerList
 import com.itaewonproject.adapter.AdapterRouteEdit
 import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.player.LocationConnector
+import com.itaewonproject.MyLocationSetting.Companion.TAG
+import com.itaewonproject.MyLocationSetting.Companion.con
+import com.itaewonproject.MyLocationSetting.Companion.mGoogleApiClient
+import com.itaewonproject.MyLocationSetting.Companion.mMoveMapByAPI
+import com.itaewonproject.MyLocationSetting.Companion.mRequestingLocationUpdates
+import com.itaewonproject.MyLocationSetting.Companion.map
 import java.util.*
 
 class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLocationSetting {
@@ -213,7 +218,7 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLoc
     override fun onStart() {
         if(mGoogleApiClient != null && mGoogleApiClient!!.isConnected== false){
 
-            Log.d(com.itaewonproject.TAG, "onStart: mGoogleApiClient connect");
+            Log.d(TAG, "onStart: mGoogleApiClient connect");
             mGoogleApiClient!!.connect();
         }
 
@@ -226,7 +231,7 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLoc
         mMoveMapByAPI=true
         if (mGoogleApiClient!!.isConnected()) {
 
-            Log.d(com.itaewonproject.TAG, "onResume : call startLocationUpdates");
+            Log.d(TAG, "onResume : call startLocationUpdates");
             if (!mRequestingLocationUpdates) startLocationUpdates();
         }
 
@@ -235,13 +240,13 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLoc
     override fun onStop() {
         if (mRequestingLocationUpdates) {
 
-            Log.d(com.itaewonproject.TAG, "onStop : call stopLocationUpdates");
+            Log.d(TAG, "onStop : call stopLocationUpdates");
             stopLocationUpdates();
         }
 
         if ( mGoogleApiClient!!.isConnected()) {
 
-            Log.d(com.itaewonproject.TAG, "onStop : mGoogleApiClient disconnect");
+            Log.d(TAG, "onStop : mGoogleApiClient disconnect");
             mGoogleApiClient!!.disconnect();
         }
 

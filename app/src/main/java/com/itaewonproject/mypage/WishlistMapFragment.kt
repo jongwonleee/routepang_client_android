@@ -21,6 +21,12 @@ import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.itaewonproject.*
+import com.itaewonproject.MyLocationSetting.Companion.TAG
+import com.itaewonproject.MyLocationSetting.Companion.con
+import com.itaewonproject.MyLocationSetting.Companion.mGoogleApiClient
+import com.itaewonproject.MyLocationSetting.Companion.mMoveMapByAPI
+import com.itaewonproject.MyLocationSetting.Companion.mRequestingLocationUpdates
+import com.itaewonproject.MyLocationSetting.Companion.map
 import com.itaewonproject.R
 import com.itaewonproject.model.receiver.Location
 import java.util.*

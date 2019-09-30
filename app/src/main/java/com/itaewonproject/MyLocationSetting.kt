@@ -37,32 +37,36 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks.CAUSE_NETWORK_LOST
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks.CAUSE_SERVICE_DISCONNECTED
 
- val TAG = "myLocation:"
-  var map: GoogleMap?=null
 
- var con: Context? = null
-
- var mGoogleApiClient: GoogleApiClient? = null
-
- val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 2002
- val UPDATE_INTERVAL_MS = 1000  // 1초
- val FASTEST_UPDATE_INTERVAL_MS = 500 // 0.5초
-
- var mRequestingLocationUpdates = false
- var mCurrentLocatiion: Location? = null
- var mMoveMapByUser = true
- var mMoveMapByAPI = true
- var currentPosition: LatLng? = null
-
- var locationRequest = LocationRequest()
-     .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-     .setInterval(UPDATE_INTERVAL_MS.toLong())
-     .setFastestInterval(FASTEST_UPDATE_INTERVAL_MS.toLong())
 
 
 interface MyLocationSetting : OnMapReadyCallback,GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient.OnConnectionFailedListener,
     LocationListener{
+
+    companion object{
+        val TAG = "myLocation:"
+        var map: GoogleMap?=null
+
+        var con: Context? = null
+
+        var mGoogleApiClient: GoogleApiClient? = null
+
+        val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 2002
+        val UPDATE_INTERVAL_MS = 1000  // 1초
+        val FASTEST_UPDATE_INTERVAL_MS = 500 // 0.5초
+
+        var mRequestingLocationUpdates = false
+        var mCurrentLocatiion: Location? = null
+        var mMoveMapByUser = true
+        var mMoveMapByAPI = true
+        var currentPosition: LatLng? = null
+
+        var locationRequest = LocationRequest()
+            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+            .setInterval(UPDATE_INTERVAL_MS.toLong())
+            .setFastestInterval(FASTEST_UPDATE_INTERVAL_MS.toLong())
+    }
 
     
 
