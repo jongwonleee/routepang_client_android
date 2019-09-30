@@ -29,7 +29,7 @@ test:
     
     script:
         - ./gradlew -Pci --console=plain :app:testDebug
-        - ./gradlew build
+       # - ./gradlew build
         - ./gradlew test
     
     tags:
