@@ -1,4 +1,4 @@
-package com.itaewonproject.mypage
+package com.itaewonproject.mainservice
 
 import android.app.Activity
 import android.content.ContentValues
@@ -17,7 +17,6 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.itaewonproject.*
@@ -44,7 +43,6 @@ class WishlistMapFragment : Fragment(), MyLocationSetting {
         autoCompleteButton = view.findViewById(R.id.button_search) as ImageView
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
-
         con = context!!
         mGoogleApiClient = GoogleApiClient.Builder(context!!)
             .addConnectionCallbacks(this)
@@ -100,6 +98,8 @@ class WishlistMapFragment : Fragment(), MyLocationSetting {
         map!!.setOnMapClickListener {
             markerUtils.changeSelectedMarker(null)
         }
+        ///FIXME list 받아오기 구현
+
 
         for (l in list) {
             markerUtils.addLocationMarker(l, false)

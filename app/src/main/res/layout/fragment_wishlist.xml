@@ -5,9 +5,9 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".mypage.WishlistFragment">
+        tools:context=".mainservice.WishlistFragment">
 
-   <com.itaewonproject.mypage.NonSwipeViewPager
+   <com.itaewonproject.mainservice.NonSwipeViewPager
            android:id="@+id/viewPager"
            android:layout_width="0dp"
            android:layout_height="0dp"
@@ -18,7 +18,7 @@
            app:layout_constraintTop_toTopOf="parent"
            app:layout_constraintVertical_bias="0.0">
 
-   </com.itaewonproject.mypage.NonSwipeViewPager>
+   </com.itaewonproject.mainservice.NonSwipeViewPager>
 
    <LinearLayout
            android:id="@+id/button_search"
@@ -44,19 +44,6 @@
               app:tabIndicatorColor="#00000000"
               app:tabMode="fixed"></com.google.android.material.tabs.TabLayout>
 
-      <TextView
-              android:id="@+id/textView5"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="8dp"
-              android:text="주변검색" />
-
-      <ImageView
-              android:id="@+id/imageView6"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_weight="1"
-              android:src="@drawable/places_ic_search" />
    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

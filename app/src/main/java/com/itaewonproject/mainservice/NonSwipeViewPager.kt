@@ -1,4 +1,4 @@
-package com.itaewonproject.mypage
+package com.itaewonproject.mainservice
 
 import android.content.Context
 import android.util.AttributeSet

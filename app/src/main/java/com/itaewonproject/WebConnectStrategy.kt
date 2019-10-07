@@ -3,7 +3,7 @@ package com.itaewonproject
 import android.os.AsyncTask
 import android.util.Log
 
-const val IS_OFFLINE: Boolean = false
+const val IS_OFFLINE: Boolean = true
 
 /* jsonParsing 따로 객체화 시키기 : apiUtils
  * stretegy화. getResult method로 통일
@@ -17,7 +17,7 @@ abstract class WebConnectStrategy {
     val isOffline: Boolean = IS_OFFLINE
     var statusCode: Int? = null
     companion object {
-        val classDomain: String = "http://15.164.16.26:9090/"
+        val classDomain: String = "http://www.routepang.com:9090/"
     }
 
     abstract fun get(vararg params: Any): String

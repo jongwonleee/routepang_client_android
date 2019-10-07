@@ -1,4 +1,4 @@
-package com.itaewonproject.mypage
+package com.itaewonproject.mainservice
 
 import android.content.Intent
 import android.net.Uri

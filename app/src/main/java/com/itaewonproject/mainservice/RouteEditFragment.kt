@@ -1,4 +1,4 @@
-package com.itaewonproject.mypage
+package com.itaewonproject.mainservice
 
 import android.content.ContentValues.TAG
 import android.os.Bundle

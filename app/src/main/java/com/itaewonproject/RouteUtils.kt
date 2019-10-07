@@ -22,7 +22,7 @@ import com.google.maps.internal.PolylineEncoding
 import com.google.maps.model.DirectionsResult
 import com.google.maps.model.TravelMode
 import com.itaewonproject.model.receiver.Location
-import com.itaewonproject.mypage.RouteMapFragment
+import com.itaewonproject.mainservice.RouteMapFragment
 
 class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
     val view: View
@@ -68,7 +68,7 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
                             fragment.list.add(addLocation)
                             fragment.setAdapterList()
                         } else {
-                            val deleteLocation = fragment.wishlist[latIndex[it.position]!!]
+                            val deleteLocation = fragment.list[latIndex[it.position]!!]
                             fragment.list.removeAt(latIndex[it.position]!!)
                             fragment.wishlist.add(deleteLocation)
                             fragment.setAdapterList()

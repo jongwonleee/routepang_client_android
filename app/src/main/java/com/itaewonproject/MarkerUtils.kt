@@ -49,6 +49,7 @@ class MarkerUtils(val map: GoogleMap, val con: Context) {
     }
 
     fun addLocationMarker(location: Location, isSelected: Boolean): Marker {
+        Log.i("!!!!!","~${location.coordinates}~ ${location.name}")
         val position = location.latlng()
         val markerOptions = MarkerOptions()
         markerOptions.title(location.name)

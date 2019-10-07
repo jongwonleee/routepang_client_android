@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+                android:id="@+id/nav_search"
+                android:icon="@drawable/ic_menu_camera"
+                android:title="여행지 검색" />
+        <item
+                android:id="@+id/nav_review"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="후기 작성" />
+        <item
+                android:id="@+id/nav_message"
+                android:icon="@drawable/ic_menu_send"
+                android:title="메세지" />
+        <item
+                android:id="@+id/nav_setting"
+                android:title="설정" />
+
+    </group>
+
+    <item android:title="마이 페이지">
+        <menu>
+            <item
+                    android:id="@+id/nav_my_info"
+                    android:title="회원 정보 변경" />
+            <item
+                    android:id="@+id/nav_quit"
+                    android:title="회원 탈퇴" />
+        </menu>
+    </item>
+
+</menu>

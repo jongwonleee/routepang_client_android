@@ -10,75 +10,101 @@ class BasketConnector : WebConnectStrategy() {
     override var method: String = "GET"
     override var inner: String = "customer/getBasketListByCustomerId/"
     override var param = ""
-    override lateinit var mockData: String
-    init {
-        val latitude: Double = 37.576110
-        val longitude: Double = 126.976819
-        mockData = """
-            [
-                {
-                        "name": "title1",
-                         "imgUrl": ["${APIs.bmp1}","${APIs.bmp2}","${APIs.bmp3}","${APIs.bmp4}","${APIs.bmp5}","${APIs.bmp4}","${APIs.bmp3}","${APIs.bmp2}", "${APIs.bmp1}"],
-                        "rating": 3.5f,
-                        "placeId": "1",
-                        "latitude":${latitude + 0.00},
-                        "longitude":${longitude + 0.01},
-                        "category":0,
-                        "articleCount":55,
-                        "usedTime":3000
-                        
-                    },
-                    {
-                        "name": "title2",
-                         "imgUrl": ["${APIs.bmp1}","${APIs.bmp2}","${APIs.bmp3}","${APIs.bmp4}","${APIs.bmp5}","${APIs.bmp4}","${APIs.bmp3}","${APIs.bmp2}", "${APIs.bmp1}"],
-                        "rating": 5.0f,
-                        "placeId": "2",
-                        "latitude":${latitude + 0.01},
-                        "longitude":${longitude + 0.00},
-                        "category":1,
-                        "articleCount":45,
-                        "usedTime":7540
-                        
-                    },
-                    {
-                        "name": "title3",
-                         "imgUrl":["${APIs.bmp4}","${APIs.bmp5}","${APIs.bmp4}","${APIs.bmp3}","${APIs.bmp2}", "${APIs.bmp1}"],
-                        "rating": 2f,
-                        "placeId": "3",
-                        "latitude":${latitude - 0.01},
-                        "longitude":${longitude + 0.0},
-                        "category":2,
-                        "articleCount":25,
-                        "usedTime":3000
-                        
-                    },
-                    {
-                        "name": "title4",
-                         "imgUrl": ["${APIs.bmp3}","${APIs.bmp1}"],
-                        "rating": 4.5f,
-                        "placeId": "4",
-                        "latitude":${latitude + 0.00},
-                        "longitude":${longitude - 0.01},
-                        "category":3,
-                        "articleCount":32,
-                        "usedTime":3600
-                        
-                    },
-                    {
-                        "name": "title5",
-                         "imgUrl":["${APIs.bmp3}","${APIs.bmp2}","${APIs.bmp5}","${APIs.bmp4}","${APIs.bmp3}","${APIs.bmp2}", "${APIs.bmp1}"],
-                        "rating": 3.5f,
-                        "placeId": "5",
-                        "latitude":${latitude + 0.02},
-                        "longitude":${longitude + 0.0},
-                        "category":4,
-                        "articleCount":98,
-                        "usedTime":3230
-                        
-                }
-            ]
-        """.trimIndent()
+    override var mockData: String = """
+[
+    {
+        "locationId": 2,
+        "coordinates": "POINT (41.374405 2.16957)",
+        "placeId": "ChIJVaNodVyipBIRvUHig6zNZkQ",
+        "address": "Carrer Nou de la Rambla, 113, 08004 Barcelona, 스페인",
+        "name": "Sala Apolo",
+        "used": 1000,
+        "category": "ATTRACTION",
+        "articleCount": 0
+    },
+    {
+        "locationId": 3,
+        "coordinates": "POINT (41.374812 2.168791)",
+        "placeId": "ChIJOfdJDFyipBIRYkepJGzr6FQ",
+        "address": "Av. del Paraŀlel, 67, 08004 Barcelona, 스페인",
+        "name": "Teatre Victoria",
+        "used": 300,
+        "category": "FOOD",
+        "articleCount": 0
+    },
+    {
+        "locationId": 4,
+        "coordinates": "POINT (41.375203 2.169433)",
+        "placeId": "ChIJIWQECFyipBIR7lEDCqHMde4",
+        "address": "Av. del Paraŀlel, 62, 08001 Barcelona, 스페인",
+        "name": "BARTS, Barcelona Arts on Stage",
+        "used": 3000,
+        "category": "FOOD",
+        "articleCount": 0
+    },
+    {
+        "locationId": 5,
+        "coordinates": "POINT (41.375174 2.168579)",
+        "placeId": "ChIJsajtF1yipBIRnk1NDxGtvFc",
+        "address": "Av. del Paraŀlel, 76, 08001 Barcelona, 스페인",
+        "name": "Nagano",
+        "used": 200,
+        "category": "ACTIVITY",
+        "articleCount": 0
+    },
+    {
+        "locationId": 6,
+        "coordinates": "POINT (41.37516 2.170794)",
+        "placeId": "ChIJr8howluipBIRrkGQRDkSQ5E",
+        "address": "Av. del Paraŀlel, 54, 08004 Barcelona, 스페인",
+        "name": "Cafe 365",
+        "used": 2000,
+        "category": "ACTIVITY",
+        "articleCount": 0
+    },
+    {
+        "locationId": 7,
+        "coordinates": "POINT (41.375176 2.170633)",
+        "placeId": "ChIJdZ1u6FuipBIRT-B8FRhSxH4",
+        "address": "Carrer Nou de la Rambla, 105, 08001 Barcelona, 스페인",
+        "name": "El Rincon del Artista",
+        "used": 500,
+        "category": "ACTIVITY",
+        "articleCount": 0
+    },
+    {
+        "locationId": 8,
+        "coordinates": "POINT (41.374135 2.169411)",
+        "placeId": "ChIJOYjNd1yipBIRvEr_Xu8tawY",
+        "address": "Carrer de Vila i Vilà, 60, 08004 Barcelona, 스페인",
+        "name": "Marcopolo‘s",
+        "used": 600,
+        "category": "FOOD",
+        "articleCount": 0
+    },
+    {
+        "locationId": 9,
+        "coordinates": "POINT (41.374192 2.16858)",
+        "placeId": "ChIJ7yEvQ1yipBIRSIytcqIN3Vo",
+        "address": "Carrer de Vila i Vilà, 77, 08004 Barcelona, 스페인",
+        "name": "Abirradero - CraftBeer - Tapas",
+        "used": 3000,
+        "category": "FOOD",
+        "articleCount": 0
+    },
+    {
+        "locationId": 10,
+        "coordinates": "POINT (41.374509 2.167236)",
+        "placeId": "ChIJrVaISlyipBIRmaaOY_tcqtU",
+        "address": "Carrer de Vila i Vilà, 99, 08004 Barcelona, 스페인",
+        "name": "El Molino Paral-lel",
+        "used": 5000,
+        "category": "ATTRACTION",
+        "articleCount": 0
     }
+]
+        """.trimIndent()
+
     override fun get(vararg params: Any): String {
         val id = params[0] as Long
         method = "GET"

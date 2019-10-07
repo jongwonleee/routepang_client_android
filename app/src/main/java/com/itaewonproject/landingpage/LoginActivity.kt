@@ -1,20 +1,18 @@
 package com.itaewonproject.landingpage
 
 import android.annotation.TargetApi
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
-import android.util.Log
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.itaewonproject.ClearEditText
 import com.itaewonproject.R
-import com.itaewonproject.mypage.MypageActivity
+import com.itaewonproject.mainservice.MainActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -48,7 +46,7 @@ class LoginActivity : AppCompatActivity() {
         buttonSignin.text= Html.fromHtml("<u>회원가입</u>",Html.FROM_HTML_MODE_LEGACY)
         buttonFind.text=Html.fromHtml("<u>ID, 비밀번호 찾기</u>",Html.FROM_HTML_MODE_LEGACY)
         buttonLogin.setOnClickListener({
-            val intent = Intent(this, MypageActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         })

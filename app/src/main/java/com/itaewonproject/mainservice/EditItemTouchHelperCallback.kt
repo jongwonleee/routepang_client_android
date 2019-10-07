@@ -1,22 +1,20 @@
-package com.itaewonproject.mypage
+package com.itaewonproject.mainservice
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.itaewonproject.adapter.AdapterMarkerList
 import com.itaewonproject.adapter.AdapterRouteEdit
-import java.util.*
 
-class MarkerItemTouchHelperCallback(var adapter: AdapterMarkerList) : ItemTouchHelper.Callback() {
-
+class EditItemTouchHelperCallback(var adapter: AdapterRouteEdit) : ItemTouchHelper.Callback() {
     private var listener: OnItemMoveListener
 
+    var swipable = false
     init {
         listener = adapter
     }
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-        var dragFlag: Int = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-        return makeMovementFlags(dragFlag, 0)
+        var dragFlag: Int = ItemTouchHelper.UP or ItemTouchHelper.DOWN
+        return makeMovementFlags(dragFlag, ItemTouchHelper.LEFT)
     }
 
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
@@ -50,16 +48,16 @@ class MarkerItemTouchHelperCallback(var adapter: AdapterMarkerList) : ItemTouchH
     }
 
     override fun isItemViewSwipeEnabled(): Boolean {
-        return false
+        return swipable
     }
 
     interface OnItemMoveListener {
         fun OnItemMove(from: Int, to: Int): Boolean
+        fun OnItemSwipe(pos: Int): Boolean
         fun OnItemDrag(): Boolean
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        listener.OnItemSwipe(viewHolder.layoutPosition)
     }
-
 }

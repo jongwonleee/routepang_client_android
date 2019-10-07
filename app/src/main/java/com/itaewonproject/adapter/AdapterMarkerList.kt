@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.CustomTextView
 import com.itaewonproject.R
 import com.itaewonproject.model.receiver.Location
-import com.itaewonproject.mypage.MarkerItemTouchHelperCallback
-import com.itaewonproject.mypage.RouteMapFragment
+import com.itaewonproject.mainservice.MarkerItemTouchHelperCallback
+import com.itaewonproject.mainservice.RouteMapFragment
 import java.util.*
 import kotlin.collections.ArrayList
 

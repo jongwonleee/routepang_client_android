@@ -1,9 +1,8 @@
-package com.itaewonproject.mypage
+package com.itaewonproject.mainservice
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.RestrictionsManager.RESULT_ERROR
-import android.location.LocationListener
 import android.os.Bundle
 import android.util.Log
 import android.view.InflateException
@@ -17,20 +16,17 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.itaewonproject.*
 import com.itaewonproject.R
 import com.itaewonproject.adapter.AdapterMarkerList
-import com.itaewonproject.adapter.AdapterRouteEdit
 import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.player.LocationConnector
 import com.itaewonproject.MyLocationSetting.Companion.TAG
@@ -38,7 +34,6 @@ import com.itaewonproject.MyLocationSetting.Companion.con
 import com.itaewonproject.MyLocationSetting.Companion.mGoogleApiClient
 import com.itaewonproject.MyLocationSetting.Companion.mMoveMapByAPI
 import com.itaewonproject.MyLocationSetting.Companion.mRequestingLocationUpdates
-import com.itaewonproject.MyLocationSetting.Companion.map
 import java.util.*
 
 class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLocationSetting {
