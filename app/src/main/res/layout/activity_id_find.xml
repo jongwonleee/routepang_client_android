@@ -11,11 +11,11 @@
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="16dp"
             android:fontFamily="@font/notosanscjkkr_regular"
             android:text="아이디 찾기"
             app:layout_constraintStart_toStartOf="@+id/edit_id"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout7" />
 
     <TextView
             android:id="@+id/textView9"
@@ -41,21 +41,6 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/edit_password"
             app:layout_constraintTop_toBottomOf="@+id/edit_password_check" />
-
-    <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="86dp"
-            android:layout_marginEnd="8dp"
-            android:fontFamily="@font/notosanscjkkr_bold"
-            android:text="아이디 / 비밀번호 찾기"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textColor="#333333"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
     <com.itaewonproject.ClearEditText
             android:id="@+id/edit_id"
@@ -110,7 +95,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="11dp"
-            android:background="@drawable/login_box_darkgrey"
+            android:background="@drawable/login_box_pink"
             android:fontFamily="@font/notosanscjkkr_medium"
             android:text="해당 이메일로 아이디 발송"
             android:textColor="#FFFFFF"
@@ -119,4 +104,38 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/edit_password"
             app:layout_constraintTop_toBottomOf="@+id/edit_id" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout7"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#FFFFFF"
+            android:elevation="3dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+                android:id="@+id/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="아이디/비밀번호 찾기"
+                android:textSize="16sp"
+                android:textColor="#333333"
+                android:fontFamily="@font/notosanscjkkr_medium"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+                android:id="@+id/button_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_chevron_left_black_24dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

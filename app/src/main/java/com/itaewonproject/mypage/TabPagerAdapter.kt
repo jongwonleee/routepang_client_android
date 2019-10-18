@@ -1,4 +1,4 @@
-package com.itaewonproject.mainservice
+package com.itaewonproject.mypage
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

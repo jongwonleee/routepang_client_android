@@ -26,9 +26,9 @@
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
         <activity android:name=".message.MessageListActivity"></activity>
-        <activity android:name=".mypage.MyInfoActivity" />
-        <activity android:name=".mypage.QuitActivity" />
-        <activity android:name=".mypage.SettingActivity" />
+        <activity android:name=".setting.MyInfoActivity" />
+        <activity android:name=".setting.QuitActivity" />
+        <activity android:name=".setting.SettingActivity" />
         <activity android:name=".landingpage.IdFindActivity" />
         <activity android:name=".landingpage.LoadingActivity">
             <intent-filter>

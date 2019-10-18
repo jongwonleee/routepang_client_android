@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.drawerlayout.widget.DrawerLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/background"
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".mainservice.MainActivity">>
+        android:fitsSystemWindows="true"
+        tools:openDrawer="end">
 
+   <androidx.constraintlayout.widget.ConstraintLayout
+           android:id="@+id/background"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           tools:context=".mainservice.MainActivity">>
        <com.google.android.material.tabs.TabLayout
                android:id="@+id/tabLayout"
                android:layout_width="match_parent"
@@ -78,4 +84,19 @@
 
        </com.itaewonproject.mypage.NonSwipeViewPager>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+   </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            app:headerLayout="@layout/nav_header_main"
+            app:menu="@menu/activity_main_drawer" />
+<!--
+android:fitsSystemWindows="true"
+    <include
+        layout="@layout/nav_header_main"/>
+-->
+
+</androidx.drawerlayout.widget.DrawerLayout>

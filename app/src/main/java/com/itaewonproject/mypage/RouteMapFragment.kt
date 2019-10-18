@@ -1,4 +1,4 @@
-package com.itaewonproject.mainservice
+package com.itaewonproject.mypage
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent

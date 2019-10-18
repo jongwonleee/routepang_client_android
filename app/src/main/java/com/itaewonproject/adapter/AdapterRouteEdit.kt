@@ -15,8 +15,8 @@ import com.google.maps.model.DirectionsStep
 import com.itaewonproject.APIs
 import com.itaewonproject.R
 import com.itaewonproject.model.receiver.Location
-import com.itaewonproject.mainservice.EditItemTouchHelperCallback
-import com.itaewonproject.mainservice.RouteEditFragment
+import com.itaewonproject.mypage.EditItemTouchHelperCallback
+import com.itaewonproject.mypage.RouteEditFragment
 import java.util.*
 import kotlin.collections.ArrayList
 

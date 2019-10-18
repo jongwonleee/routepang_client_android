@@ -22,7 +22,7 @@ import com.google.maps.internal.PolylineEncoding
 import com.google.maps.model.DirectionsResult
 import com.google.maps.model.TravelMode
 import com.itaewonproject.model.receiver.Location
-import com.itaewonproject.mainservice.RouteMapFragment
+import com.itaewonproject.mypage.RouteMapFragment
 
 class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
     val view: View

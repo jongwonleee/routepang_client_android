@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+                android:id="@+id/nav_my_info"
+                app:actionLayout="@layout/widget_button"
+                android:title="내 정보" />
+
+
+    </group>
+
+    <item android:title="알림 설정">
+        <menu>
+            <item
+                    android:id="@+id/nav_alarm_like"
+                    app:actionLayout="@layout/widget_switch"
+                    android:title="좋아요 알림 설정" />
+            <item
+                    android:id="@+id/nav_alarm_following"
+                    app:actionLayout="@layout/widget_switch"
+                    android:title="팔로잉 알림 설정" />
+            <item
+                    android:id="@+id/nav_alarm_route"
+                    app:actionLayout="@layout/widget_switch"
+                    android:title="여행 일정 알림 설정" />
+        </menu>
+    </item>
+
+    <item android:title="서비스 정보">
+        <menu>
+            <item
+                    android:id="@+id/nav_service_qna"
+                    app:actionLayout="@layout/widget_button"
+                    android:title="건의사항 " />
+            <item
+                    android:id="@+id/nav_service_private"
+                    app:actionLayout="@layout/widget_button"
+                    android:title="개인정보보호법 " />
+            <item
+                    android:id="@+id/nav_service_opensource"
+                    app:actionLayout="@layout/widget_button"
+                    android:title="오픈소스 " />
+        </menu>
+    </item>
+
+</menu>
