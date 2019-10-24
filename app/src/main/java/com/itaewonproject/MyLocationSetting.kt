@@ -134,7 +134,7 @@ interface MyLocationSetting : OnMapReadyCallback,GoogleApiClient.ConnectionCallb
 
     override fun onConnectionFailed(p0: ConnectionResult) {
         Log.d(TAG, "onConnectionFailed")
-        setDefaultLocation()
+        //setDefaultLocation()
     }
 
     override fun onLocationChanged(location: Location?) {

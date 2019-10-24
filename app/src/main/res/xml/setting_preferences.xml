@@ -1,0 +1,72 @@
+<!--
+  ~ Copyright 2018 The app Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:iconSpaceReserved="false">
+
+    <PreferenceCategory
+            app:iconSpaceReserved="false"
+            app:title="계정">
+        <Preference
+                android:padding="0dp"
+                app:key="account_myInfo"
+                app:iconSpaceReserved="false"
+                app:title="내 정보" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            app:iconSpaceReserved="false"
+            app:title="알림설정">
+
+        <SwitchPreference
+                app:key="alarm_like"
+                app:iconSpaceReserved="false"
+                app:switchTextOn="내가 쓴 게시물에 대한 좋아요, 댓글 알림을 받습니다."
+                app:title="좋아요 알림 설정"/>
+        <SwitchPreference
+                app:key="alarm_following"
+                app:iconSpaceReserved="false"
+                app:title="팔로잉 알림 설정" />
+        <SwitchPreference
+                app:key="alarm_route"
+                app:iconSpaceReserved="false"
+                app:title="여행 일정 알림 설정" />
+
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            app:iconSpaceReserved="false"
+            app:title="서비스 정보">
+
+        <Preference
+                app:key="service_qna"
+                app:iconSpaceReserved="false"
+                app:title="건의사항"/>
+        <Preference
+                app:key="service_privateData"
+                app:iconSpaceReserved="false"
+                app:title="개인정보보호법" />
+        <Preference
+                app:key="service_openSource"
+                app:iconSpaceReserved="false"
+                app:title="오픈소스"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

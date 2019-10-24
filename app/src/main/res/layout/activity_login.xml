@@ -58,7 +58,6 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/login_box_yellow"
             android:orientation="horizontal"
-            android:text="카톡으로 로그인"
             app:layout_constraintEnd_toEndOf="@+id/edit_password"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/edit_password"
@@ -66,13 +65,13 @@
 
         <Button
                 android:id="@+id/textView7"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:background="@drawable/login_box_yellow"
                 android:fontFamily="@font/notosanscjkkr_medium"
                 android:text="카카오톡으로 시작하기"
-                style="?android:attr/borderlessButtonStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -162,5 +161,15 @@
                 android:padding="5dp"
                 android:text="아이디, 비밀번호찾기"
                 android:textColor="#d763f3" />
+
     </LinearLayout>
+
+    <com.kakao.usermgmt.LoginButton
+            android:id="@+id/kakao_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

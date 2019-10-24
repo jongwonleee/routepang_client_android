@@ -13,6 +13,7 @@
 
     </group>
 
+
     <item android:title="알림 설정">
         <menu>
             <item
@@ -43,7 +44,7 @@
             <item
                     android:id="@+id/nav_service_opensource"
                     app:actionLayout="@layout/widget_button"
-                    android:title="오픈소스 " />
+                    android:title="법 " />
         </menu>
     </item>
 

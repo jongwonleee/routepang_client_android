@@ -6,6 +6,8 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.graphics.Paint
 import android.net.Uri
 import android.os.Build
@@ -14,12 +16,15 @@ import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
 import android.text.Html
+import android.util.Base64
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.itaewonproject.R
 import com.itaewonproject.linkshare.ClipboardListener
+import java.lang.Exception
+import java.security.MessageDigest
 
 class LoadingActivity : AppCompatActivity() {
 
@@ -33,6 +38,7 @@ class LoadingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loading)
+        //getHashKey(this)
         slogan = findViewById(R.id.text_slogan) as TextView
         sharedPreferences = getSharedPreferences("autoLogin", Context.MODE_PRIVATE)
         slogan.text= Html.fromHtml("원하는 정보만 <b>루팡!</b><br>나만의 루트가 <b>팡팡!</b>",Html.FROM_HTML_MODE_LEGACY)
@@ -117,4 +123,49 @@ class LoadingActivity : AppCompatActivity() {
             }
         }
     }
+/*
+    fun getHashKey(context:Context):String {
+
+        val TAG = "KeyHash";
+
+        var keyHash:String? = null
+
+        try {
+
+            val info = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
+
+
+
+            for (signature in info.signatures) {
+
+                val md = MessageDigest.getInstance("SHA");
+
+                md.update(signature.toByteArray());
+
+                keyHash = String(Base64.encode(md.digest(), 0));
+
+                Log.d(TAG+"!!@@@", keyHash);
+
+            }
+
+        } catch (e:Exception) {
+
+            Log.e("name not found", e.toString());
+
+        }
+
+
+
+        if (keyHash != null) {
+
+            return keyHash;
+
+        } else {
+
+            return ""
+
+        }
+
+    }*/
+
 }

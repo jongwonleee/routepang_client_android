@@ -54,14 +54,14 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/check_quit" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_pw2" />
 
     <com.itaewonproject.ClearEditText
-            android:id="@+id/edit_id"
+            android:id="@+id/edit_email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:background="@drawable/login_box_grey"
             android:ems="10"
@@ -71,10 +71,10 @@
             android:paddingLeft="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout7" />
 
     <com.itaewonproject.ClearEditText
-            android:id="@+id/edit_id2"
+            android:id="@+id/edit_id"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -88,7 +88,7 @@
             android:paddingLeft="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_id" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_email" />
 
     <com.itaewonproject.ClearEditText
             android:id="@+id/edit_pw"
@@ -104,30 +104,26 @@
             android:inputType="textEmailAddress"
             android:paddingLeft="20dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_id2" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_id" />
 
-    <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
+    <com.itaewonproject.ClearEditText
+            android:id="@+id/edit_pw2"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/login_box_grey"
+            android:ems="10"
             android:fontFamily="@font/notosanscjkkr_regular"
-            android:text="회원 탈퇴"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout7" />
-
-    <CheckedTextView
-            android:id="@+id/check_quit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
-            android:background="@android:color/transparent"
-            android:drawableRight="@drawable/checkbox_circle_pink"
-            android:fontFamily="@font/notosanscjkkr_regular"
-            android:text="루팡 서비스를 탈퇴하겠습니다."
+            android:hint="비밀번호 확인"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="20dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_pw" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

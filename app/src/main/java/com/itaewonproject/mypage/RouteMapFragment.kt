@@ -66,24 +66,29 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLoc
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         if (isResumed && isVisibleToUser) {
-            val temp = JsonParser().listJsonParsing(LocationConnector().get(LatLng(41.374902, 2.170370), 14f), Location::class.java)
-            for (i in 0..temp.size - 1) {
-                // XXX:
-                if (i <temp.size / 2) {
-                    list.add(temp[i])
+            try{
+                val temp = JsonParser().listJsonParsing(LocationConnector().get(LatLng(41.374902, 2.170370), 14f), Location::class.java)
+                for (i in 0..temp.size - 1) {
+                    // XXX:
+                    if (i <temp.size / 2) {
+                        list.add(temp[i])
+                    }
+                    else {
+                        wishlist.add(temp[i])
+                    }
                 }
-                else {
-                    wishlist.add(temp[i])
-                }
+                // map.moveCamera(CameraUpdateFactory.newLatLngZoom(list[0].latlng(),15f))
+
+                routeUtils.setList()
+                routeUtils.addLine()
+                routeUtils.setBoundary(list)
+
+                adapter.list = list
+                adapter.notifyDataSetChanged()
+            }catch (e : UninitializedPropertyAccessException){
+                e.printStackTrace()
             }
-            // map.moveCamera(CameraUpdateFactory.newLatLngZoom(list[0].latlng(),15f))
 
-            routeUtils.setList()
-            routeUtils.addLine()
-            routeUtils.setBoundary(list)
-
-            adapter.list = list
-            adapter.notifyDataSetChanged()
         }
     }
 
