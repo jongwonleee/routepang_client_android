@@ -4,6 +4,9 @@
     <string name="Web_key" translatable="false" templateMergeStrategy="preserve">
         NULL
     </string>
+    
+    <string name="kakao_app_key">NULL</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
