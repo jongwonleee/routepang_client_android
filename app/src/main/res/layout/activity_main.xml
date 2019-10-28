@@ -13,9 +13,11 @@
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                app:tabGravity="fill"
-               app:tabIndicatorColor="#00000000"
-               app:tabBackground="@drawable/tab_color_selector"
                app:tabMode="fixed"
+               app:tabSelectedTextColor="#f862b8"
+               app:tabTextColor="#8e8e93"
+               app:tabTextAppearance="@style/tabText"
+               app:tabIndicatorColor="#00000000"
                app:layout_constraintStart_toStartOf="parent"
                app:layout_constraintEnd_toEndOf="parent"
                app:layout_constraintHorizontal_bias="0.0"
@@ -35,47 +37,57 @@
 
            <ImageView
                    android:id="@+id/button_message"
-                   android:padding="8dp"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
+                   android:layout_marginEnd="8dp"
+                   android:padding="8dp"
                    app:layout_constraintBottom_toBottomOf="parent"
                    app:layout_constraintEnd_toEndOf="parent"
                    app:layout_constraintTop_toTopOf="parent"
-                   app:srcCompat="@drawable/ic_menu_send" />
+                   app:srcCompat="@drawable/ic_ico_chat" />
 
            <ImageView
                    android:id="@+id/imageView9"
                    android:layout_width="wrap_content"
                    android:layout_height="0dp"
-                   android:layout_marginStart="8dp"
+                   android:layout_marginStart="16dp"
                    android:layout_marginTop="8dp"
                    android:layout_marginBottom="8dp"
                    app:layout_constraintBottom_toBottomOf="parent"
                    app:layout_constraintStart_toStartOf="parent"
                    app:layout_constraintTop_toTopOf="parent"
-                   app:srcCompat="@drawable/ic_logo_splash" />
+                   app:srcCompat="@drawable/ic_logo_text" />
 
            <ImageView
                    android:id="@+id/button_search"
-                   android:padding="8dp"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   app:layout_constraintBottom_toBottomOf="parent"
+                   android:padding="8dp"
+                   app:layout_constraintBottom_toBottomOf="@+id/button_message"
                    app:layout_constraintEnd_toStartOf="@+id/button_message"
-                   app:layout_constraintTop_toTopOf="parent"
-                   app:srcCompat="@drawable/places_ic_search" />
+                   app:layout_constraintTop_toTopOf="@+id/button_message"
+                   app:srcCompat="@drawable/ic_ico_search" />
        </androidx.constraintlayout.widget.ConstraintLayout>
 
-       <com.itaewonproject.mypage.NonSwipeViewPager
-               android:id="@+id/viewPager"
-               android:layout_width="0dp"
-               android:layout_height="0dp"
-               app:layout_constraintBottom_toTopOf="@+id/tabLayout"
-               app:layout_constraintEnd_toEndOf="parent"
-               app:layout_constraintHorizontal_bias="0.0"
-               app:layout_constraintStart_toStartOf="parent"
-               app:layout_constraintTop_toBottomOf="@+id/toolbar">
+    <com.itaewonproject.mypage.NonSwipeViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/tabLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-       </com.itaewonproject.mypage.NonSwipeViewPager>
+    </com.itaewonproject.mypage.NonSwipeViewPager>
+
+    <View
+            android:id="@+id/view3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#40000000"
+            app:layout_constraintBottom_toBottomOf="@+id/viewPager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

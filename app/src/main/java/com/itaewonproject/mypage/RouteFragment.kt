@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.itaewonproject.R
+import com.itaewonproject.adapter.TabPagerAdapter
 import com.itaewonproject.model.receiver.Route
 
 class RouteFragment : Fragment() {

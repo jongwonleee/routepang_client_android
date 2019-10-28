@@ -1,8 +1,6 @@
 package com.itaewonproject.mypage
 
-import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,8 +12,8 @@ import android.widget.TextView
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.itaewonproject.R
+import com.itaewonproject.adapter.TabPagerAdapter
 import com.itaewonproject.setting.SettingActivity
-import kotlinx.android.synthetic.main.list_marker.*
 
 class MyPageFragment : Fragment() {
     // TODO: Rename and change types of parameters\
@@ -25,7 +23,6 @@ class MyPageFragment : Fragment() {
     private lateinit var settingButton:ImageView
     private lateinit var textName:TextView
     private lateinit var profile:ImageView
-    private lateinit var articleCount:TextView
     private lateinit var followingCount:TextView
     private lateinit var followerCount:TextView
 
@@ -44,7 +41,6 @@ class MyPageFragment : Fragment() {
         settingButton = view.findViewById(R.id.button_setting) as ImageView
         textName = view.findViewById(R.id.text_name) as TextView
         profile = view.findViewById(R.id.image_profile) as ImageView
-        articleCount = view.findViewById(R.id.text_article) as TextView
         followerCount = view.findViewById(R.id.text_follower) as TextView
         followingCount = view.findViewById(R.id.text_following) as TextView
 
@@ -55,9 +51,9 @@ class MyPageFragment : Fragment() {
         })
 
         val adapter = TabPagerAdapter(childFragmentManager, 3)
-        adapter.addPage(RouteFragment(), "Route")
-        adapter.addPage(WishlistFragment(), "Wish List")
-        adapter.addPage(ReviewFragment(), "Review")
+        adapter.addPage(RouteFragment(), "루트\n200")
+        adapter.addPage(WishlistFragment(), "위시리스트\n150")
+        adapter.addPage(ReviewFragment(), "후기\n100")
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)
     }

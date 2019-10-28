@@ -51,6 +51,7 @@ public class ClearEditText extends AppCompatEditText implements TextWatcher, Vie
 
     private void init() {
 
+        setPadding(25,25,0,25);
         Drawable tempDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_ico_close_circle_fill_s);
         clearDrawable = DrawableCompat.wrap(tempDrawable);
         DrawableCompat.setTintList(clearDrawable,getHintTextColors());
@@ -81,7 +82,7 @@ public class ClearEditText extends AppCompatEditText implements TextWatcher, Vie
     @Override
     public boolean onTouch(final View view, final MotionEvent motionEvent) {
         final int x = (int) motionEvent.getX();
-        if (clearDrawable.isVisible() && x > getWidth() - getPaddingRight() - clearDrawable.getIntrinsicWidth()) {
+        if (clearDrawable.isVisible() && x > getWidth() - getPaddingRight() - (clearDrawable.getIntrinsicWidth()-40)-100) {
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                 setError(null);
                 setText(null);

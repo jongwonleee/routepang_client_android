@@ -11,6 +11,7 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.itaewonproject.JsonParser
 import com.itaewonproject.R
+import com.itaewonproject.adapter.TabPagerAdapter
 import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.player.BasketConnector
 import com.itaewonproject.search.LocationActivity

@@ -1,4 +1,4 @@
-package com.itaewonproject.mypage
+package com.itaewonproject.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -24,6 +24,8 @@ class TabPagerAdapter(fm: FragmentManager, behavior: Int) : FragmentStatePagerAd
     override fun getPageTitle(position: Int): CharSequence? {
         return pages[position].title
     }
+
+
 
     override fun getCount(): Int {
         return pages.size

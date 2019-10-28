@@ -36,8 +36,7 @@ import android.os.Build
 import androidx.core.content.ContextCompat
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks.CAUSE_NETWORK_LOST
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks.CAUSE_SERVICE_DISCONNECTED
-
-
+import java.lang.IllegalStateException
 
 
 interface MyLocationSetting : OnMapReadyCallback,GoogleApiClient.ConnectionCallbacks,
@@ -188,10 +187,14 @@ interface MyLocationSetting : OnMapReadyCallback,GoogleApiClient.ConnectionCallb
 
 
     fun stopLocationUpdates() {
+        try{
 
-        Log.d(TAG, "stopLocationUpdates : LocationServices.FusedLocationApi.removeLocationUpdates")
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,this)
-        mRequestingLocationUpdates = false
+            Log.d(TAG, "stopLocationUpdates : LocationServices.FusedLocationApi.removeLocationUpdates")
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,this)
+            mRequestingLocationUpdates = false
+        }catch (e:IllegalStateException){
+            e.printStackTrace()
+        }
     }
 
 

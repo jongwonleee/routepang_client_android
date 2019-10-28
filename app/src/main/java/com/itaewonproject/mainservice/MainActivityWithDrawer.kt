@@ -11,6 +11,7 @@ import com.google.android.material.navigation.NavigationView
 import android.view.MenuItem
 import android.widget.ImageView
 import androidx.core.view.GravityCompat
+import com.itaewonproject.adapter.TabPagerAdapter
 import com.itaewonproject.linkshare.LinkShareActivity
 import com.itaewonproject.message.MessageListActivity
 import com.itaewonproject.mypage.*

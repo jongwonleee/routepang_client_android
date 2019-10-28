@@ -17,7 +17,7 @@
             android:thickness="1dp"
             android:innerRadiusRatio="2.4"
             android:useLevel="false">
-            <solid android:color="#f862b8"/>
+            <solid android:color="#DDD"/>
             <size android:width="16dp"
                     android:height="16dp"/>
         </shape>
@@ -27,7 +27,7 @@
                 android:thickness="1dp"
                 android:innerRadiusRatio="2.4"
                 android:useLevel="false">
-            <solid android:color="#f862b8" />
+            <solid android:color="#DDD" />
             <size android:width="16dp"
                 android:height="16dp"/>
         </shape>
