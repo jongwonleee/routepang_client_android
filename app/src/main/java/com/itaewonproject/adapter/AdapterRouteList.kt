@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.toDrawable
@@ -107,16 +108,18 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Folder>) :
     }
 
     inner class SingleViewHolder(itemView: View) : BaseViewHolder(itemView) {
-        private var title: TextView
-        private var location: TextView
-        private var updated: TextView
-        private var background: ConstraintLayout
-        private var viewChecked: View
+        private val title: TextView
+        private val location: TextView
+        private val updated: TextView
+        private val emptyView: LinearLayout
+        private val emptyLeft:View
+        private val viewChecked: View
         init {
             title = itemView.findViewById(R.id.text_title) as TextView
             location = itemView.findViewById(R.id.text_location) as TextView
             updated = itemView.findViewById(R.id.text_updated) as TextView
-            background = itemView.findViewById(R.id.background) as ConstraintLayout
+            emptyView = itemView.findViewById(R.id.empty_view) as LinearLayout
+            emptyLeft = itemView.findViewById(R.id.empty_left) as View
             viewChecked = itemView.findViewById(R.id.view_checked) as View
         }
 
@@ -144,21 +147,23 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Folder>) :
                 return@setOnLongClickListener true
             })
             if (folder.isOpened(pos)) {
-                background.background = Color.LTGRAY.toDrawable()
+                emptyView.visibility= if (folder.isOpened(pos+1)) View.GONE else View.VISIBLE
+                emptyLeft.visibility=View.VISIBLE
             } else {
-                background.background = Color.WHITE.toDrawable()
+                emptyView.visibility=View.VISIBLE
+                emptyLeft.visibility=View.GONE
             }
         }
     }
 
     inner class GroupViewHolder(itemView: View) : BaseViewHolder(itemView) {
-        private var folderImage: ImageView
-        private var textTitle: TextView
-        private var editTitle: EditText
-        private var location: TextView
-        private var updated: TextView
-        private var background: ConstraintLayout
-        private var viewChecked: View
+        private val folderImage: ImageView
+        private val textTitle: TextView
+        private val editTitle: EditText
+        private val location: TextView
+        private val updated: TextView
+        private val viewChecked: View
+        private val emptyView: LinearLayout
 
         init {
             folderImage = itemView.findViewById(R.id.image_folder) as ImageView
@@ -166,8 +171,8 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Folder>) :
             editTitle = itemView.findViewById(R.id.edit_title) as EditText
             location = itemView.findViewById(R.id.text_location) as TextView
             updated = itemView.findViewById(R.id.text_updated) as TextView
-            background = itemView.findViewById(R.id.background) as ConstraintLayout
             viewChecked = itemView.findViewById(R.id.view_checked) as View
+            emptyView = itemView.findViewById(R.id.empty_view) as LinearLayout
             editTitle.visibility = View.INVISIBLE
             textTitle.visibility = View.VISIBLE
         }
@@ -182,9 +187,9 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Folder>) :
             else viewChecked.visibility = View.INVISIBLE
 
             if (folder.isOpened(pos)) {
-                background.background = Color.LTGRAY.toDrawable()
+                emptyView.visibility=View.GONE
             } else {
-                background.background = Color.WHITE.toDrawable()
+                emptyView.visibility=View.VISIBLE
             }
 
             itemView.setOnLongClickListener({
@@ -201,13 +206,11 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Folder>) :
             itemView.setOnClickListener({
                 folder.open(pos)
                 if (folder.isOpened(pos)) {
-                    background.background = Color.LTGRAY.toDrawable()
-                    folderImage.setImageResource(R.drawable.ic_folder_open_black_24dp)
+                    folderImage.setImageResource(R.drawable.ic_ico_folder_open)
                     editTitle.visibility = View.VISIBLE
                     textTitle.visibility = View.INVISIBLE
                 } else {
-                    background.background = Color.WHITE.toDrawable()
-                    folderImage.setImageResource(R.drawable.ic_folder_black_24dp)
+                    folderImage.setImageResource(R.drawable.ic_ico_folder_closed_gray_s)
                     editTitle.visibility = View.INVISIBLE
                     textTitle.visibility = View.VISIBLE
                 }
@@ -224,7 +227,7 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Folder>) :
         }
 
         fun isOpened(pos: Int): Boolean {
-            return opened[pos]
+            return if(opened.size>pos) opened[pos] else false
         }
 
         fun setList() {

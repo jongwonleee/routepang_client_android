@@ -61,7 +61,7 @@
                 app:layout_constraintStart_toStartOf="@+id/progressBar_rating"
                 app:layout_constraintTop_toTopOf="@+id/progressBar_rating" />
 
-        <com.itaewonproject.CustomTextView
+        <com.itaewonproject.customviews.CustomTextView
                 android:id="@+id/text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

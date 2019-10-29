@@ -52,7 +52,7 @@
     <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBar_layout"
             android:layout_width="match_parent"
-            app:layout_behavior=".linkshare.FixedAppBarLayoutBehavior"
+            app:layout_behavior=".customviews.FixedAppBarLayoutBehavior"
             android:layout_height="match_parent">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout

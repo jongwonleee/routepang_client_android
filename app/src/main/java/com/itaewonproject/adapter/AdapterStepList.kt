@@ -41,6 +41,7 @@ class AdapterStepList(val context: Context, var list: List<DirectionsStep>) : Re
                 .load(images!![pos])
                 .transform(RatioTransformation(300))
                 .into(img)*/
+            travelMode.setImageDrawable(null)
             description.text = list[pos].htmlInstructions
             usedTime.text = list[pos].duration.humanReadable
         }

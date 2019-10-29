@@ -19,7 +19,7 @@
             app:layout_constraintEnd_toEndOf="@+id/edit_id"
             app:layout_constraintStart_toStartOf="@+id/edit_id" />
 
-    <com.itaewonproject.ClearEditText
+    <com.itaewonproject.customviews.ClearEditText
             android:id="@+id/edit_id"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
-    <com.itaewonproject.ClearEditText
+    <com.itaewonproject.customviews.ClearEditText
             android:id="@+id/edit_password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

@@ -12,8 +12,8 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
+import com.itaewonproject.customviews.CustomTextView
 import com.itaewonproject.model.receiver.Location
-import java.lang.Integer.min
 
 class MarkerUtils(val map: GoogleMap, val con: Context) {
     val view: View

@@ -21,6 +21,7 @@ import com.google.maps.PendingResult
 import com.google.maps.internal.PolylineEncoding
 import com.google.maps.model.DirectionsResult
 import com.google.maps.model.TravelMode
+import com.itaewonproject.customviews.CustomTextView
 import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.mypage.RouteMapFragment
 

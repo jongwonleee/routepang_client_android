@@ -60,7 +60,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-    <com.itaewonproject.ClearEditText
+    <com.itaewonproject.customviews.ClearEditText
             android:id="@+id/edit_id"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <com.itaewonproject.ClearEditText
+    <com.itaewonproject.customviews.ClearEditText
             android:id="@+id/edit_password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
             app:layout_constraintStart_toStartOf="@+id/edit_id"
             app:layout_constraintTop_toBottomOf="@+id/edit_id" />
 
-    <com.itaewonproject.ClearEditText
+    <com.itaewonproject.customviews.ClearEditText
             android:id="@+id/edit_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -108,7 +108,7 @@
             app:layout_constraintStart_toStartOf="@+id/edit_id"
             app:layout_constraintTop_toBottomOf="@+id/edit_password_check" />
 
-    <com.itaewonproject.ClearEditText
+    <com.itaewonproject.customviews.ClearEditText
             android:id="@+id/edit_password_check"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

@@ -1,10 +1,11 @@
-package com.itaewonproject
+package com.itaewonproject.customviews
 
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.widget.TextView
+import com.itaewonproject.R
 
 class CustomTextView : TextView {
 

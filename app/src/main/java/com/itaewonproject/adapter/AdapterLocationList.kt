@@ -50,7 +50,6 @@ class AdapterLocationList(val context: Context, var output: ArrayList<Location>)
         var placeId = ""
         var imageCategory: ImageView
         var usedTime: TextView
-        var articleCount: TextView
 
         init {
             title = itemView.findViewById(R.id.textView_title) as TextView
@@ -58,7 +57,6 @@ class AdapterLocationList(val context: Context, var output: ArrayList<Location>)
             imgList = itemView.findViewById(R.id.recyclerView_images) as RecyclerView
             imageCategory = itemView.findViewById(R.id.image_category) as ImageView
             usedTime = itemView.findViewById(R.id.text_used_time) as TextView
-            articleCount = itemView.findViewById(R.id.text_articleCount) as TextView
             itemView.setOnClickListener({
                 val pos = adapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
@@ -75,7 +73,6 @@ class AdapterLocationList(val context: Context, var output: ArrayList<Location>)
             this.placeId = output.placeId
             this.imageCategory.setImageBitmap(APIs.getCategoryImage(output.cate))
             this.usedTime.text = "평균 소요 시간: ${APIs.secToString(output.used.toInt())}"
-            this.articleCount.text = "관련 게시물: ${output.articleCount} 건"
 
             val adapter = AdapterImageList(itemView.context, output.imgUrl)
 

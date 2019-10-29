@@ -1,4 +1,4 @@
-package com.itaewonproject.linkshare
+package com.itaewonproject.customviews
 
 import android.content.Context
 import android.util.AttributeSet

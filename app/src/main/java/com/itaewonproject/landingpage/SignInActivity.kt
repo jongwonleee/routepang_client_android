@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.itaewonproject.ClearEditText
+import com.itaewonproject.customviews.ClearEditText
 import com.itaewonproject.R
 
 class SignInActivity : AppCompatActivity() {

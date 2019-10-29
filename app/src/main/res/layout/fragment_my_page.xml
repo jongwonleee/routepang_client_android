@@ -17,8 +17,9 @@
 
         <com.itaewonproject.mypage.NonSwipeViewPager
                 android:id="@+id/viewPager"
+                android:descendantFocusability="blocksDescendants"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
     </androidx.core.widget.NestedScrollView>
 
@@ -26,8 +27,7 @@
             android:id="@+id/appBar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            app:layout_behavior=".linkshare.FixedAppBarLayoutBehavior">
+            android:background="#FFFFFF">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"

@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.itaewonproject.CustomTextView
+import com.itaewonproject.customviews.CustomTextView
 import com.itaewonproject.R
 import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.mypage.MarkerItemTouchHelperCallback

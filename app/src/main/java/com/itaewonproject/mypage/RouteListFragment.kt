@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.APIs
@@ -21,19 +22,15 @@ class RouteListFragment : Fragment() {
     private lateinit var adapter: AdapterRouteList
     private lateinit var buttonMakeFolder: ImageView
     private lateinit var buttonDelete: ImageView
-
+    private lateinit var viewDivider:View
     private fun setListViewOption(view: View) {
         list = APIs.B_API1(1)
         adapter = AdapterRouteList(view.context, list)
         adapter.setOnItemClickClickListener(object : AdapterRouteList.onItemClickListener {
             override fun onItemLongClick(size: Int) {
-                buttonMakeFolder.visibility = if (size> 1)
-                    View.VISIBLE
-                else
-                    View.GONE
-
-                if (size> 0) buttonDelete.visibility = View.VISIBLE
-                else buttonDelete.visibility = View.GONE
+                buttonMakeFolder.visibility = if (size> 1) View.VISIBLE else View.GONE
+                buttonDelete.visibility = if(size>0) View.VISIBLE else View.GONE
+                viewDivider.visibility = if (size> 1) View.VISIBLE else View.GONE
             }
 
             override fun onItemClick(v: View, position: Int) {
@@ -44,13 +41,17 @@ class RouteListFragment : Fragment() {
         recyclerView.adapter = adapter
         val linearLayoutManager = LinearLayoutManager(view.context)
         recyclerView.layoutManager = linearLayoutManager
+        val dividerItemDecoration = DividerItemDecoration(context,linearLayoutManager.orientation)
+        dividerItemDecoration.setDrawable(context!!.resources.getDrawable(R.drawable.recycler_divider))
         recyclerView.setHasFixedSize(true)
+        recyclerView.addItemDecoration(dividerItemDecoration)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         buttonMakeFolder = view.findViewById(R.id.image_makeFolder) as ImageView
         buttonDelete = view.findViewById(R.id.image_delete) as ImageView
         recyclerView = view.findViewById(R.id.route_RecyclerView) as RecyclerView
+        viewDivider = view.findViewById(R.id.view_divider) as View
 
         buttonMakeFolder.visibility = View.GONE
         buttonDelete.visibility = View.GONE

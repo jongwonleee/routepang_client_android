@@ -1,4 +1,4 @@
-package com.itaewonproject;
+package com.itaewonproject.customviews;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -11,6 +11,8 @@ import android.view.View;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
+
+import com.itaewonproject.R;
 
 
 /**

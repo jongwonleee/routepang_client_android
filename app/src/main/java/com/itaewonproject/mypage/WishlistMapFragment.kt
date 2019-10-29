@@ -27,19 +27,21 @@ import com.itaewonproject.MyLocationSetting.Companion.mMoveMapByAPI
 import com.itaewonproject.MyLocationSetting.Companion.mRequestingLocationUpdates
 import com.itaewonproject.MyLocationSetting.Companion.map
 import com.itaewonproject.R
+import com.itaewonproject.customviews.CustomMapView
 import com.itaewonproject.model.receiver.Location
 import java.util.*
 
 class WishlistMapFragment : Fragment(), MyLocationSetting {
 
-    private lateinit var mapView: MapView
+    private lateinit var mapView: CustomMapView
     val list: ArrayList<Location>
         get() = (parentFragment as WishlistFragment).list
     lateinit var markerUtils: MarkerUtils
     private lateinit var autoCompleteButton: ImageView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        mapView = view.findViewById(R.id.map) as MapView
+        mapView = view.findViewById(R.id.map) as CustomMapView
+        mapView.isInRoute=false
         autoCompleteButton = view.findViewById(R.id.button_search) as ImageView
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)

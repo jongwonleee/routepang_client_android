@@ -14,50 +14,79 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" android:id="@+id/constraintLayout2">
 
-        <Button
-                android:text="뒤로"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/button_back"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-        />
-        <TextView
-                android:text="TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/text_title"
-                app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp" android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                android:layout_marginStart="8dp" app:layout_constraintStart_toEndOf="@+id/button_back"/>
+
         <ImageView
-                android:src="@drawable/ic_map_black_24dp"
+                android:id="@+id/button_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/image_map"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_chevron_left_black_24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
-        <ImageView
-                android:src="@drawable/ic_mode_edit_black_24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+                android:id="@+id/text_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/image_edit" app:layout_constraintEnd_toStartOf="@+id/image_map"
-                android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toTopOf="parent" app:srcCompat="@drawable/ic_mode_edit_black_24dp"/>
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/notosanscjkkr_medium"
+                android:text="TextView"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/edit_title"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/button_back"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                    android:id="@+id/image_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_ico_edit_gray" />
+
+            <View
+                    android:id="@+id/view_divider"
+                    android:layout_width="1dp"
+                    android:layout_height="10dp"
+                    android:background="#d8d8d8" />
+
+            <ImageView
+                    android:id="@+id/image_map"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_ico_map_gray" />
+
+        </LinearLayout>
 
         <EditText
                 android:id="@+id/edit_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:layout_marginTop="1dp"
+                android:layout_marginEnd="16dp"
                 android:ems="10"
+                android:fontFamily="@font/notosanscjkkr_medium"
                 android:inputType="textPersonName"
                 android:text="TextView"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/text_title"
-                app:layout_constraintEnd_toStartOf="@+id/image_edit"
+                app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
                 app:layout_constraintStart_toEndOf="@+id/button_back"
                 app:layout_constraintTop_toTopOf="@+id/text_title" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -70,35 +99,73 @@
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
             app:layout_constraintBottom_toTopOf="@+id/tableLayout">
     </androidx.recyclerview.widget.RecyclerView>
+
     <TableLayout
+            android:id="@+id/tableLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toBottomOf="parent" android:id="@+id/tableLayout">
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-        <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
+        <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
             <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="30dp"
+                    android:padding="5dp"
                     android:text="총 소요시간"
-                    android:layout_width="wrap_content"
-                    android:padding="5dp"
-                    android:layout_height="wrap_content" android:id="@+id/textView4"/>
+                    android:textColor="#909090"
+                    android:textSize="14sp" />
+
             <TextView
+                    android:id="@+id/text_totalTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/notosanscjkkr_medium"
+                    android:gravity="right|center_horizontal"
                     android:text="9시간 15분"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/text_totalTime"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="#444444"
+                    android:textSize="14sp" />
         </TableRow>
-        <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
+
+        <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
             <TextView
-                    android:text="총 이동경로"
+                    android:id="@+id/textView6"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:layout_height="wrap_content" android:id="@+id/textView6"/>
+                    android:text="총 이동경로"
+                    android:textColor="#909090"
+                    android:textSize="14sp" />
+
             <TextView
-                    android:text="15km"
+                    android:id="@+id/text_totalMove"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/text_totalMove"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/notosanscjkkr_medium"
+                    android:gravity="right|center_horizontal"
+                    android:text="15km"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="#444444"
+                    android:textSize="14sp" />
         </TableRow>
     </TableLayout>
+
+    <View
+            android:id="@+id/view8"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#eeeeee"
+            app:layout_constraintBottom_toBottomOf="@+id/edit_recyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

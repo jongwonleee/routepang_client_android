@@ -28,20 +28,15 @@ class RouteFragment : Fragment() {
         adapter.addPage(RouteEditFragment(), "Edit")
         adapter.addPage(RouteMapFragment(), "Map")
         viewPager.adapter = adapter
-        // tabLayout.setupWithViewPager(viewPager)
-        /*val fragmentTransaction = fragmentManager!!.beginTransaction()
-        var fragment = RouteListFragment()
-        fragmentTransaction.add(R.id.fragment, fragment) // add 대신 replace도 가능
-        fragmentTransaction.commit()*/
     }
 
     fun toEditFragment(item: Route) {
         route = item
-        viewPager.setCurrentItem(viewPager.currentItem + 1, true)
-       /* var fragmentTransaction = fragmentManager!!.beginTransaction()
-        fragmentTransaction.replace(R.id.fragment,RouteEditFragment())
-        fragmentTransaction.commit()
-        Log.i("!!~~","!!!")*/
+        viewPager.setCurrentItem(1, true)
+    }
+
+    fun toListFragment() {
+        viewPager.setCurrentItem(0, true)
     }
 
     //FIXME enum 화시키기
@@ -54,4 +49,5 @@ class RouteFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_route, container, false)
     }
+
 }

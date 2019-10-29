@@ -28,6 +28,7 @@ import com.itaewonproject.R
 import com.itaewonproject.adapter.AdapterRouteEdit
 import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.player.LocationConnector
+import java.lang.NullPointerException
 
 class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
 
@@ -36,7 +37,7 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
     }
 
     private lateinit var buttonMap: ImageView
-    private lateinit var buttonBack: Button
+    private lateinit var buttonBack: ImageView
     private lateinit var buttonEdit: ImageView
     private lateinit var textTitle: TextView
     private lateinit var editTitle: TextView
@@ -48,25 +49,30 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
     private var durations: Long? = null
     private var distances: Long? = null
     private lateinit var itemTouchHelper: ItemTouchHelper
-    private lateinit var adapter: AdapterRouteEdit
+    private var adapter: AdapterRouteEdit? =null
     private lateinit var callback: EditItemTouchHelperCallback
     private lateinit var geoApiContext: GeoApiContext
     var editMode = false
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
-        if (isVisibleToUser && isResumed) {
-            list = JsonParser().listJsonParsing(LocationConnector().get(LatLng(41.374902, 2.170370), 14f),Location::class.java)
-            adapter.list = list
-            adapter.resetSteplist()
-            adapter.notifyDataSetChanged()
-            setEditMode()
+        try{
+            if (isVisibleToUser && isResumed ) {
+                list = JsonParser().listJsonParsing(LocationConnector().get(LatLng(41.374902, 2.170370), 14f),Location::class.java)
+                adapter!!.list = list
+                adapter!!.resetSteplist()
+                adapter!!.notifyDataSetChanged()
+                setEditMode()
+            }
+        }catch (e:NullPointerException){
+            e.printStackTrace()
         }
+
     }
 
     private fun setListViewOption(view: View) {
         list = arrayListOf()
         adapter = AdapterRouteEdit(view.context, this)
-        callback = EditItemTouchHelperCallback(adapter)
+        callback = EditItemTouchHelperCallback(adapter!!)
         itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
         val linearLayoutManager = LinearLayoutManager(view.context)
@@ -78,6 +84,7 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.i("view Created!!!","!!")
         buttonMap = view.findViewById(R.id.image_map)
         recyclerView = view.findViewById(R.id.edit_recyclerView) as RecyclerView
         buttonBack = view.findViewById(R.id.button_back)
@@ -116,18 +123,12 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
             buttonMap.visibility = View.VISIBLE
             setTotals()
         }
-        adapter.setEditMode(editMode)
+        adapter!!.setEditMode(editMode)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        var view = view
-        try {
-            view = inflater.inflate(R.layout.fragment_route_edit, container, false)
-        } catch (e: InflateException) {
-            e.printStackTrace()
-        }
-        return view
+
+        return inflater.inflate(R.layout.fragment_route_edit, container, false)
     }
 
     fun setTotals() {
@@ -196,7 +197,7 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
             this.durations = durations
             this.distances = distances
 
-            adapter.stepList[pos] = result.routes[0].legs[0].steps.toList()
+            adapter!!.stepList[pos] = result.routes[0].legs[0].steps.toList()
             /*or(s in result.routes[0].legs[0].steps)
                 Log.i("!!!steps:",s.htmlInstructions)*/
         })

@@ -10,7 +10,7 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.itaewonproject.ClearEditText
+import com.itaewonproject.customviews.ClearEditText
 import com.itaewonproject.R
 import com.itaewonproject.mainservice.MainActivity
 

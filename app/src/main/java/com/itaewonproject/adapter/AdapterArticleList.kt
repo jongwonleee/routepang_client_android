@@ -43,14 +43,14 @@ class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewon
         private var summary: TextView
         private var imgSmall: ImageView
         private var imgBig: ImageView
-        private var buttonRef: ImageButton
+        private var buttonRef: ImageView
         private var layoutArticle: ConstraintLayout
         private var articleId: Long = 0
         init {
             summary = itemView.findViewById(R.id.text_summary) as TextView
             imgSmall = itemView.findViewById(R.id.image_article_small) as ImageView
             imgBig = itemView.findViewById(R.id.image_arcticle_big) as ImageView
-            buttonRef = itemView.findViewById(R.id.imageButton_ref) as ImageButton
+            buttonRef = itemView.findViewById(R.id.imageButton_ref) as ImageView
             layoutArticle = itemView.findViewById(R.id.layout_article) as ConstraintLayout
             imgBig.visibility = View.GONE
 

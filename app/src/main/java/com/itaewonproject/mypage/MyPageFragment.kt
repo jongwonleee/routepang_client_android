@@ -9,7 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.widget.NestedScrollView
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.itaewonproject.R
 import com.itaewonproject.adapter.TabPagerAdapter
@@ -25,7 +28,7 @@ class MyPageFragment : Fragment() {
     private lateinit var profile:ImageView
     private lateinit var followingCount:TextView
     private lateinit var followerCount:TextView
-
+    private lateinit var appBarLayout: AppBarLayout
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,6 +39,7 @@ class MyPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        appBarLayout = view.findViewById(R.id.appBar_layout) as AppBarLayout
         tabLayout = view.findViewById(R.id.tabLayout) as TabLayout
         viewPager = view.findViewById(R.id.viewPager) as ViewPager
         settingButton = view.findViewById(R.id.button_setting) as ImageView
@@ -56,7 +60,12 @@ class MyPageFragment : Fragment() {
         adapter.addPage(ReviewFragment(), "후기\n100")
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)
+        viewPager.setOnClickListener({
+            appBarLayout.setExpanded(false)
+        })
+
     }
+
 
 
 }

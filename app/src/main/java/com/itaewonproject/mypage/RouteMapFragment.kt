@@ -34,16 +34,18 @@ import com.itaewonproject.MyLocationSetting.Companion.con
 import com.itaewonproject.MyLocationSetting.Companion.mGoogleApiClient
 import com.itaewonproject.MyLocationSetting.Companion.mMoveMapByAPI
 import com.itaewonproject.MyLocationSetting.Companion.mRequestingLocationUpdates
+import com.itaewonproject.customviews.CustomMapView
 import java.util.*
 
 class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLocationSetting {
 
 
     private lateinit var map: GoogleMap
-    private lateinit var mapView: MapView
-    private lateinit var autoCompleteButton: ImageView
-    private lateinit var buttonEditList: ImageView
+    private lateinit var mapView: CustomMapView
+    private lateinit var autoCompleteButton: CardView
+    private lateinit var buttonEditor: ImageView
     private lateinit var buttonEdit: ImageView
+    private lateinit var buttonBack: ImageView
     private lateinit var textTitle: TextView
     private lateinit var editTitle: TextView
     private lateinit var layoutMarkerList: CardView
@@ -63,6 +65,9 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLoc
         list = arrayListOf()
         wishlist = arrayListOf()
     }
+
+
+
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         if (isResumed && isVisibleToUser) {
@@ -108,12 +113,14 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLoc
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        mapView = view.findViewById(R.id.map) as MapView
+        mapView = view.findViewById(R.id.map) as CustomMapView
+        mapView.isInRoute=true
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
         layoutMarkerList = view.findViewById(R.id.layout_markerList) as CardView
         recyclerView = view.findViewById(R.id.recyclerView_marker) as RecyclerView
         buttonEdit = view.findViewById(R.id.image_edit)
+        buttonBack = view.findViewById(R.id.button_back)
         textTitle = view.findViewById(R.id.text_title)
         editTitle = view.findViewById(R.id.edit_title)
 
@@ -131,12 +138,12 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLoc
                     layoutMarkerList.visibility = View.VISIBLE
                     textTitle.visibility = View.INVISIBLE
                     editTitle.visibility = View.VISIBLE
-                    buttonEditList.visibility = View.GONE
+                    buttonEditor.visibility = View.GONE
                 } else {
                     layoutMarkerList.visibility = View.GONE
                     textTitle.visibility = View.VISIBLE
                     editTitle.visibility = View.INVISIBLE
-                    buttonEditList.visibility = View.VISIBLE
+                    buttonEditor.visibility = View.VISIBLE
                     routeUtils.setBoundary(list)
                 }
             routeUtils.editMode = editMode
@@ -145,12 +152,15 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLoc
         editTitle.visibility = View.INVISIBLE
         layoutMarkerList.visibility = View.GONE
 
-        buttonEditList = view.findViewById(R.id.image_map)
-        buttonEditList.setOnClickListener({
+        buttonEditor = view.findViewById(R.id.image_editor)
+        buttonEditor.setOnClickListener({
             if (!editMode)(parentFragment as RouteFragment).toFragment(false)
         })
+        buttonBack.setOnClickListener({
+            (parentFragment as RouteFragment).toListFragment()
+        })
 
-        autoCompleteButton = view.findViewById(R.id.button_search) as ImageView
+        autoCompleteButton = view.findViewById(R.id.button_search) as CardView
 
         Places.initialize(activity!!.applicationContext, context!!.getString(R.string.Web_key))
         Places.createClient(context!!)
@@ -198,8 +208,6 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLoc
 
         map = googleMap
         routeUtils = RouteUtils(map, this)
-
-
         mMoveMapByAPI=false
         setMapReady()
     }
