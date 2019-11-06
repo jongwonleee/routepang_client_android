@@ -27,14 +27,14 @@ import com.itaewonproject.mypage.RouteMapFragment
 
 class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
     val view: View
-    val rating: ProgressBar
-    val text: CustomTextView
     val image: ImageView
-    val imageAdd: ImageView
-    val articleCount: ProgressBar
     val latLoc = HashMap<LatLng, Location>()
     val latIndex = HashMap<LatLng, Int>()
     val latWishlist = HashMap<LatLng, Int>()
+    val imageList = listOf(listOf(R.drawable.ic_map_pin_fill_blue,R.drawable.ic_map_pin_fill_green,R.drawable.ic_map_pin_fill_purple,R.drawable.ic_map_pin_fill_red,R.drawable.ic_map_pin_fill_yellow),
+        listOf(R.drawable.ic_map_pin_fill_blue_minus, R.drawable.ic_map_pin_fill_green_minus, R.drawable.ic_map_pin_fill_purple_minus, R.drawable.ic_map_pin_fill_red_minus, R.drawable.ic_map_pin_fill_yellow_minus),
+        listOf(R.drawable.ic_map_pin_fill_blue_plus, R.drawable.ic_map_pin_fill_green_plus, R.drawable.ic_map_pin_fill_purple_plus, R.drawable.ic_map_pin_fill_red_plus, R.drawable.ic_map_pin_fill_yellow_plus),
+        listOf(R.drawable.ic_map_pin_not_fill_blue,R.drawable.ic_map_pin_not_fill_green,R.drawable.ic_map_pin_not_fill_purple,R.drawable.ic_map_pin_not_fill_red,R.drawable.ic_map_pin_not_fill_yellow))
     var editMode = false
         set(value) {
             field = value
@@ -51,13 +51,8 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
     init {
         geoApiContext = GeoApiContext.Builder().apiKey(fragment.context!!.getString(R.string.Web_key)).build()
         view = LayoutInflater.from(fragment.context).inflate(R.layout.view_route_marker, null)
-        rating = view.findViewById(R.id.progressBar_rating) as ProgressBar
-        text = view.findViewById(R.id.text) as CustomTextView
         image = view.findViewById(R.id.image) as ImageView
-        imageAdd = view.findViewById(R.id.image_add) as ImageView
-        articleCount = view.findViewById(R.id.progressBar_articleCount) as ProgressBar
-        rating.max = 100
-        articleCount.max = 20
+
         selectedMarker = null
         map.setOnMarkerClickListener {
             if (editMode) {
@@ -76,7 +71,7 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
                         }
                         setList()
                         setWishList()
-                    } else changeSelectedMarker(it!!)
+                    } else changeSelectedMarker(it)
                 } else
                     changeSelectedMarker(it!!)
             }
@@ -112,16 +107,15 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
     fun addMarker(location: Location, isSelected: Boolean, index: Int, isWishlist: Boolean): Marker {
         Log.i("adding marker","${location.name} , latlng:${location.latlng()}")
         val position = location.latlng()
-        rating.progress = (location.rating * 10).toInt()
-        articleCount.progress = Math.min(10,location.articleCount)
-        if (isSelected) {
-            imageAdd.setImageResource(if (isWishlist)R.drawable.ic_add_black_24dp else R.drawable.ic_clear_black_24dp)
-            imageAdd.visibility = View.VISIBLE
-            text.text = ""
-        } else {
-            imageAdd.visibility = View.INVISIBLE
-            text.text = if (isWishlist) "" else (index + 1).toString()
-        }
+        val categoryColor = 0
+        image.setImageResource(if(isSelected){
+            if(isWishlist) imageList[2][categoryColor]
+            else imageList[1][categoryColor]
+        }else
+        {
+            if(isWishlist) imageList[3][categoryColor]
+            else imageList[0][categoryColor]
+        })
 
         val markerOptions = MarkerOptions()
         markerOptions.title(location.name)
@@ -234,8 +228,8 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
     private fun addPolylinesToMap(result: DirectionsResult) {
         Handler(Looper.getMainLooper()).post(Runnable {
             val polylineOptions = PolylineOptions()
-            polylineOptions.color(Color.argb(96, 255, 0, 0))
-            polylineOptions.width(15.0f)
+            polylineOptions.color(Color.argb(255,253,98,176))
+            polylineOptions.width(10.0f)
             polylineOptions.clickable(false)
             polylineOptions.endCap(RoundCap())
             for (route in result.routes) {

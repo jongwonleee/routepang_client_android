@@ -17,21 +17,13 @@ import com.itaewonproject.model.receiver.Location
 
 class MarkerUtils(val map: GoogleMap, val con: Context) {
     val view: View
-    val rating: ProgressBar
-    val text: CustomTextView
     val image: ImageView
-    val articleCount: ProgressBar
     val latLoc = HashMap<LatLng, Location>()
     val latIndex = HashMap<LatLng, Int>()
     var selectedMarker: Marker?
     init {
         view = LayoutInflater.from(con).inflate(R.layout.view_route_marker, null)
-        rating = view.findViewById(R.id.progressBar_rating) as ProgressBar
-        text = view.findViewById(R.id.text) as CustomTextView
         image = view.findViewById(R.id.image) as ImageView
-        articleCount = view.findViewById(R.id.progressBar_articleCount) as ProgressBar
-        rating.max = 100
-        articleCount.max = 20
         selectedMarker = null
         map.setOnMarkerClickListener {
             if (it != null && selectedMarker != null) {
@@ -54,7 +46,7 @@ class MarkerUtils(val map: GoogleMap, val con: Context) {
         val markerOptions = MarkerOptions()
         markerOptions.title(location.name)
         markerOptions.position(position)
-        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFroview(view)))
+        //markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFroview(view)))
         val marker = map.addMarker(markerOptions)
         latLoc.put(position, location)
         return marker
@@ -62,14 +54,14 @@ class MarkerUtils(val map: GoogleMap, val con: Context) {
 
     fun addEditMarker(location: Location, isSelected: Boolean, index: Int): Marker {
         val position = location.latlng()
-        rating.progress = (location.rating * 10).toInt()
-        articleCount.progress = Math.min(location.articleCount, 10)
         Log.i("isSelected", "$isSelected")
+/*
         if (isSelected) {
             text.text = "-"
         } else {
             text.text = (index + 1).toString()
         }
+*/
 
        /* rating.rating=location.rating
         name.text=location.name
@@ -89,7 +81,7 @@ class MarkerUtils(val map: GoogleMap, val con: Context) {
         val markerOptions = MarkerOptions()
         markerOptions.title(location.name)
         markerOptions.position(position)
-        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFroview(view)))
+        //markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFroview(view)))
         val marker = map.addMarker(markerOptions)
         latLoc.put(position, location)
         latIndex.put(position, index)

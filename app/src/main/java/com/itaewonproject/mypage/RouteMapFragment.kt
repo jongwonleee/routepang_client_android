@@ -88,8 +88,10 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLoc
                 routeUtils.addLine()
                 routeUtils.setBoundary(list)
 
+
                 adapter.list = list
                 adapter.notifyDataSetChanged()
+                Log.i("!!list size","${adapter.itemCount}")
             }catch (e : UninitializedPropertyAccessException){
                 e.printStackTrace()
             }
@@ -103,11 +105,13 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLoc
 
     private fun setListViewOption(view: View){
         adapter = AdapterMarkerList(view.context,this)
+        adapter.list=list
         callback = MarkerItemTouchHelperCallback(adapter)
         itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
         recyclerView.adapter = adapter
-        val linearLayoutManager = LinearLayoutManager(view.context, RecyclerView.HORIZONTAL, false)
+
+        val linearLayoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.setHasFixedSize(true)
     }

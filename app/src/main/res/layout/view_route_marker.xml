@@ -2,89 +2,14 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ImageView
+            android:id="@+id/image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/marker_background">
+            tools:srcCompat="@drawable/ic_map_pin_fill_red_minus" />
 
-        <ImageView
-                android:id="@+id/image"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="7dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginEnd="7dp"
-                android:layout_marginBottom="7dp"
-                app:layout_constraintBottom_toBottomOf="@+id/progressBar_articleCount"
-                app:layout_constraintEnd_toEndOf="@+id/progressBar_articleCount"
-                app:layout_constraintStart_toStartOf="@+id/progressBar_articleCount"
-                app:layout_constraintTop_toTopOf="@+id/progressBar_articleCount"
-                tools:srcCompat="@tools:sample/avatars" />
-
-        <ProgressBar
-                android:id="@+id/progressBar_base"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:progress="100"
-                android:progressDrawable="@drawable/circular_progressbar_base"
-                app:layout_constraintBottom_toBottomOf="@+id/progressBar_articleCount"
-                app:layout_constraintEnd_toEndOf="@+id/progressBar_articleCount"
-                app:layout_constraintStart_toStartOf="@+id/progressBar_articleCount"
-                app:layout_constraintTop_toTopOf="@+id/progressBar_articleCount" />
-
-        <ProgressBar
-                android:id="@+id/progressBar_rating"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:max="10"
-                android:progress="4"
-                android:progressDrawable="@drawable/circular_progressbar_up"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        <ProgressBar
-                android:id="@+id/progressBar_articleCount"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:max="10"
-                android:progress="4"
-                android:progressDrawable="@drawable/circular_progressbar_down"
-                android:scaleY="-1"
-                app:layout_constraintBottom_toBottomOf="@+id/progressBar_rating"
-                app:layout_constraintEnd_toEndOf="@+id/progressBar_rating"
-                app:layout_constraintStart_toStartOf="@+id/progressBar_rating"
-                app:layout_constraintTop_toTopOf="@+id/progressBar_rating" />
-
-        <com.itaewonproject.customviews.CustomTextView
-                android:id="@+id/text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                android:textColor="#FFFFFF"
-                app:layout_constraintBottom_toBottomOf="@+id/image"
-                app:layout_constraintEnd_toEndOf="@+id/image"
-                app:layout_constraintStart_toStartOf="@+id/image"
-                app:layout_constraintTop_toTopOf="@+id/image"
-                app:textStroke="true"
-                app:textStrokeColor="#000000"
-                app:textStrokeWidth="7.0" />
-
-        <ImageView
-                android:id="@+id/image_add"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/text"
-                app:layout_constraintEnd_toEndOf="@+id/progressBar_articleCount"
-                app:layout_constraintStart_toStartOf="@+id/progressBar_articleCount"
-                app:layout_constraintTop_toTopOf="@+id/text"
-                app:srcCompat="@drawable/ic_clear_black_24dp" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

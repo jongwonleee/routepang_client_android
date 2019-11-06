@@ -1,13 +1,16 @@
-package com.itaewonproject.mypage
+package com.itaewonproject.customviews
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.appbar.AppBarLayout
 
 class NonSwipeViewPager(context: Context, attrs: AttributeSet) : ViewPager(context, attrs) {
     private var swipeEnabled = false
-
+    private var setUnexpend = false
+    private lateinit var appBarLayout:AppBarLayout
     override fun onTouchEvent(event: MotionEvent): Boolean {
         return when (swipeEnabled) {
             true -> super.onTouchEvent(event)
@@ -16,6 +19,9 @@ class NonSwipeViewPager(context: Context, attrs: AttributeSet) : ViewPager(conte
     }
 
     override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
+        if(setUnexpend){
+            appBarLayout.setExpanded(false)
+        }
         return when (swipeEnabled) {
             true -> super.onInterceptTouchEvent(event)
             false -> false
@@ -24,5 +30,9 @@ class NonSwipeViewPager(context: Context, attrs: AttributeSet) : ViewPager(conte
 
     fun setSwipePagingEnabled(swipeEnabled: Boolean) {
         this.swipeEnabled = swipeEnabled
+    }
+    fun setAutoUnexpendingAppbar(appBarLayout: AppBarLayout){
+        setUnexpend=true
+        this.appBarLayout = appBarLayout
     }
 }

@@ -15,7 +15,7 @@
             android:scrollbars="none"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <com.itaewonproject.mypage.NonSwipeViewPager
+        <com.itaewonproject.customviews.NonSwipeViewPager
                 android:id="@+id/viewPager"
                 android:descendantFocusability="blocksDescendants"
                 android:layout_width="match_parent"

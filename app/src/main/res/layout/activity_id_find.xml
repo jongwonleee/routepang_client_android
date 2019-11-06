@@ -25,14 +25,14 @@
             android:fontFamily="@font/notosanscjkkr_regular"
             android:text="비밀번호 찾기"
             app:layout_constraintStart_toStartOf="@+id/edit_id"
-            app:layout_constraintTop_toBottomOf="@+id/button_create" />
+            app:layout_constraintTop_toBottomOf="@+id/button_link_share" />
 
     <Button
             android:id="@+id/button_create2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="11dp"
-            android:background="@drawable/login_box_darkgrey"
+            android:background="@drawable/box_darkgrey_radius_5dp"
             android:fontFamily="@font/notosanscjkkr_medium"
             android:text="해당 이메일로 임시 비밀번호 발송"
             android:textColor="#FFFFFF"
@@ -49,7 +49,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="20dp"
-            android:background="@drawable/login_box_grey"
+            android:background="@drawable/box_grey_radius_5dp"
             android:ems="10"
             android:fontFamily="@font/notosanscjkkr_regular"
             android:hint="가입된 이메일"
@@ -64,7 +64,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="@drawable/login_box_grey"
+            android:background="@drawable/box_grey_radius_5dp"
             android:ems="10"
             android:fontFamily="@font/notosanscjkkr_regular"
             android:hint="가입된 이메일"
@@ -79,7 +79,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="11dp"
-            android:background="@drawable/login_box_grey"
+            android:background="@drawable/box_grey_radius_5dp"
             android:ems="10"
             android:fontFamily="@font/notosanscjkkr_regular"
             android:hint="ID"
@@ -91,11 +91,11 @@
             app:layout_constraintTop_toBottomOf="@+id/edit_password" />
 
     <Button
-            android:id="@+id/button_create"
+            android:id="@+id/button_link_share"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="11dp"
-            android:background="@drawable/login_box_pink"
+            android:background="@drawable/box_pink_gradient_radius_5dp"
             android:fontFamily="@font/notosanscjkkr_medium"
             android:text="해당 이메일로 아이디 발송"
             android:textColor="#FFFFFF"

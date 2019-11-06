@@ -34,11 +34,10 @@ class LinkShareActivity : AppCompatActivity() {
     lateinit var usedTime: SeekBar
     lateinit var buttonOk: Button
     lateinit var buttonCancel: Button
-    lateinit var textRating: TextView
     lateinit var textSeekMax: TextView
     lateinit var textUsedTime: TextView
     lateinit var buttonSend: Button
-    lateinit var buttonRef: ImageButton
+    lateinit var buttonRef: ImageView
     lateinit var link: Link
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,19 +88,18 @@ class LinkShareActivity : AppCompatActivity() {
 
     private fun initActivity() {
         textLink = findViewById(R.id.text_link) as EditText
-        image = findViewById(R.id.image_article) as ImageView
+        image = findViewById(R.id.image_article_small) as ImageView
         summary = findViewById(R.id.text_summary) as TextView
-        checkVisited = findViewById(R.id.checked_visited) as CheckedTextView
+        checkVisited = findViewById(R.id.check_visited) as CheckedTextView
         layoutRating = findViewById(R.id.layout_rating) as LinearLayout
         rating = findViewById(R.id.ratingBar3) as RatingBar
         usedTime = findViewById(R.id.seek_usedTime) as SeekBar
         buttonCancel = findViewById(R.id.button_cancel) as Button
         buttonOk = findViewById(R.id.button_ok) as Button
-        textRating = findViewById(R.id.text_rating) as TextView
         textSeekMax = findViewById(R.id.text_seekMax) as TextView
         textUsedTime = findViewById(R.id.text_used_time) as TextView
         buttonSend = findViewById(R.id.button_send)as Button
-        buttonRef = findViewById(R.id.imageButton_ref)as ImageButton
+        buttonRef = findViewById(R.id.imageButton_ref)as ImageView
 
         buttonSend.setOnClickListener({
             link = LinkManager().LinkApi(textLink.text.toString())
@@ -138,9 +136,6 @@ class LinkShareActivity : AppCompatActivity() {
         })
 
         rating.max = 5
-        rating.setOnRatingBarChangeListener { ratingBar: RatingBar, fl: Float, b: Boolean ->
-            textRating.text = "$fl"
-        }
         usedTime.max = 3600
         usedTime.progress = 1800
         textUsedTime.text = APIs.secToString(usedTime.progress)

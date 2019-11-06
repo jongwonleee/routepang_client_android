@@ -8,7 +8,7 @@
         tools:context=".mypage.RouteFragment">
 
 
-    <com.itaewonproject.mypage.NonSwipeViewPager
+    <com.itaewonproject.customviews.NonSwipeViewPager
             android:id="@+id/viewPager"
             android:layout_width="0dp"
             android:layout_height="0dp"

@@ -22,7 +22,7 @@ class SignInActivity : AppCompatActivity() {
         editPW = findViewById(R.id.edit_password) as ClearEditText
         editPWCheck = findViewById(R.id.edit_password_check) as ClearEditText
         editName = findViewById(R.id.edit_name) as ClearEditText
-        buttonSignin = findViewById(R.id.button_create) as Button
+        buttonSignin = findViewById(R.id.button_link_share) as Button
         buttonSigninKakao = findViewById(R.id.button_login_kakao) as ConstraintLayout
         buttonSignin.setOnClickListener({
             finish()

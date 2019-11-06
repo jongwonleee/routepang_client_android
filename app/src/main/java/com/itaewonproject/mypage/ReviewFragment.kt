@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.JsonParser
 import com.itaewonproject.R
 import com.itaewonproject.adapter.AdapterArticleList
+import com.itaewonproject.linkshare.LinkShareActivity
 import com.itaewonproject.model.receiver.Article
 import com.itaewonproject.player.ReviewConnector
 
@@ -42,9 +43,10 @@ class ReviewFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        var button = view.findViewById(R.id.button_create) as Button
+        val button = view.findViewById(R.id.button_link_share) as Button
         button.setOnClickListener({
-            Log.i("!!", "!!")
+            val intent = Intent(context, LinkShareActivity::class.java)
+            startActivity(intent)
         })
         setListViewOption(view)
     }

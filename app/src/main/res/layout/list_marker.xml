@@ -3,123 +3,47 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="90dp"
         android:background="#00FFFFFF"
         android:orientation="vertical">
 
     <View
             android:id="@+id/line_left"
             android:layout_width="0dp"
-            android:layout_height="15dp"
+            android:layout_height="2dp"
             android:layout_marginEnd="16dp"
-            android:background="#60FF0000"
-            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout4"
-            app:layout_constraintEnd_toEndOf="@+id/constraintLayout4"
+            android:background="#F0e3e3e3"
+            app:layout_constraintBottom_toBottomOf="@+id/image"
+            app:layout_constraintEnd_toEndOf="@+id/image"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/constraintLayout4" />
+            app:layout_constraintTop_toTopOf="@+id/image" />
 
     <View
             android:id="@+id/line_right"
             android:layout_width="0dp"
-            android:layout_height="15dp"
+            android:layout_height="2dp"
             android:layout_marginStart="16dp"
-            android:background="#60FF0000"
-            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout4"
+            android:background="#F0e3e3e3"
+            app:layout_constraintBottom_toBottomOf="@id/image"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/constraintLayout4"
-            app:layout_constraintTop_toTopOf="@+id/constraintLayout4" />
+            app:layout_constraintStart_toStartOf="@id/image"
+            app:layout_constraintTop_toTopOf="@id/image" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout4"
+    <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/image"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/marker_list_background"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="30dp"
+            android:src="@drawable/box_pink_gradient_radius_5dp"
+            app:civ_border_color="#fb7286"
+            app:civ_border_width="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-                android:id="@+id/image"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="7dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginEnd="7dp"
-                android:layout_marginBottom="7dp"
-                app:layout_constraintBottom_toBottomOf="@+id/progressBar_articleCount"
-                app:layout_constraintEnd_toEndOf="@+id/progressBar_articleCount"
-                app:layout_constraintStart_toStartOf="@+id/progressBar_articleCount"
-                app:layout_constraintTop_toTopOf="@+id/progressBar_articleCount"
-                tools:srcCompat="@tools:sample/avatars" />
-
-        <ProgressBar
-                android:id="@+id/progressBar_base"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:progress="100"
-                android:progressDrawable="@drawable/circular_progressbar_base"
-                app:layout_constraintBottom_toBottomOf="@+id/progressBar_articleCount"
-                app:layout_constraintEnd_toEndOf="@+id/progressBar_articleCount"
-                app:layout_constraintStart_toStartOf="@+id/progressBar_articleCount"
-                app:layout_constraintTop_toTopOf="@+id/progressBar_articleCount" />
-
-        <ProgressBar
-                android:id="@+id/progressBar_rating"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:max="10"
-                android:progress="4"
-                android:progressDrawable="@drawable/circular_progressbar_up"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        <ProgressBar
-                android:id="@+id/progressBar_articleCount"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:max="10"
-                android:progress="4"
-                android:progressDrawable="@drawable/circular_progressbar_down"
-                android:scaleY="-1"
-                app:layout_constraintBottom_toBottomOf="@+id/progressBar_rating"
-                app:layout_constraintEnd_toEndOf="@+id/progressBar_rating"
-                app:layout_constraintStart_toStartOf="@+id/progressBar_rating"
-                app:layout_constraintTop_toTopOf="@+id/progressBar_rating" />
-
-        <com.itaewonproject.customviews.CustomTextView
-                android:id="@+id/text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-                android:textColor="#FFFFFF"
-                app:layout_constraintBottom_toBottomOf="@+id/image"
-                app:layout_constraintEnd_toEndOf="@+id/image"
-                app:layout_constraintStart_toStartOf="@+id/image"
-                app:layout_constraintTop_toTopOf="@+id/image"
-                app:textStroke="true"
-                app:textStrokeColor="#000000"
-                app:textStrokeWidth="7.0" />
-
-        <ImageView
-                android:id="@+id/image_add"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/text"
-                app:layout_constraintEnd_toEndOf="@+id/progressBar_articleCount"
-                app:layout_constraintStart_toStartOf="@+id/progressBar_articleCount"
-                app:layout_constraintTop_toTopOf="@+id/text"
-                app:srcCompat="@drawable/ic_clear_black_24dp" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
             android:id="@+id/text_title"
@@ -127,14 +51,16 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
             android:gravity="center"
-            android:text="TextView"
+            android:letterSpacing="-0.06"
             android:maxLines="1"
+            android:text="TextView"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="#333333"
+            android:textSize="9sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
+            app:layout_constraintTop_toBottomOf="@+id/image" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
