@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -43,7 +44,7 @@ class ReviewFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val button = view.findViewById(R.id.button_link_share) as Button
+        val button = view.findViewById(R.id.button_link_share) as CardView
         button.setOnClickListener({
             val intent = Intent(context, LinkShareActivity::class.java)
             startActivity(intent)

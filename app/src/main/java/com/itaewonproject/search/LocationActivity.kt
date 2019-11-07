@@ -114,7 +114,6 @@ class LocationActivity : AppCompatActivity(),  Serializable,MyLocationSetting{
         for (l in list) {
             markerUtils.addLocationMarker(l, false)
         }
-        Log.i("!!!", "1")
 
         adapter = AdapterLocationList(this, list)
 
@@ -157,7 +156,6 @@ class LocationActivity : AppCompatActivity(),  Serializable,MyLocationSetting{
         })
         mMoveMapByAPI=true
         setMapReady()
-        //map!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, zoom))
 
         map!!.setOnMapClickListener {
             mapSearching()

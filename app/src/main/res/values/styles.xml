@@ -22,7 +22,10 @@
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/notosanscjkkr_medium</item>
     </style>
-
+    <style name="tabTextSmall" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/notosanscjkkr_medium</item>
+    </style>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

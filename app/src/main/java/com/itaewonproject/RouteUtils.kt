@@ -53,6 +53,7 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
         view = LayoutInflater.from(fragment.context).inflate(R.layout.view_route_marker, null)
         image = view.findViewById(R.id.image) as ImageView
 
+
         selectedMarker = null
         map.setOnMarkerClickListener {
             if (editMode) {
@@ -63,17 +64,19 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
                             fragment.wishlist.removeAt(latWishlist[it.position]!!)
                             fragment.list.add(addLocation)
                             fragment.setAdapterList()
+                            latWishlist.remove(it.position)
                         } else {
                             val deleteLocation = fragment.list[latIndex[it.position]!!]
                             fragment.list.removeAt(latIndex[it.position]!!)
                             fragment.wishlist.add(deleteLocation)
                             fragment.setAdapterList()
+                            latIndex.remove(it.position)
                         }
                         setList()
                         setWishList()
                     } else changeSelectedMarker(it)
                 } else
-                    changeSelectedMarker(it!!)
+                    changeSelectedMarker(it)
             }
             return@setOnMarkerClickListener editMode
         }
@@ -105,9 +108,9 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
     }
 
     fun addMarker(location: Location, isSelected: Boolean, index: Int, isWishlist: Boolean): Marker {
-        Log.i("adding marker","${location.name} , latlng:${location.latlng()}")
+        Log.i("adding marker","${isSelected}, ${index}, ${isWishlist}")
         val position = location.latlng()
-        val categoryColor = 0
+        val categoryColor = CategoryIcon.getIndex(location.category!!)
         image.setImageResource(if(isSelected){
             if(isWishlist) imageList[2][categoryColor]
             else imageList[1][categoryColor]
@@ -120,7 +123,7 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
         val markerOptions = MarkerOptions()
         markerOptions.title(location.name)
         markerOptions.position(position)
-        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFroview(view)))
+        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(view)))
         val marker = map.addMarker(markerOptions)
         if (isWishlist) latWishlist.put(position, index)
         else latIndex.put(position, index)
@@ -132,10 +135,14 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
         if (selectedMarker != null) {
             addEditMarker(selectedMarker!!, false)
             selectedMarker!!.remove()
+            selectedMarker=null
         }
         if (marker != null) {
             selectedMarker = addEditMarker(marker, true)!!
             marker.remove()
+        }else
+        {
+
         }
     }
 
@@ -157,18 +164,8 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
         }
         return null
     }
-    private fun getCategoryColor(category: Int): Int {
-        var color = Color.GREEN
-        when (category) {
-            0 -> color = Color.CYAN
-            1 -> color = Color.GREEN
-            2 -> color = Color.MAGENTA
-            3 -> color = Color.RED
-            4 -> color = Color.YELLOW
-        }
-        return color
-    }
-    private fun createDrawableFroview(view: View): Bitmap {
+
+    private fun createDrawableFromView(view: View): Bitmap {
         val displayMatrics = DisplayMetrics()
         (fragment.context as Activity).windowManager.defaultDisplay.getMetrics(displayMatrics)
         view.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT)
@@ -189,11 +186,9 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
         for (l in list) {
             arrayPoints.add(l.latlng())
         }
-        // calculateDirections(arrayPoints[0],arrayPoints[1])
         for (i in 0..arrayPoints.size - 2) {
             calculateDirections(arrayPoints[i], arrayPoints[i + 1])
         }
-        // calculateDirectionList(list)
     }
 
     //FIXME:directions 저장해놓고 바뀔 시에만 하기

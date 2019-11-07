@@ -8,7 +8,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:orientation="horizontal"
-            android:background="@drawable/tab_box_selector"
+            android:background="#FFFFFF"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/background">
 

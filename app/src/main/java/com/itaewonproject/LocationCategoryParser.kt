@@ -107,4 +107,5 @@ object LocationCategoryParser{
       if(parser.containsKey(category)) ret = parser.get(category)!!
       return ret
    }
+
 }

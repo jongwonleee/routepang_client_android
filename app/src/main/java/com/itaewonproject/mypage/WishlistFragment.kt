@@ -19,7 +19,6 @@ import com.itaewonproject.search.LocationActivity
 class WishlistFragment : Fragment() {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager
-    private lateinit var buttonSearch: LinearLayout
     lateinit var list: ArrayList<Location>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,17 +29,13 @@ class WishlistFragment : Fragment() {
         list = JsonParser().listJsonParsing(BasketConnector().get((1).toLong()), Location::class.java)
         tabLayout = view.findViewById(R.id.tabLayout) as TabLayout
         viewPager = view.findViewById(R.id.viewPager) as ViewPager
-        buttonSearch = view.findViewById(R.id.button_search) as LinearLayout
 
-        buttonSearch.setOnClickListener({
-            var intent = Intent(activity, LocationActivity::class.java)
-            startActivity(intent)
-        })
         var adapter = TabPagerAdapter(childFragmentManager, 2)
-        adapter.addPage(WishlistListFragment(), "List")
-        adapter.addPage(WishlistMapFragment(), "Map")
+        adapter.addPage(WishlistListFragment(), "리스트")
+        adapter.addPage(WishlistMapFragment(), "지도")
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)
+        tabLayout.clipToOutline=true
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

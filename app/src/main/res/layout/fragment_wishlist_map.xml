@@ -16,13 +16,127 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintVertical_bias="1.0"/>
-    <ImageView
-            android:src="@drawable/places_ic_search"
+
+    <androidx.cardview.widget.CardView
+            android:id="@+id/button_search"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/button_search"
-            android:background="@drawable/tab_box_selector"
-            android:padding="10dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="24dp" android:layout_marginBottom="24dp"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="3dp"
+            app:layout_constraintBottom_toTopOf="@+id/layout_location_info"
+            app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:fontFamily="@font/notosanscjkkr_medium"
+                android:padding="8dp"
+                android:text="검색"
+                android:textColor="#333333"
+                android:textSize="12sp" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+            android:id="@+id/layout_location_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="3dp"
+            app:layout_constraintBottom_toBottomOf="@+id/map"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.6"
+            app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:id="@+id/textView_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/notosanscjkkr_bold"
+                    android:text="지역명"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textColor="#333333"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toStartOf="@id/image_preview"
+                    app:layout_constraintStart_toStartOf="@+id/image_category"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            <RatingBar
+                    android:id="@+id/ratingBar_location"
+                    style="@android:style/Widget.Material.Light.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:clickable="false"
+                    android:max="5"
+                    android:numStars="5"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/image_category"
+                    app:layout_constraintTop_toTopOf="@+id/image_category" />
+
+            <TextView
+                    android:id="@+id/text_used_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="8dp"
+                    android:text="약 세시간 반"
+                    android:textColor="#6e6e6e"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/image_category"
+                    app:layout_constraintStart_toEndOf="@+id/imageView4"
+                    app:layout_constraintTop_toBottomOf="@+id/ratingBar_location" />
+
+            <ImageView
+                    android:id="@+id/image_category"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView_title"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_used_time"
+                    app:layout_constraintStart_toStartOf="@+id/ratingBar_location"
+                    app:layout_constraintTop_toTopOf="@+id/text_used_time"
+                    app:srcCompat="@drawable/ic_ico_time_gray" />
+
+            <com.itaewonproject.customviews.RoundedImageView
+                    android:id="@+id/image_preview"
+                    android:layout_width="69dp"
+                    android:layout_height="66dp"
+                    android:layout_marginEnd="16dp"
+                    app:imageRadius="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@tools:sample/avatars" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

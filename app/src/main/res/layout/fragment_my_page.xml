@@ -71,13 +71,12 @@
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-                        app:tabBackground="@drawable/tab_color_selector"
                         app:tabGravity="fill"
-                        app:tabTextAppearance="@style/tabText"
                         app:tabIndicatorColor="#f862b8"
                         app:tabIndicatorFullWidth="false"
                         app:tabMode="fixed"
                         app:tabSelectedTextColor="#f862b8"
+                        app:tabTextAppearance="@style/tabText"
                         app:tabTextColor="#333333" />
 
                 <de.hdodenhof.circleimageview.CircleImageView

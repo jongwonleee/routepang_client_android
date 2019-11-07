@@ -1,6 +1,8 @@
 package com.itaewonproject.adapter
 
 import android.content.Context
+import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +10,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.itaewonproject.CategoryIcon
 import com.itaewonproject.R
 import com.itaewonproject.RatioTransformation
 import com.itaewonproject.model.receiver.Location
@@ -75,15 +78,10 @@ class AdapterMarkerList(val context: Context, val fragment: RouteMapFragment)
         }
         override fun bind(pos: Int) {
             val location = list[pos]
-          /*  if (isSelected) {
-                imageAdd.setImageResource(R.drawable.ic_clear_black_24dp)
-                imageAdd.visibility = View.VISIBLE
-            } else {
-                imageAdd.visibility = View.INVISIBLE
-            }*/
             title.text = location.name
             lineLeft.visibility = if (pos != 0) View.VISIBLE else View.INVISIBLE
             lineRight.visibility = if (pos != list.size - 1) View.VISIBLE else View.INVISIBLE
+            image.borderColor = CategoryIcon.getColor(location.category!!)
             Picasso.with(itemView.context)
                 .load("https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Oegyujanggak_at_Kanghwa.jpg/2560px-Oegyujanggak_at_Kanghwa.jpg")
                 .transform(RatioTransformation(100))

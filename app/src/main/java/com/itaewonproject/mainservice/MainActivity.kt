@@ -35,9 +35,15 @@ class MainActivity : AppCompatActivity(),TabLayout.OnTabSelectedListener {
     private lateinit var buttonSearch:ImageView
     private lateinit var buttonMessage:ImageView
 
+    val titles = listOf("마이 페이지","뉴스피드", "인기 루트")
+    val iconsOff = listOf(R.drawable.ic_ico_user_off,R.drawable.ic_ico_newsfeed_off,R.drawable.ic_ico_pin_off)
+    val iconsOn = listOf(R.drawable.ic_ico_user_on,R.drawable.ic_ico_newsfeed_on,R.drawable.ic_ico_pin_on)
+/*
+        /////원래
     val titles = listOf("뉴스피드", "인기 루트", "마이 페이지")
     val iconsOff = listOf(R.drawable.ic_ico_newsfeed_off,R.drawable.ic_ico_pin_off,R.drawable.ic_ico_user_off)
     val iconsOn = listOf(R.drawable.ic_ico_newsfeed_on,R.drawable.ic_ico_pin_on,R.drawable.ic_ico_user_on)
+*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,9 +56,9 @@ class MainActivity : AppCompatActivity(),TabLayout.OnTabSelectedListener {
         var adapter = TabPagerAdapter(supportFragmentManager, 3)
        /* adapter.addPage(NewsfeedFragment(), "")
         adapter.addPage(FavRouteFragment(), "")*/
-        adapter.addPage(ComingSoonFragment(),"")
-        adapter.addPage(ComingSoonFragment(),"")
         adapter.addPage(MyPageFragment(), "")
+        adapter.addPage(ComingSoonFragment(),"")
+        adapter.addPage(ComingSoonFragment(),"")
 
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)

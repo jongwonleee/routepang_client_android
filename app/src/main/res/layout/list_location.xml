@@ -1,76 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   xmlns:tools="http://schemas.android.com/tools"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="wrap_content">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-            android:id="@+id/textView_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="8dp"
-            android:fontFamily="@font/notosanscjkkr_bold"
-            android:text="지역명"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textColor="#333333"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/image_category"
-            app:layout_constraintTop_toBottomOf="@+id/image_category" />
-    <RatingBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:id="@+id/ratingBar_location"
-            android:layout_marginStart="8dp"
-            style="@android:style/Widget.Material.Light.RatingBar.Small" android:numStars="5" android:max="5"
-            app:layout_constraintStart_toEndOf="@+id/image_category"
-            app:layout_constraintTop_toTopOf="@+id/image_category" android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.0"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView_images"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
-            android:layout_marginBottom="16dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:background="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView_title" />
+            app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-            android:id="@+id/text_used_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="8dp"
-            android:text="약 세시간 반"
-            android:textColor="#6e6e6e"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/image_category"
-            app:layout_constraintStart_toEndOf="@+id/imageView4"
-            app:layout_constraintTop_toBottomOf="@+id/ratingBar_location" />
+        <TextView
+                android:id="@+id/textView_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/notosanscjkkr_bold"
+                android:text="지역명"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textColor="#333333"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/image_category"
+                app:layout_constraintTop_toBottomOf="@+id/image_category" />
 
-    <ImageView
-            android:id="@+id/image_category"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars" />
+        <RatingBar
+                android:id="@+id/ratingBar_location"
+                style="@android:style/Widget.Material.Light.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:clickable="false"
+                android:max="5"
+                android:numStars="5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/image_category"
+                app:layout_constraintTop_toTopOf="@+id/image_category" />
 
-    <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/text_used_time"
-            app:layout_constraintStart_toStartOf="@+id/ratingBar_location"
-            app:layout_constraintTop_toTopOf="@+id/text_used_time"
-            app:srcCompat="@drawable/ic_ico_time_gray" />
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView_images"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView_title" />
+
+        <TextView
+                android:id="@+id/text_used_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:text="약 세시간 반"
+                android:textColor="#6e6e6e"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/image_category"
+                app:layout_constraintStart_toEndOf="@+id/imageView4"
+                app:layout_constraintTop_toBottomOf="@+id/ratingBar_location" />
+
+        <ImageView
+                android:id="@+id/image_category"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+
+        <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/text_used_time"
+                app:layout_constraintStart_toStartOf="@+id/ratingBar_location"
+                app:layout_constraintTop_toTopOf="@+id/text_used_time"
+                app:srcCompat="@drawable/ic_ico_time_gray" />
+
+        <View
+                android:id="@+id/view18"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="#eeeeee"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        <View
+                android:id="@+id/view19"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="#eeeeee"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

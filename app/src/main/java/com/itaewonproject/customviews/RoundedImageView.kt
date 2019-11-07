@@ -12,8 +12,9 @@ import android.widget.ImageView
 import com.itaewonproject.R
 
 class RoundedImageView: ImageView {
-    private var imageRadius =0f
-    private var isCircular = false
+    var imageRadius =0f
+
+    var isCircular = false
 
 
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int):super(context, attrs, defStyleAttr, defStyleRes){

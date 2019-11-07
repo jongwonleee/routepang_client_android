@@ -14,13 +14,22 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import com.itaewonproject.customviews.CustomTextView
 import com.itaewonproject.model.receiver.Location
+import com.itaewonproject.mypage.WishlistMapFragment
 
 class MarkerUtils(val map: GoogleMap, val con: Context) {
     val view: View
     val image: ImageView
     val latLoc = HashMap<LatLng, Location>()
-    val latIndex = HashMap<LatLng, Int>()
     var selectedMarker: Marker?
+    var wishlistMapFragment:WishlistMapFragment?=null
+    var isWishlist=false
+    val imageList = listOf(listOf(R.drawable.ic_map_pin_fill_blue,R.drawable.ic_map_pin_fill_green,R.drawable.ic_map_pin_fill_purple,R.drawable.ic_map_pin_fill_red,R.drawable.ic_map_pin_fill_yellow),
+        listOf(R.drawable.ic_map_pin_not_fill_blue,R.drawable.ic_map_pin_not_fill_green,R.drawable.ic_map_pin_not_fill_purple,R.drawable.ic_map_pin_not_fill_red,R.drawable.ic_map_pin_not_fill_yellow))
+
+    constructor(map:GoogleMap, fragment: WishlistMapFragment):this(map,fragment.context!!){
+        isWishlist=true
+        wishlistMapFragment = fragment
+    }
     init {
         view = LayoutInflater.from(con).inflate(R.layout.view_route_marker, null)
         image = view.findViewById(R.id.image) as ImageView
@@ -29,9 +38,12 @@ class MarkerUtils(val map: GoogleMap, val con: Context) {
             if (it != null && selectedMarker != null) {
                 if (selectedMarker!!.position == it.position) {
                     changeSelectedMarker(null)
-                    selectedMarker = null
+                    selectedMarker!!.remove()
+                    selectedMarker =null
+                    if(isWishlist) wishlistMapFragment!!.showDetail(null)
                 } else {
                     changeSelectedMarker(it)
+
                 }
             } else {
                 changeSelectedMarker(it)
@@ -41,50 +53,16 @@ class MarkerUtils(val map: GoogleMap, val con: Context) {
     }
 
     fun addLocationMarker(location: Location, isSelected: Boolean): Marker {
-        Log.i("!!!!!","~${location.coordinates}~ ${location.name}")
+        val categoryColor = CategoryIcon.getIndex(location.category!!)
+        image.setImageResource(if(isSelected) imageList[0][categoryColor] else imageList[1][categoryColor])
         val position = location.latlng()
         val markerOptions = MarkerOptions()
         markerOptions.title(location.name)
         markerOptions.position(position)
-        //markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFroview(view)))
+        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFroview(view)))
         val marker = map.addMarker(markerOptions)
+        if(isWishlist && isSelected) wishlistMapFragment!!.showDetail(location)
         latLoc.put(position, location)
-        return marker
-    }
-
-    fun addEditMarker(location: Location, isSelected: Boolean, index: Int): Marker {
-        val position = location.latlng()
-        Log.i("isSelected", "$isSelected")
-/*
-        if (isSelected) {
-            text.text = "-"
-        } else {
-            text.text = (index + 1).toString()
-        }
-*/
-
-       /* rating.rating=location.rating
-        name.text=location.name
-        val markerImage = marker.drawable
-        val duffColorFilter  = PorterDuffColorFilter(getCategoryColor(location.cate), PorterDuff.Mode.SRC_ATOP)
-        markerImage.colorFilter=duffColorFilter
-        marker.setImageDrawable(markerImage)
-        buttonAdd.visibility=View.VISIBLE
-        if(isSelected){
-            layoutInfo.visibility=View.VISIBLE
-            buttonAdd.visibility=View.VISIBLE
-        }else
-        {
-            layoutInfo.visibility=View.INVISIBLE
-            buttonAdd.visibility=View.INVISIBLE
-        }*/
-        val markerOptions = MarkerOptions()
-        markerOptions.title(location.name)
-        markerOptions.position(position)
-        //markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFroview(view)))
-        val marker = map.addMarker(markerOptions)
-        latLoc.put(position, location)
-        latIndex.put(position, index)
         return marker
     }
 
@@ -99,13 +77,6 @@ class MarkerUtils(val map: GoogleMap, val con: Context) {
         }
     }
 
-    fun setBoundary(list: ArrayList<Location>): LatLngBounds {
-        val bound = LatLngBounds.builder()
-        for (l in list) {
-            bound.include(l.latlng())
-        }
-        return bound.build()
-    }
 
     private fun addLocationMarker(marker: Marker, isSelected: Boolean): Marker? {
         if (latLoc.containsKey(marker.position)) {
@@ -115,24 +86,13 @@ class MarkerUtils(val map: GoogleMap, val con: Context) {
         }
         return null
     }
-    private fun getCategoryColor(category: Int): Int {
-        var color = Color.GREEN
-        when (category) {
-            0 -> color = Color.CYAN
-            1 -> color = Color.GREEN
-            2 -> color = Color.MAGENTA
-            3 -> color = Color.RED
-            4 -> color = Color.YELLOW
-        }
-        return color
-    }
+
     private fun createDrawableFroview(view: View): Bitmap {
         val displayMatrics = DisplayMetrics()
         (con as Activity).windowManager.defaultDisplay.getMetrics(displayMatrics)
         view.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT)
         view.measure(displayMatrics.widthPixels, displayMatrics.heightPixels)
         view.layout(0, 0, displayMatrics.widthPixels, displayMatrics.heightPixels)
-        view.buildDrawingCache()
         val bitmap = Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         view.draw(canvas)

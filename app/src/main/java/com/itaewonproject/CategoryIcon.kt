@@ -1,24 +1,47 @@
 package com.itaewonproject
 
+import android.graphics.Color
+
 object CategoryIcon{
-    val Icons = hashMapOf<LocationCategory,Int>()
+    private val icons = hashMapOf<LocationCategory,Int>()
+    private val indexs = HashMap<LocationCategory,Int>()
+    private val colors = arrayOf("#4DABFF","#4DABFF","#866DF2","#FB7286","#F8C51B")
     init{
-        Icons.put(LocationCategory.UNKNOWN,R.drawable.ic_ico_dummy)
-        Icons.put(LocationCategory.PUBLIC,R.drawable.ic_ico_tourist)
-        Icons.put(LocationCategory.ENTERTAINMENT,R.drawable.ic_ico_shopping)//여가 아이콘 부재
-        Icons.put(LocationCategory.UTILITY,R.drawable.ic_ico_store)
-        Icons.put(LocationCategory.SERVICE,R.drawable.ic_ico_shopping)//여가 아이콘 부재
-        Icons.put(LocationCategory.ACTIVITY,R.drawable.ic_ico_walk)
-        Icons.put(LocationCategory.SHOPPING,R.drawable.ic_ico_shopping)
-        Icons.put(LocationCategory.MEDICAL,R.drawable.ic_ico_hospital)
-        Icons.put(LocationCategory.TRAFFIC,R.drawable.ic_ico_transfer)
-        Icons.put(LocationCategory.ATTRACTION,R.drawable.ic_ico_tourist)
-        Icons.put(LocationCategory.RELIGIOUS,R.drawable.ic_ico_tourist)
-        Icons.put(LocationCategory.FOOD,R.drawable.ic_ico_restaurant)
-        Icons.put(LocationCategory.LODGE,R.drawable.ic_ico_hotel)
+        icons.put(LocationCategory.UNKNOWN,R.drawable.ic_ico_dummy)
+        icons.put(LocationCategory.PUBLIC,R.drawable.ic_ico_tourist)
+        icons.put(LocationCategory.ENTERTAINMENT,R.drawable.ic_ico_shopping)//여가 아이콘 부재
+        icons.put(LocationCategory.UTILITY,R.drawable.ic_ico_store)
+        icons.put(LocationCategory.SERVICE,R.drawable.ic_ico_shopping)//여가 아이콘 부재
+        icons.put(LocationCategory.ACTIVITY,R.drawable.ic_ico_walk)
+        icons.put(LocationCategory.SHOPPING,R.drawable.ic_ico_shopping)
+        icons.put(LocationCategory.MEDICAL,R.drawable.ic_ico_hospital)
+        icons.put(LocationCategory.TRAFFIC,R.drawable.ic_ico_transfer)
+        icons.put(LocationCategory.ATTRACTION,R.drawable.ic_ico_tourist)
+        icons.put(LocationCategory.RELIGIOUS,R.drawable.ic_ico_tourist)
+        icons.put(LocationCategory.FOOD,R.drawable.ic_ico_restaurant)
+        icons.put(LocationCategory.LODGE,R.drawable.ic_ico_hotel)
+
+        // 파 초 보 빨
+        indexs.put(LocationCategory.UNKNOWN,4)
+        indexs.put(LocationCategory.PUBLIC,0)
+        indexs.put(LocationCategory.ENTERTAINMENT,3)//여가 아이콘 부재
+        indexs.put(LocationCategory.UTILITY,2)
+        indexs.put(LocationCategory.SERVICE,3)//여가 아이콘 부재
+        indexs.put(LocationCategory.ACTIVITY,0)
+        indexs.put(LocationCategory.SHOPPING,3)
+        indexs.put(LocationCategory.MEDICAL,2)
+        indexs.put(LocationCategory.TRAFFIC,2)
+        indexs.put(LocationCategory.ATTRACTION,0)
+        indexs.put(LocationCategory.RELIGIOUS,0)
+        indexs.put(LocationCategory.FOOD,3)
+        indexs.put(LocationCategory.LODGE,1)
 
     }
-    inline fun get(category: LocationCategory):Int = Icons.get(category)!!
+    fun get(category: LocationCategory):Int = icons.get(category)!!
+
+    fun getIndex(category: LocationCategory):Int = indexs.get(category)!!
+
+    fun getColor(category: LocationCategory):Int = Color.parseColor(colors[indexs.get(category)!!])
 }
 
 /***

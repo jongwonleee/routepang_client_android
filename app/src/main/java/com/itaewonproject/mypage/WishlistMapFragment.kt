@@ -11,7 +11,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RatingBar
+import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
@@ -28,23 +32,41 @@ import com.itaewonproject.MyLocationSetting.Companion.mRequestingLocationUpdates
 import com.itaewonproject.MyLocationSetting.Companion.map
 import com.itaewonproject.R
 import com.itaewonproject.customviews.CustomMapView
+import com.itaewonproject.customviews.RoundedImageView
 import com.itaewonproject.model.receiver.Location
+import com.squareup.picasso.Picasso
 import java.util.*
 
 class WishlistMapFragment : Fragment(), MyLocationSetting {
 
     private lateinit var mapView: CustomMapView
-    val list: ArrayList<Location>
-        get() = (parentFragment as WishlistFragment).list
+    private var list: ArrayList<Location> = arrayListOf()
     lateinit var markerUtils: MarkerUtils
-    private lateinit var autoCompleteButton: ImageView
+    private lateinit var autoCompleteButton: CardView
+    private lateinit var title: TextView
+    private lateinit var rating: RatingBar
+    private lateinit var imageCategory: ImageView
+    private lateinit var imagePreview: RoundedImageView
+    private lateinit var usedTime: TextView
+    private lateinit var layoutDetail : CardView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mapView = view.findViewById(R.id.map) as CustomMapView
+        title = view.findViewById(R.id.textView_title) as TextView
+        rating = view.findViewById(R.id.ratingBar_location) as RatingBar
+        imageCategory = view.findViewById(R.id.image_category) as ImageView
+        imagePreview = view.findViewById(R.id.image_preview) as RoundedImageView
+        usedTime = view.findViewById(R.id.text_used_time) as TextView
+        layoutDetail = view.findViewById(R.id.layout_location_info)
+
+        layoutDetail.visibility =View.GONE
         mapView.isInRoute=false
-        autoCompleteButton = view.findViewById(R.id.button_search) as ImageView
+        autoCompleteButton = view.findViewById(R.id.button_search)
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
+
+        list = (parentFragment as WishlistFragment).list
+
         con = context!!
         mGoogleApiClient = GoogleApiClient.Builder(context!!)
             .addConnectionCallbacks(this)
@@ -92,14 +114,17 @@ class WishlistMapFragment : Fragment(), MyLocationSetting {
     override fun onMapReady(googleMap: GoogleMap) {
         MapsInitializer.initialize(this.activity)
         map = googleMap
-        mMoveMapByAPI=true
+        mMoveMapByAPI=false
         setMapReady()
 
-        markerUtils = MarkerUtils(map!!, context!!)
+        markerUtils = MarkerUtils(map!!,this)
+
         map!!.clear()
         map!!.setOnMapClickListener {
             markerUtils.changeSelectedMarker(null)
+            showDetail(null)
         }
+
         ///FIXME list 받아오기 구현
 
 
@@ -132,10 +157,34 @@ class WishlistMapFragment : Fragment(), MyLocationSetting {
         super.onStart();
     }
 
+    fun showDetail(location:Location?){
+        if(location==null){
+            Log.i("details!!","NULL")
+            layoutDetail.visibility =View.GONE
+        }else
+        {
+            layoutDetail.visibility =View.VISIBLE
+            this.title.text = location.name
+            this.rating.rating = location.rating
+            this.imageCategory.setImageResource(CategoryIcon.get(location.category!!))
+            this.usedTime.text = "평균 소요 시간: ${APIs.secToString(location.used.toInt())}"
+            if(location.imgUrl.size>0){
+                imagePreview.visibility=View.VISIBLE
+                Picasso.with(context)
+                    .load(location.imgUrl[0])
+                    .transform(RatioTransformation(300))
+                    .into(imagePreview)
+            }else
+            {
+                imagePreview.visibility=View.GONE
+            }
+        }
+    }
+
     override fun onResume() {
         mapView.onResume()
         super.onResume();
-        mMoveMapByAPI=true
+        mMoveMapByAPI=false
         if (mGoogleApiClient!!.isConnected()) {
 
             Log.d(TAG, "onResume : call startLocationUpdates");

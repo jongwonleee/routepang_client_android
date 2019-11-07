@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.maps.model.DirectionsStep
 import com.itaewonproject.APIs
+import com.itaewonproject.CategoryIcon
 import com.itaewonproject.R
 import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.mypage.EditItemTouchHelperCallback
@@ -142,7 +143,7 @@ class AdapterRouteEdit(val context: Context, val fragment: RouteEditFragment) :
                 lineUp.visibility = View.VISIBLE
                 lineDown.visibility = View.VISIBLE
             }
-            category.setImageBitmap(APIs.getCategoryImage(edit.cate))
+            category.setImageResource(CategoryIcon.get(edit.category!!))
             if (editMode) {
                 drag.visibility = View.VISIBLE
                 showSteps = false
@@ -165,7 +166,6 @@ class AdapterRouteEdit(val context: Context, val fragment: RouteEditFragment) :
                     adapter.list = stepList[pos]
                     adapter.notifyDataSetChanged()
                     recyclerView.visibility = View.VISIBLE
-                    Log.i("!!!", "${stepList[pos]}")
                 } else {
                     recyclerView.visibility = View.GONE
                 }
