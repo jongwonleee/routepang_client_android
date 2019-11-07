@@ -14,7 +14,7 @@ abstract class WebConnectStrategy {
     abstract var inner: String
     abstract var param: String
     abstract var mockData: String
-    val isOffline: Boolean = IS_OFFLINE
+    var isOffline: Boolean = IS_OFFLINE
     var statusCode: Int? = null
     companion object {
         val classDomain: String = "http://www.routepang.com:9090/"

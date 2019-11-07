@@ -3,6 +3,7 @@ package com.itaewonproject.player
 import android.util.Log
 import com.google.gson.Gson
 import com.itaewonproject.WebConnectStrategy
+import com.itaewonproject.linkshare.LinkManager
 import com.itaewonproject.model.sender.Link
 
 class LinkConnector : WebConnectStrategy() {

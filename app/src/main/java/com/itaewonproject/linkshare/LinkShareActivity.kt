@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.itaewonproject.APIs
@@ -19,7 +18,6 @@ import com.itaewonproject.R
 import com.itaewonproject.model.sender.Article
 import com.itaewonproject.model.sender.Link
 import com.itaewonproject.player.ArticleConnector
-import com.itaewonproject.player.LinkManager
 import com.squareup.picasso.Picasso
 import java.util.*
 

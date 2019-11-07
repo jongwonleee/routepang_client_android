@@ -1,4 +1,4 @@
-package com.itaewonproject.player;
+package com.itaewonproject.linkshare;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -6,6 +6,7 @@ import com.itaewonproject.model.sender.Link;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
