@@ -1,6 +1,7 @@
 package com.itaewonproject.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.APIs
+import com.itaewonproject.CategoryIcon
+import com.itaewonproject.LocationCategory
 import com.itaewonproject.R
 import com.itaewonproject.model.receiver.Location
 
@@ -71,9 +74,9 @@ class AdapterLocationList(val context: Context, var output: ArrayList<Location>)
             this.title.text = output.name
             this.rating.rating = output.rating
             this.placeId = output.placeId
-            this.imageCategory.setImageBitmap(APIs.getCategoryImage(output.cate))
+            this.imageCategory.setImageResource(CategoryIcon.get(output.category!!))
             this.usedTime.text = "평균 소요 시간: ${APIs.secToString(output.used.toInt())}"
-
+            Log.i("imageCount","${output.imgUrl.size}")
             val adapter = AdapterImageList(itemView.context, output.imgUrl)
 
             imgList.adapter = adapter

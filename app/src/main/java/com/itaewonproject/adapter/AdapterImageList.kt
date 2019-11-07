@@ -8,6 +8,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.R
 import com.itaewonproject.RatioTransformation
+import com.itaewonproject.customviews.RoundedImageView
 import com.squareup.picasso.Picasso
 
 class AdapterImageList(val context: Context, var images: ArrayList<String>?) : RecyclerView.Adapter<AdapterImageList.ViewHolder>() {
@@ -34,9 +35,9 @@ class AdapterImageList(val context: Context, var images: ArrayList<String>?) : R
         notifyDataSetChanged()
     }*/
     inner class ViewHolder(itemView: View) : BaseViewHolder(itemView) {
-        private var img: ImageView
+        private var img: RoundedImageView
         init {
-            img = itemView.findViewById(R.id.imageView) as ImageView
+            img = itemView.findViewById(R.id.imageView) as RoundedImageView
         }
         override fun bind(pos: Int) {
             // img.setImageBitmap(APIs.BitmapFromURL(url,300,300))

@@ -11,6 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.R
 import com.itaewonproject.RatioTransformation
+import com.itaewonproject.customviews.RoundedImageView
 import com.squareup.picasso.Picasso
 
 class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewonproject.model.receiver.Article>) : RecyclerView.Adapter<AdapterArticleList.ViewHolder>() {
@@ -41,15 +42,15 @@ class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewon
     inner class ViewHolder(itemView: View) : BaseViewHolder(itemView) {
 
         private var summary: TextView
-        private var imgSmall: ImageView
-        private var imgBig: ImageView
+        private var imgSmall: RoundedImageView
+        private var imgBig: RoundedImageView
         private var buttonRef: ImageView
         private var layoutArticle: ConstraintLayout
         private var articleId: Long = 0
         init {
             summary = itemView.findViewById(R.id.text_summary) as TextView
-            imgSmall = itemView.findViewById(R.id.image_article_small) as ImageView
-            imgBig = itemView.findViewById(R.id.image_arcticle_big) as ImageView
+            imgSmall = itemView.findViewById(R.id.image_article_small) as RoundedImageView
+            imgBig = itemView.findViewById(R.id.image_arcticle_big) as RoundedImageView
             buttonRef = itemView.findViewById(R.id.imageButton_ref) as ImageView
             layoutArticle = itemView.findViewById(R.id.layout_article) as ConstraintLayout
             imgBig.visibility = View.GONE

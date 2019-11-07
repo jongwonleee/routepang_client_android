@@ -50,7 +50,7 @@
                 tools:srcCompat="@tools:sample/avatars" />
 
         <ImageView
-                android:id="@+id/imageView14"
+                android:id="@+id/image_profile"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
@@ -86,7 +86,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/imageView14" />
 
         <TextView
-                android:id="@+id/textView14"
+                android:id="@+id/text_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"

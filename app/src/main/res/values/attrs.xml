@@ -5,5 +5,9 @@
         <attr format="float" name="textStrokeWidth"/>
         <attr format="color" name="textStrokeColor"/>
     </declare-styleable>
+    <declare-styleable name="RoundedImageView">
+        <attr format="dimension" name="imageRadius"/>
+        <attr format="boolean" name="isCircular"/>
+    </declare-styleable>
 </resources>
 

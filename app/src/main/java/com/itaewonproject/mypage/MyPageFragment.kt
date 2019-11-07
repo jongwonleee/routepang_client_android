@@ -63,7 +63,7 @@ class MyPageFragment : Fragment() {
         adapter.addPage(ReviewFragment(), "후기\n100")
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)
-        appBarLayout.setExpanded(false)
+        appBarLayout.setExpanded(true)
         viewPager.setAutoUnexpendingAppbar(appBarLayout)
     }
 
