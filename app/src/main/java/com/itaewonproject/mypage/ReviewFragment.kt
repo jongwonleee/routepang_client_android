@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,6 +32,7 @@ class ReviewFragment : Fragment() {
             override fun onItemClick(v: View, position: Int) {
                 var intent = Intent(Intent.ACTION_VIEW, Uri.parse(list[position].link.linkUrl))
                 startActivity(intent)
+                activity?.overridePendingTransition(R.anim.translate_in_from_left,0)
             }
         })
 
@@ -48,6 +48,7 @@ class ReviewFragment : Fragment() {
         button.setOnClickListener({
             val intent = Intent(context, LinkShareActivity::class.java)
             startActivity(intent)
+            activity?.overridePendingTransition(R.anim.translate_in_from_left,0)
         })
         setListViewOption(view)
     }

@@ -16,7 +16,7 @@ class MyInfoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
         buttonBack = findViewById(R.id.button_back) as ImageView
-        buttonBack.setOnClickListener({finish()})
+        buttonBack.setOnClickListener({ finish()})
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.settings, SettingsFragment())
@@ -35,6 +35,7 @@ class MyInfoActivity : AppCompatActivity() {
                     "secure_quit" ->{
                         val intent = Intent(context,QuitActivity::class.java)
                         startActivity(intent)
+                        activity?.overridePendingTransition(R.anim.translate_in_from_left,0)
                     }
                     "service_qna"->{
 

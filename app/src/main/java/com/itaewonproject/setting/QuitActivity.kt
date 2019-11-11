@@ -13,8 +13,6 @@ class QuitActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quit)
         buttonBack=findViewById(R.id.button_back) as ImageView
-        buttonBack.setOnClickListener({
-            finish()
-        })
+        buttonBack.setOnClickListener({ finish() })
     }
 }

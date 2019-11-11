@@ -6,17 +6,13 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
-import android.util.Log
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.google.gson.Gson
-import com.itaewonproject.LocationCategory
 import com.itaewonproject.customviews.ClearEditText
 import com.itaewonproject.R
 import com.itaewonproject.mainservice.MainActivity
-import com.itaewonproject.model.receiver.Location
 
 class LoginActivity : AppCompatActivity() {
 
@@ -58,11 +54,13 @@ class LoginActivity : AppCompatActivity() {
         buttonSignin.setOnClickListener({
             val intent = Intent(this, SignInActivity::class.java)
             startActivity(intent)
+
         })
 
         buttonFind.setOnClickListener({
             val intent = Intent(this, IdFindActivity::class.java)
             startActivity(intent)
+
         })
 
         checkAutoLogin.setOnCheckedChangeListener({ compoundButton: CompoundButton, isChecked: Boolean ->

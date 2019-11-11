@@ -29,6 +29,7 @@ class WishlistListFragment : Fragment() {
                 var intent = Intent(context, ArticleActivity::class.java)
                 intent.putExtra("Location", adapter.output[position])
                 startActivity(intent)
+                activity?.overridePendingTransition(R.anim.translate_in_from_left,0)
             }
         })
 

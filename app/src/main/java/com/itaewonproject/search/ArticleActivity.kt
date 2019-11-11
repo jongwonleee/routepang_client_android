@@ -11,7 +11,6 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.tabs.TabLayout
 import com.itaewonproject.*
 import com.itaewonproject.adapter.AdapterArticleList
 import com.itaewonproject.model.receiver.Article
@@ -127,6 +126,7 @@ class ArticleActivity : AppCompatActivity() {
             override fun onItemClick(v: View, position: Int) {
                 var intent = Intent(Intent.ACTION_VIEW, Uri.parse(list[position].link.linkUrl))
                 startActivity(intent)
+
             }
         })
 

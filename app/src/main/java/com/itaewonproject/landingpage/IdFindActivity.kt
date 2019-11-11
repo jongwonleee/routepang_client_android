@@ -14,6 +14,6 @@ class IdFindActivity : AppCompatActivity() {
         setContentView(R.layout.activity_id_find)
 
         buttonBack = findViewById(R.id.button_back) as ImageView
-        buttonBack.setOnClickListener({finish()})
+        buttonBack.setOnClickListener({ finish()})
     }
 }

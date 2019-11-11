@@ -71,11 +71,15 @@ class MainActivity : AppCompatActivity(),TabLayout.OnTabSelectedListener {
         buttonSearch.setOnClickListener({
             val intent = Intent(this,LocationActivity::class.java)
             startActivity(intent)
+
+
+
         })
 
         buttonMessage.setOnClickListener({
             val intent = Intent(this, MessageListActivity::class.java)
             startActivity(intent)
+
         })
 
 
@@ -95,8 +99,3 @@ class MainActivity : AppCompatActivity(),TabLayout.OnTabSelectedListener {
         tabLayout.refreshDrawableState()
     }
 }
-
-private fun TabLayout.addOnTabSelectedListener(onPageChangeListener: ViewPager.OnPageChangeListener) {
-
-}
-

@@ -1,8 +1,6 @@
 package com.itaewonproject.search
 
-import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
@@ -14,13 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.Status
-import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.material.appbar.AppBarLayout
@@ -122,6 +118,7 @@ class LocationActivity : AppCompatActivity(),  Serializable,MyLocationSetting{
                 var intent = Intent(context, ArticleActivity::class.java)
                 intent.putExtra("Location", adapter.output[position])
                 startActivity(intent)
+
             }
         })
 

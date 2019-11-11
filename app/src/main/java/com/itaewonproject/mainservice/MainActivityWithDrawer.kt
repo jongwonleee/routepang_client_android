@@ -52,6 +52,7 @@ class MainActivityWithDrawer : AppCompatActivity(),NavigationView.OnNavigationIt
         buttonSearch.setOnClickListener({
             val intent = Intent(this,LocationActivity::class.java)
             startActivity(intent)
+
         })
 
 
@@ -62,26 +63,32 @@ class MainActivityWithDrawer : AppCompatActivity(),NavigationView.OnNavigationIt
             R.id.nav_search->{
                 val intent = Intent(this,LocationActivity::class.java)
                 startActivity(intent)
+
             }
             R.id.nav_review->{
                 val intent = Intent(this,LinkShareActivity::class.java)
                 startActivity(intent)
+
             }
             R.id.nav_message->{
                 val intent = Intent(this, MessageListActivity::class.java)
                 startActivity(intent)
+
             }
             R.id.nav_setting->{
                 val intent = Intent(this, SettingActivity::class.java)
                 startActivity(intent)
+
             }
             R.id.nav_my_info->{
                 val intent = Intent(this,MyInfoActivity::class.java)
                 startActivity(intent)
+
             }
             R.id.nav_quit->{
                 val intent = Intent(this, QuitActivity::class.java)
                 startActivity(intent)
+
             }
 
         }

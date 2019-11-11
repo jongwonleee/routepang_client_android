@@ -13,8 +13,6 @@ class MessageListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_message_list)
         buttonBack=findViewById(R.id.button_back) as ImageView
-        buttonBack.setOnClickListener({
-            finish()
-        })
+        buttonBack.setOnClickListener({ finish() })
     }
 }

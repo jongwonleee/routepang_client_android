@@ -110,9 +110,7 @@ class LinkShareActivity : AppCompatActivity() {
             summary.text = link.summary
         })
 
-        buttonCancel.setOnClickListener({
-            finish()
-        })
+        buttonCancel.setOnClickListener({ finish() })
         buttonOk.setOnClickListener({
             var article = Article()
             article.customerId = 1
