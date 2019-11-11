@@ -32,7 +32,7 @@ class WishlistFragment : Fragment() {
 
         var adapter = TabPagerAdapter(childFragmentManager, 2)
         adapter.addPage(WishlistListFragment(), "리스트")
-        adapter.addPage(WishlistMapFragment(), "지도")
+        adapter.addPage(WishlistMapFragment(), "지도　")
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)
         tabLayout.clipToOutline=true

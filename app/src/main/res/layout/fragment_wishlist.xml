@@ -22,8 +22,8 @@
 
    <com.google.android.material.tabs.TabLayout
            android:id="@+id/tabLayout"
-           android:layout_width="120dp"
-           android:layout_height="wrap_content"
+           android:layout_width="wrap_content"
+           android:layout_height="28dp"
            android:layout_marginTop="16dp"
            android:layout_marginEnd="16dp"
            android:background="@drawable/box_white_radius_100dp"
@@ -35,7 +35,9 @@
            app:tabBackground="@drawable/tab_color_selector"
            app:tabIndicatorColor="#00000000"
            app:tabMode="fixed"
+           app:tabPadding="0dp"
            app:tabSelectedTextColor="#FFFFFF"
+           app:tabTextAppearance="@style/tabTextSmall"
            app:tabTextColor="#333333" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,8 +13,7 @@
 
     https://developers.google.com/maps/documentation/android/signup
 
-    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    Once you have your key (it starts with "AIza"), replace the "location"
     string in this file.
     -->
-    <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">YOUR_KEY_HERE</string>
 </resources>

@@ -32,7 +32,7 @@ class ReviewConnector : WebConnectStrategy() {
                     "image":"${APIs.bmp1}",
                     "link":${link[1]},
                     "favicon_url":"${ref[1]}",
-                    "summary":"summary\nof\nArticle1"
+                    "summary":"베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요? 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요?베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요? 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요?1"
                 },
                 {
                     "articleId":2,
@@ -42,7 +42,7 @@ class ReviewConnector : WebConnectStrategy() {
                     "image":"${APIs.bmp2}",
                     "link":${link[0]},
                     "favicon_url":"${ref[0]}",
-                    "summary":"summary\nof\nArticle2"
+                    "summary":"베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요? 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요?베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요? 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요?2"
                 },
                 {
                     "articleId":3,
@@ -52,7 +52,7 @@ class ReviewConnector : WebConnectStrategy() {
                     "image":"${APIs.bmp3}",
                     "link":${link[1]},
                     "favicon_url":"${ref[1]}",
-                    "summary":"summary\nof\nArticle3"
+                    "summary":"베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요? 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요?베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요? 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요?3"
                 },
                 {
                     "articleId":4,
@@ -62,7 +62,7 @@ class ReviewConnector : WebConnectStrategy() {
                     "image":"${APIs.bmp4}",
                     "link":${link[0]},
                     "favicon_url":"${ref[0]}",
-                    "summary":"summary\nof\nArticle4"
+                    "summary":"베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요? 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요?베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요? 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요?4"
                 },
                 {
                     "articleId":5,
@@ -72,7 +72,7 @@ class ReviewConnector : WebConnectStrategy() {
                     "image":"${APIs.bmp5}",
                     "link":${link[1]},
                     "favicon_url":"${ref[1]}",
-                    "summary":"summary\nof\nArticle5"
+                    "summary":"베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요? 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요?베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요? 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요?5"
                 },
                 {
                     "articleId":6,
@@ -82,7 +82,7 @@ class ReviewConnector : WebConnectStrategy() {
                     "image":"${APIs.bmp1}",
                     "link":${link[0]},
                     "favicon_url":"${ref[0]}",
-                    "summary":"summary\nof\nArticle6"
+                    "summary":"베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요? 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요?베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요? 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요?6"
                 },
                 {
                     "articleId":7,
@@ -92,7 +92,7 @@ class ReviewConnector : WebConnectStrategy() {
                     "image":"${APIs.bmp2}",
                     "link":${link[1]},
                     "favicon_url":"${ref[1]}",
-                    "summary":"summary\nof\nArticle7"
+                    "summary":"베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요? 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요?베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요? 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요?7"
                 },
                 {
                     "articleId":8,
@@ -102,7 +102,7 @@ class ReviewConnector : WebConnectStrategy() {
                     "image":"${APIs.bmp3}",
                     "link":${link[0]},
                     "favicon_url":"${ref[0]}",
-                    "summary":"summary\nof\nArticle8"
+                    "summary":"베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요? 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요?베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요? 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요?8"
                 },
                 {
                     "articleId":9,
@@ -112,7 +112,7 @@ class ReviewConnector : WebConnectStrategy() {
                     "image":"${APIs.bmp4}",
                     "link":${link[1]},
                     "favicon_url":"${ref[1]}",
-                    "summary":"summary\nof\nArticle9"
+                    "summary":"베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요? 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요?베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요? 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요?9"
                 },
                 {
                     "articleId":10,
@@ -122,7 +122,7 @@ class ReviewConnector : WebConnectStrategy() {
                     "image":"${APIs.bmp5}",
                     "link":${link[0]},
                     "favicon_url":"${ref[0]}",
-                    "summary":"summary\nof\nArticle10"
+                    "summary":"베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요? 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요?베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요? 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립 베니스에 있는 페기구겐하임 갤러리 근처에 있는 립이 스테이크 맛집 알려드릴까요?10"
                 }
             ]
         """.trimIndent()

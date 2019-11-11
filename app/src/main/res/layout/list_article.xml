@@ -23,6 +23,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+                android:id="@+id/image_measure"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+
         <com.itaewonproject.customviews.RoundedImageView
                 android:id="@+id/image_arcticle_big"
                 android:layout_width="0dp"
@@ -32,11 +46,12 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                app:imageRadius="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.6"
                 app:layout_constraintStart_toStartOf="parent"
-                app:imageRadius="10dp"
                 app:layout_constraintTop_toBottomOf="@+id/text_summary"
                 tools:srcCompat="@tools:sample/avatars" />
 
