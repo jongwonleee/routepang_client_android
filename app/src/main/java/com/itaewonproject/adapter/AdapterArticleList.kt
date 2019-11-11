@@ -91,9 +91,9 @@ class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewon
             val imgBigHeightAnimator = ValueAnimator.ofInt(imageMeasure.height,imgSmallHeight)
             val imgBigWidthAnimator = ValueAnimator.ofInt(imageMeasure.width,imgSmallWidth)
             val imgSmallWidthAnimator = ValueAnimator.ofInt(0,imgSmallWidth)
-            imgSmallWidthAnimator.duration= 500
-            imgBigHeightAnimator.duration=500
-            imgBigWidthAnimator.duration=500
+            imgSmallWidthAnimator.duration= 300
+            imgBigHeightAnimator.duration=300
+            imgBigWidthAnimator.duration=300
             imgBigHeightAnimator.addUpdateListener {
                 val p = imgBig.layoutParams
                 p.height = imgBigHeightAnimator.animatedValue as Int
@@ -115,7 +115,7 @@ class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewon
             imgSmallWidthAnimator.start()
 
             val animation = TranslateAnimation(0f,(imageMeasure.width/2-(64 * scale + 0.5f).toInt()).toFloat(),0f,-imgSmallHeight.toFloat()-(16 * scale + 0.5f).toInt())
-            animation.duration=500
+            animation.duration=300
 
             animation.setAnimationListener(object :Animation.AnimationListener{
                 override fun onAnimationRepeat(p0: Animation?) {
@@ -125,6 +125,7 @@ class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewon
                     imgSmall.visibility = View.VISIBLE
                     imgBig.visibility=View.GONE
                     layoutArticle.isClickable=true
+                    summary.maxLines=3
                 }
 
                 override fun onAnimationStart(p0: Animation?) {
@@ -140,12 +141,17 @@ class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewon
             imgBig.visibility = View.VISIBLE
             imgSmall.visibility = View.INVISIBLE
             layoutArticle.isClickable=false
+            val params = summary.layoutParams
+            summary.maxLines=6
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            summary.layoutParams=params
+            layoutArticle.isClickable=false
             val imgBigHeightAnimator = ValueAnimator.ofInt(imgSmallHeight,imageMeasure.height)
             val imgBigWidthAnimator = ValueAnimator.ofInt(imgSmallWidth,imageMeasure.width)
             val imgSmallWidthAnimator = ValueAnimator.ofInt(imgSmallWidth,0)
-            imgBigHeightAnimator.duration=500
-            imgBigWidthAnimator.duration=500
-            imgSmallWidthAnimator.duration=500
+            imgBigHeightAnimator.duration=300
+            imgBigWidthAnimator.duration=300
+            imgSmallWidthAnimator.duration=300
 
             imgBigHeightAnimator.addUpdateListener {
                 val p = imgBig.layoutParams
@@ -166,8 +172,8 @@ class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewon
             imgBigHeightAnimator.start()
             imgBigWidthAnimator.start()
             imgSmallWidthAnimator.start()
-            val animation = TranslateAnimation((imgBig.width/2+(70 * scale + 0.5f).toInt()).toFloat(),0f,-imgSmallHeight.toFloat()-(16 * scale + 0.5f).toInt(),0f)
-            animation.duration=500
+            val animation = TranslateAnimation((imgBig.width/2+(74 * scale + 0.5f).toInt()).toFloat(),0f,-imgSmallHeight.toFloat()-(16 * scale + 0.5f).toInt(),0f)
+            animation.duration=300
 
             animation.setAnimationListener(object :Animation.AnimationListener{
                 override fun onAnimationRepeat(p0: Animation?) {
@@ -201,6 +207,7 @@ class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewon
                 .transform(RatioTransformation(200))
                 .into(buttonRef)
             summary.text = output.summary
+            summary.maxLines=3
             imgBig.visibility=View.GONE
 
         }

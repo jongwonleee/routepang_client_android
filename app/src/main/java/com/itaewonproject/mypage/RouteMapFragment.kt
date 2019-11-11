@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
@@ -35,6 +36,8 @@ import com.itaewonproject.MyLocationSetting.Companion.mGoogleApiClient
 import com.itaewonproject.MyLocationSetting.Companion.mMoveMapByAPI
 import com.itaewonproject.MyLocationSetting.Companion.mRequestingLocationUpdates
 import com.itaewonproject.customviews.CustomMapView
+import com.itaewonproject.customviews.RoundedImageView
+import com.squareup.picasso.Picasso
 import java.util.*
 
 class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLocationSetting {
@@ -50,6 +53,12 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLoc
     private lateinit var editTitle: TextView
     private lateinit var layoutMarkerList: CardView
     private lateinit var recyclerView: RecyclerView
+
+    private lateinit var title: TextView
+    private lateinit var rating: RatingBar
+    private lateinit var imageCategory: ImageView
+    private lateinit var usedTime: TextView
+    private lateinit var layoutDetail : CardView
 
     private lateinit var adapter: AdapterMarkerList
     private lateinit var itemTouchHelper: ItemTouchHelper
@@ -128,6 +137,12 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLoc
         textTitle = view.findViewById(R.id.text_title)
         editTitle = view.findViewById(R.id.edit_title)
 
+        title = view.findViewById(R.id.textView_title) as TextView
+        rating = view.findViewById(R.id.ratingBar_location) as RatingBar
+        imageCategory = view.findViewById(R.id.image_category) as ImageView
+        usedTime = view.findViewById(R.id.text_used_time) as TextView
+        layoutDetail = view.findViewById(R.id.layout_location_info)
+
         con = context!!
         mGoogleApiClient = GoogleApiClient.Builder(context!!)
             .addConnectionCallbacks(this)
@@ -140,12 +155,14 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLoc
             editMode = !editMode
             if (editMode) {
                     layoutMarkerList.visibility = View.VISIBLE
+                    layoutDetail.visibility=View.GONE
                     textTitle.visibility = View.INVISIBLE
                     editTitle.visibility = View.VISIBLE
                     buttonEditor.visibility = View.GONE
                 } else {
                     layoutMarkerList.visibility = View.GONE
-                    textTitle.visibility = View.VISIBLE
+                layoutDetail.visibility=View.GONE
+                textTitle.visibility = View.VISIBLE
                     editTitle.visibility = View.INVISIBLE
                     buttonEditor.visibility = View.VISIBLE
                     routeUtils.setBoundary(list)
@@ -155,6 +172,7 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLoc
         textTitle.visibility = View.VISIBLE
         editTitle.visibility = View.INVISIBLE
         layoutMarkerList.visibility = View.GONE
+        layoutDetail.visibility=View.GONE
 
         buttonEditor = view.findViewById(R.id.image_editor)
         buttonEditor.setOnClickListener({
@@ -179,6 +197,20 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLoc
     fun setAdapterList() {
         adapter.list = list
         adapter.notifyDataSetChanged()
+    }
+
+    fun showDetail(location:Location?){
+        if(location==null){
+            Log.i("details!!","NULL")
+            layoutDetail.visibility =View.GONE
+        }else
+        {
+            layoutDetail.visibility =View.VISIBLE
+            this.title.text = location.name
+            this.rating.rating = location.rating
+            this.imageCategory.setImageResource(CategoryIcon.get(location.category!!))
+            this.usedTime.text = "${APIs.secToString(location.used.toInt())}"
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

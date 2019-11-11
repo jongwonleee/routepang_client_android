@@ -48,6 +48,7 @@ class LoginActivity : AppCompatActivity() {
         buttonLogin.setOnClickListener({
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.translate_in_from_right,R.anim.translate_out_to_left)
             finish()
         })
 

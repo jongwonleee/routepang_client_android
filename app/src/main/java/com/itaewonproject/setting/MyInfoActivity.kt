@@ -35,7 +35,6 @@ class MyInfoActivity : AppCompatActivity() {
                     "secure_quit" ->{
                         val intent = Intent(context,QuitActivity::class.java)
                         startActivity(intent)
-                        activity?.overridePendingTransition(R.anim.translate_in_from_left,0)
                     }
                     "service_qna"->{
 

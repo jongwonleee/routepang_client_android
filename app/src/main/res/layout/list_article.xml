@@ -78,12 +78,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
-        <ImageView
+        <com.itaewonproject.customviews.RoundedImageView
                 android:id="@+id/imageButton_ref"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_marginEnd="16dp"
                 android:background="#00000000"
+                app:imageRadius="4dp"
                 app:layout_constraintBottom_toBottomOf="@id/image_profile"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/image_profile"
@@ -97,6 +98,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
+                android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:text="TextView"
                 android:textColor="#666666"

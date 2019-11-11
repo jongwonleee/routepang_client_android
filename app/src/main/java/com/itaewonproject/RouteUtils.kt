@@ -82,6 +82,7 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
         }
         map.setOnMapClickListener({
             changeSelectedMarker(null)
+            fragment.showDetail(null)
         })
     }
 
@@ -127,6 +128,7 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
         val marker = map.addMarker(markerOptions)
         if (isWishlist) latWishlist.put(position, index)
         else latIndex.put(position, index)
+        fragment.showDetail(location)
         latLoc.put(position, location)
         return marker
     }

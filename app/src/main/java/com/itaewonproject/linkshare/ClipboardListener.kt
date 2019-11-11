@@ -16,6 +16,7 @@ import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.TextView
 import android.widget.Toast
 import com.itaewonproject.R
 import java.util.Calendar
@@ -184,7 +185,7 @@ class ClipboardListener : Service() {
         }
 
         floatyView = (getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(com.itaewonproject.R.layout.view_url_copy, interceptorLayout)
-        var buttonOk = floatyView.findViewById(R.id.button_ok) as Button
+        var buttonOk = floatyView.findViewById(R.id.button_ok) as TextView
         buttonOk.setOnClickListener({
             var intent = Intent(this, LinkShareActivity::class.java)
             intent.putExtra(Intent.EXTRA_TEXT, cm.primaryClip!!.getItemAt(0).text)

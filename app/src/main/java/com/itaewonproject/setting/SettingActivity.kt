@@ -35,7 +35,6 @@ class SettingActivity : AppCompatActivity(){
                     "account_myInfo" ->{
                         val intent = Intent(context,MyInfoActivity::class.java)
                         startActivity(intent)
-                        activity?.overridePendingTransition(R.anim.translate_in_from_left,0)
                     }
                     "service_qna"->{
 
