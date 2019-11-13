@@ -28,6 +28,16 @@ android {
         abortOnError false
     }
 
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/INDEX.LIST'
+/*
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/library_release.kotlin_module'
+        exclude 'META-INF/ASL2.0'*//*
+        */
+    }
+
 }
 crashlytics {
     enableNdk true
@@ -68,7 +78,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:17.2.1'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     implementation 'com.crashlytics.sdk.android:crashlytics-ndk:2.1.1'
-    implementation 'com.mikhaellopez:circularimageview:3.2.0'
     implementation 'de.hdodenhof:circleimageview:3.0.1'
+    implementation 'com.auth0:java-jwt:3.8.3'
+    implementation 'com.google.cloud:google-cloud-language:1.75.0'
+
 }
 apply plugin: 'com.google.gms.google-services'

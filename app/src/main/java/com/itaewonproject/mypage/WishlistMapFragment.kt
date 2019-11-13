@@ -74,7 +74,7 @@ class WishlistMapFragment : Fragment(), MyLocationSetting {
             .addApi(LocationServices.API)
             .build()
 
-        Places.initialize(activity!!.applicationContext, context!!.getString(R.string.Web_key))
+        Places.initialize(activity!!.applicationContext, context!!.getString(R.string.google_key))
         Places.createClient(context!!)
         var intent = Autocomplete.IntentBuilder(
             AutocompleteActivityMode.OVERLAY,
@@ -83,6 +83,7 @@ class WishlistMapFragment : Fragment(), MyLocationSetting {
             startActivityForResult(intent, 1)
         })
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == 1) {

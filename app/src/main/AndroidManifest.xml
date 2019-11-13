@@ -84,7 +84,7 @@
         -->
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
-                android:value="@string/Web_key" />
+                android:value="@string/google_key" />
         <meta-data
                 android:name="com.kakao.sdk.Appkey"
                 android:value="@string/kakao_app_key" />

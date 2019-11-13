@@ -97,6 +97,7 @@ class LoadingActivity : AppCompatActivity() {
             if(!isAutoLogin){
                 val intent = Intent(this,LoginActivity::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.translate_in_from_right,R.anim.translate_out_to_left)
                 finish()
             }
 
@@ -118,49 +119,5 @@ class LoadingActivity : AppCompatActivity() {
             }
         }
     }
-/*
-    fun getHashKey(context:Context):String {
-
-        val TAG = "KeyHash";
-
-        var keyHash:String? = null
-
-        try {
-
-            val info = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
-
-
-
-            for (signature in info.signatures) {
-
-                val md = MessageDigest.getInstance("SHA");
-
-                md.update(signature.toByteArray());
-
-                keyHash = String(Base64.encode(md.digest(), 0));
-
-                Log.d(TAG+"!!@@@", keyHash);
-
-            }
-
-        } catch (e:Exception) {
-
-            Log.e("name not found", e.toString());
-
-        }
-
-
-
-        if (keyHash != null) {
-
-            return keyHash;
-
-        } else {
-
-            return ""
-
-        }
-
-    }*/
 
 }

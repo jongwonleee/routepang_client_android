@@ -105,7 +105,7 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
             editMode = !editMode
             setEditMode()
         })
-        geoApiContext = GeoApiContext.Builder().apiKey(context!!.getString(R.string.Web_key)).build()
+        geoApiContext = GeoApiContext.Builder().apiKey(context!!.getString(R.string.google_key)).build()
         setListViewOption(view)
     }
 

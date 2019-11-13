@@ -184,7 +184,7 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLoc
 
         autoCompleteButton = view.findViewById(R.id.button_search) as CardView
 
-        Places.initialize(activity!!.applicationContext, context!!.getString(R.string.Web_key))
+        Places.initialize(activity!!.applicationContext, context!!.getString(R.string.google_key))
         Places.createClient(context!!)
         var intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG)).build(context!!)
        autoCompleteButton.setOnClickListener({

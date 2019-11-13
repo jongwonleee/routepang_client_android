@@ -1,27 +1,43 @@
 package com.itaewonproject.linkshare
 
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.ContentValues
 import android.content.Intent
+import android.content.RestrictionsManager
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.Status
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.itaewonproject.APIs
+import com.itaewonproject.IS_OFFLINE
+import com.itaewonproject.MyLocationSetting
 import com.itaewonproject.R
+import com.itaewonproject.adapter.AdapterAddressList
+import com.itaewonproject.adapter.AdapterImageList
 import com.itaewonproject.model.sender.Article
 import com.itaewonproject.model.sender.Link
+import com.itaewonproject.model.sender.Location
 import com.itaewonproject.player.ArticleConnector
 import com.squareup.picasso.Picasso
 import java.util.*
 
-class LinkShareActivity : AppCompatActivity() {
+class LinkShareActivity : AppCompatActivity(){
 
     lateinit var textLink: EditText
     lateinit var image: ImageView
@@ -36,53 +52,84 @@ class LinkShareActivity : AppCompatActivity() {
     lateinit var textUsedTime: TextView
     lateinit var buttonSend: Button
     lateinit var buttonRef: ImageView
+    lateinit var recyclerView: RecyclerView
     lateinit var link: Link
 
+    val address = arrayListOf<Location>()
+    var adapter:AdapterAddressList?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_link_share)
+        if(IS_OFFLINE){
+            Toast.makeText(applicationContext,"인터넷 연결이 되지 않아 접속할 수 없습니다",Toast.LENGTH_LONG).show()
+            finish()
+        }
 
         initActivity()
+
 
         if (intent.getStringExtra(Intent.EXTRA_TEXT) != null) {
             val url = intent.getStringExtra(Intent.EXTRA_TEXT)
             textLink.text = Editable.Factory.getInstance().newEditable(url)
             textLink.isEnabled = false
-            link = LinkManager().LinkApi(url)
-            Picasso.with(applicationContext)
-                .load(link.image)
-                .into(image)
-            Picasso.with(applicationContext)
-                .load(link.favicon)
-                .into(buttonRef)
-            summary.text = link.summary
+            LinkSetter(url)
         }
-        Places.initialize(applicationContext, getString(R.string.Web_key))
+        Places.initialize(applicationContext, getString(R.string.google_key))
         Places.createClient(this)
-        val autoCompleteSupportFragment = supportFragmentManager.findFragmentById(R.id.autocomplete_location_search) as AutocompleteSupportFragment
-        autoCompleteSupportFragment.setPlaceFields(
-            Arrays.asList(
-                Place.Field.ID,
-                Place.Field.NAME,
-                Place.Field.LAT_LNG))
-
-        autoCompleteSupportFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-            override fun onPlaceSelected(place: Place) {
-                // TODO: Get info about the selected place.
-                if (place.latLng != null) {
-                  /*  mMap.clear()
-                    Log.i("!!",place.name)
-                    mMap.addMarker(APIs.getMarkerOption(con,place.latLng!!))
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(place.latLng))
-                    mMap.animateCamera(CameraUpdateFactory.zoomTo(15f))*/
-                }
-            }
-
-            override fun onError(status: Status) {
-                // TODO: Handle the error.
-            }
-        })
     }
+
+    private fun LinkSetter(url:String){
+        val linkPlaces = LinkManager(this).LinkApi(url)
+        link = linkPlaces.link!!
+        address.clear()
+        address.addAll(linkPlaces.list)
+        Picasso.with(applicationContext)
+            .load(link.image)
+            .into(image)
+        Picasso.with(applicationContext)
+            .load(link.favicon)
+            .into(buttonRef)
+        summary.text = link.summary
+
+        adapter = AdapterAddressList(this, address)
+
+        recyclerView.adapter = adapter
+
+        val linearLayoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        recyclerView.layoutManager = linearLayoutManager
+        recyclerView.setHasFixedSize(true)
+
+        var intent = Autocomplete.IntentBuilder(
+            AutocompleteActivityMode.OVERLAY,
+            Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS)).build(this)
+        adapter?.setOnItemClickListener(object:AdapterAddressList.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                startActivityForResult(intent, 1)
+            }
+        }
+        )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                var place = Autocomplete.getPlaceFromIntent(data!!)
+                Log.i("id",place.id)
+                val location = Location()
+                location.address = place.address
+                location.name=place.name
+                location.placeId=place.id
+                adapter?.addAddress(location)
+
+            } else if (requestCode == RestrictionsManager.RESULT_ERROR) {
+                var status = Autocomplete.getStatusFromIntent(data!!)
+                Log.e(ContentValues.TAG, status.statusMessage!!)
+            }
+        }
+    }
+
+
 
     private fun initActivity() {
         textLink = findViewById(R.id.text_link) as EditText
@@ -98,16 +145,10 @@ class LinkShareActivity : AppCompatActivity() {
         textUsedTime = findViewById(R.id.text_used_time) as TextView
         buttonSend = findViewById(R.id.button_send)as Button
         buttonRef = findViewById(R.id.imageButton_ref)as ImageView
+        recyclerView =findViewById(R.id.recyclerview_address)
 
         buttonSend.setOnClickListener({
-            link = LinkManager().LinkApi(textLink.text.toString())
-            Picasso.with(applicationContext)
-                .load(link.image)
-                .into(image)
-            Picasso.with(applicationContext)
-                .load(link.favicon)
-                .into(buttonRef)
-            summary.text = link.summary
+            LinkSetter(textLink.text.toString())
         })
 
         buttonCancel.setOnClickListener({ finish() })
@@ -130,6 +171,7 @@ class LinkShareActivity : AppCompatActivity() {
                 layoutRating.visibility = View.GONE
             }
         })
+
 
         rating.max = 5
         usedTime.max = 3600

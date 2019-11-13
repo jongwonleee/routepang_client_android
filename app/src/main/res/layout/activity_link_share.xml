@@ -7,100 +7,348 @@
         android:layout_height="match_parent"
         tools:context=".linkshare.LinkShareActivity">
 
-    <View
-            android:id="@+id/view12"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:background="#eee"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/autocomplete_location_search" />
-
-    <View
-            android:id="@+id/view13"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#eee"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_article" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_article"
+    <ScrollView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:paddingBottom="16dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view12">
+            app:layout_constraintTop_toBottomOf="@+id/text_link">
 
-        <com.itaewonproject.customviews.RoundedImageView
-                android:id="@+id/image_article_small"
-                android:layout_width="70dp"
-                android:layout_height="0dp"
-                android:layout_marginEnd="16dp"
-                android:scaleType="centerCrop"
-                app:imageRadius="10dp"
-                app:layout_constraintBottom_toBottomOf="@+id/text_summary"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_summary"
-                tools:srcCompat="@tools:sample/avatars" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <ImageView
-                android:id="@+id/image_profile"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_profile_pic_none" />
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/view20">
 
-        <com.itaewonproject.customviews.RoundedImageView
-                android:id="@+id/imageButton_ref"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="#00000000"
-                app:imageRadius="4dp"
-                app:layout_constraintBottom_toBottomOf="@+id/text_name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_name"
-                tools:srcCompat="@tools:sample/avatars" />
+            </androidx.recyclerview.widget.RecyclerView>
 
-        <TextView
-                android:id="@+id/text_summary"
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:gravity="center_vertical"
-                android:textColor="#666666"
-                android:textSize="12sp"
-                android:ellipsize="end"
-                android:maxLines="3"
-                app:layout_constraintEnd_toStartOf="@+id/image_article_small"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/image_profile" />
+            <View
+                    android:id="@+id/view20"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#eee"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/recyclerview_address" />
 
-        <TextView
-                android:id="@+id/text_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:fontFamily="@font/notosanscjkkr_medium"
-                android:text="이종원"
-                android:textColor="#333333"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@+id/image_profile"
-                app:layout_constraintStart_toEndOf="@+id/image_profile"
-                app:layout_constraintTop_toTopOf="@+id/image_profile" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <View
+                    android:id="@+id/view12"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#eee"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/recyclerview_address" />
+
+            <View
+                    android:id="@+id/view13"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#eee"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_article" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_article"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    android:paddingBottom="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view12">
+
+
+                <com.itaewonproject.customviews.RoundedImageView
+                        android:id="@+id/image_article_small"
+                        android:layout_width="70dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="16dp"
+                        android:scaleType="centerCrop"
+                        app:imageRadius="10dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_summary"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/text_summary"
+                        tools:srcCompat="@tools:sample/avatars" />
+
+                <ImageView
+                        android:id="@+id/image_profile"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_profile_pic_none" />
+
+                <com.itaewonproject.customviews.RoundedImageView
+                        android:id="@+id/imageButton_ref"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#00000000"
+                        app:imageRadius="4dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_name"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/text_name"
+                        tools:srcCompat="@tools:sample/avatars" />
+
+                <TextView
+                        android:id="@+id/text_summary"
+                        android:layout_width="0dp"
+                        android:layout_height="70dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:maxLines="3"
+                        android:textColor="#666666"
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toStartOf="@+id/image_article_small"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/image_profile" />
+
+                <TextView
+                        android:id="@+id/text_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/notosanscjkkr_medium"
+                        android:text="이종원"
+                        android:textColor="#333333"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/image_profile"
+                        app:layout_constraintStart_toEndOf="@+id/image_profile"
+                        app:layout_constraintTop_toTopOf="@+id/image_profile" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <LinearLayout
+                    android:id="@+id/layout_rating"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="#FFF"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+
+                <View
+                        android:id="@+id/view15"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#eee"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/checked_visited" />
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="10dp"
+                        android:text="어떤 곳인가요?"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textSize="14sp" />
+
+                <RatingBar
+                        android:id="@+id/ratingBar3"
+                        style="@android:style/Widget.Material.Light.RatingBar.Indicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:max="5" />
+
+                <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingTop="30sp"
+                        android:text="둘러보는데 얼마나 걸렸나요?"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textSize="14sp" />
+
+                <TextView
+                        android:id="@+id/text_used_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:text="약 1시간 반" />
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginEnd="32dp"
+                        android:layout_marginBottom="16dp"
+                        android:orientation="horizontal">
+
+                    <SeekBar
+                            android:id="@+id/seek_usedTime"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:padding="5dp"
+                            android:progressDrawable="@drawable/seekbar_progress"
+                            android:thumb="@drawable/seekbar_thumb" />
+
+                    <TextView
+                            android:id="@+id/text_seekMax"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="1시간"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+                </LinearLayout>
+
+                <View
+                        android:id="@+id/view16"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#eee"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/checked_visited" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/linearLayout4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_rating">
+
+                <Button
+                        android:id="@+id/button_cancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_margin="4dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/box_darkgrey_radius_5dp"
+                        android:fontFamily="@font/notosanscjkkr_medium"
+                        android:text="취소"
+                        android:textColor="#FFF" />
+
+                <Button
+                        android:id="@+id/button_ok"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/box_pink_gradient_radius_5dp"
+                        android:fontFamily="@font/notosanscjkkr_medium"
+                        android:text="공유"
+                        android:textColor="#FFF" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                    android:id="@+id/linearLayout5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_article">
+
+                <View
+                        android:id="@+id/view14"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#eee" />
+
+                <CheckedTextView
+                        android:id="@+id/check_wishlist"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:drawableLeft="@drawable/checkbox_circle_pink"
+                        android:padding="8dp"
+                        android:text="  위시리스트에 추가하기" />
+
+                <CheckedTextView
+                        android:id="@+id/check_visited"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:drawableLeft="@drawable/checkbox_circle_pink"
+                        android:padding="8dp"
+                        android:text="  별점 남기기" />
+
+                <View
+                        android:id="@+id/view17"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#eee" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <Button
+            android:id="@+id/button_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/box_pink_radius_2dp"
+            android:fontFamily="@font/notosanscjkkr_medium"
+            android:text="확인"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <EditText
+            android:id="@+id/text_link"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/box_grey_radius_4dp"
+            android:hint="URL을 입력해주세요"
+            android:padding="8dp"
+            android:singleLine="true"
+            android:text=""
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="#666666"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/button_send"
+            app:layout_constraintEnd_toStartOf="@+id/button_send"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/button_send" />
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/toolbar"
@@ -140,226 +388,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <EditText
-            android:id="@+id/text_link"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/box_grey_radius_4dp"
-            android:hint="URL을 입력해주세요"
-            android:padding="8dp"
-            android:singleLine="true"
-            android:text=""
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textColor="#666666"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/button_send"
-            app:layout_constraintEnd_toStartOf="@+id/button_send"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/button_send" />
 
-    <fragment
-            android:id="@+id/autocomplete_location_search"
-            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:hint="검색할 지역을 입력하세요."
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_send" />
 
-    <LinearLayout
-            android:id="@+id/layout_rating"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="#FFF"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
 
-        <View
-                android:id="@+id/view15"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#eee"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/checked_visited" />
-
-        <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingTop="16dp"
-                android:paddingBottom="10dp"
-                android:text="어떤 곳인가요?"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="14sp" />
-
-        <RatingBar
-                android:id="@+id/ratingBar3"
-                style="@android:style/Widget.Material.Light.RatingBar.Indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:max="5" />
-
-        <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingTop="30sp"
-                android:text="둘러보는데 얼마나 걸렸나요?"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="14sp" />
-
-        <TextView
-                android:id="@+id/text_used_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:text="약 1시간 반" />
-
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="16dp"
-                android:orientation="horizontal">
-
-            <SeekBar
-                    android:id="@+id/seek_usedTime"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="8"
-                    android:padding="5dp"
-                    android:progressDrawable="@drawable/seekbar_progress"
-                    android:thumb="@drawable/seekbar_thumb" />
-
-            <TextView
-                    android:id="@+id/text_seekMax"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="1시간"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
-        </LinearLayout>
-
-        <View
-                android:id="@+id/view16"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#eee"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/checked_visited" />
-
-    </LinearLayout>
-
-    <LinearLayout
-            android:id="@+id/linearLayout4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_rating">
-
-        <Button
-                android:id="@+id/button_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="4dp"
-                android:layout_weight="1"
-                android:background="@drawable/box_darkgrey_radius_5dp"
-                android:fontFamily="@font/notosanscjkkr_medium"
-                android:text="취소"
-                android:textColor="#FFF" />
-
-        <Button
-                android:id="@+id/button_ok"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:layout_weight="1"
-                android:background="@drawable/box_pink_gradient_radius_5dp"
-                android:fontFamily="@font/notosanscjkkr_medium"
-                android:text="공유"
-                android:textColor="#FFF" />
-
-    </LinearLayout>
-
-    <Button
-            android:id="@+id/button_send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/box_pink_radius_2dp"
-            android:fontFamily="@font/notosanscjkkr_medium"
-            android:text="확인"
-            android:textColor="#FFFFFF"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-    <LinearLayout
-            android:id="@+id/linearLayout5"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_article">
-
-        <View
-                android:id="@+id/view14"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#eee" />
-
-        <CheckedTextView
-                android:id="@+id/check_wishlist"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:drawableLeft="@drawable/checkbox_circle_pink"
-                android:padding="8dp"
-                android:text="  위시리스트에 추가하기" />
-
-        <CheckedTextView
-                android:id="@+id/check_visited"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="8dp"
-                android:drawableLeft="@drawable/checkbox_circle_pink"
-                android:padding="8dp"
-                android:text="  별점 남기기" />
-
-        <View
-                android:id="@+id/view17"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#eee" />
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

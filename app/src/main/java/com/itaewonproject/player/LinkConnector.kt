@@ -42,7 +42,7 @@ class LinkConnector : WebConnectStrategy() {
     private fun offlineMock(url: String) {
         var link = Link()
         link.linkUrl = url
-        link = LinkManager().LinkApi(url)
+        //link = LinkManager().LinkApi(url)
 
         mockData = Gson().toJson(link)
         Log.i("link json", mockData)

@@ -49,7 +49,7 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
     var geoApiContext: GeoApiContext
     var selectedMarker: Marker?
     init {
-        geoApiContext = GeoApiContext.Builder().apiKey(fragment.context!!.getString(R.string.Web_key)).build()
+        geoApiContext = GeoApiContext.Builder().apiKey(fragment.context!!.getString(R.string.google_key)).build()
         view = LayoutInflater.from(fragment.context).inflate(R.layout.view_route_marker, null)
         image = view.findViewById(R.id.image) as ImageView
 

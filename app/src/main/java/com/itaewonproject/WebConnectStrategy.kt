@@ -3,7 +3,7 @@ package com.itaewonproject
 import android.os.AsyncTask
 import android.util.Log
 
-const val IS_OFFLINE: Boolean = true
+const val IS_OFFLINE: Boolean = false
 
 /* jsonParsing 따로 객체화 시키기 : apiUtils
  * stretegy화. getResult method로 통일

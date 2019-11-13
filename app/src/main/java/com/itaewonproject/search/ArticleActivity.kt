@@ -111,7 +111,7 @@ class ArticleActivity : AppCompatActivity() {
         override var method: String = "GET"
         override var inner: String = "maps/api/place/details/"
         override lateinit var mockData: String
-        private val key = getString(R.string.Web_key)
+        private val key = getString(R.string.google_key)
         init {
             mockData = ""
         }

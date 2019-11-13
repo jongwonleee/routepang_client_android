@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">itaewonProject</string>
     <string name="title_activity_maps">Map</string>
-    <string name="Web_key" translatable="false" templateMergeStrategy="preserve">
+    <string name="google_key" translatable="false" templateMergeStrategy="preserve">
         NULL
     </string>
     

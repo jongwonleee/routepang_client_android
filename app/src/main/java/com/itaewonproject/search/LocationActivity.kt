@@ -79,7 +79,7 @@ class LocationActivity : AppCompatActivity(),  Serializable,MyLocationSetting{
 
 
 
-        Places.initialize(applicationContext, context!!.getString(R.string.Web_key))
+        Places.initialize(applicationContext, context!!.getString(R.string.google_key))
         Places.createClient(this)
 
         val autoCompleteSupportFragment = supportFragmentManager.findFragmentById(R.id.autocomplete_location_search) as AutocompleteSupportFragment
