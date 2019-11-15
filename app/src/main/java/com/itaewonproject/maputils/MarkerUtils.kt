@@ -1,18 +1,16 @@
-package com.itaewonproject
+package com.itaewonproject.maputils
 
 import android.app.Activity
 import android.content.Context
 import android.graphics.*
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.ProgressBar
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
-import com.itaewonproject.customviews.CustomTextView
+import com.itaewonproject.R
 import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.mypage.WishlistMapFragment
 
@@ -23,8 +21,20 @@ class MarkerUtils(val map: GoogleMap, val con: Context) {
     var selectedMarker: Marker?
     var wishlistMapFragment:WishlistMapFragment?=null
     var isWishlist=false
-    val imageList = listOf(listOf(R.drawable.ic_map_pin_fill_blue,R.drawable.ic_map_pin_fill_green,R.drawable.ic_map_pin_fill_purple,R.drawable.ic_map_pin_fill_red,R.drawable.ic_map_pin_fill_yellow),
-        listOf(R.drawable.ic_map_pin_not_fill_blue,R.drawable.ic_map_pin_not_fill_green,R.drawable.ic_map_pin_not_fill_purple,R.drawable.ic_map_pin_not_fill_red,R.drawable.ic_map_pin_not_fill_yellow))
+    val imageList = listOf(listOf(
+        R.drawable.ic_map_pin_fill_blue,
+        R.drawable.ic_map_pin_fill_green,
+        R.drawable.ic_map_pin_fill_purple,
+        R.drawable.ic_map_pin_fill_red,
+        R.drawable.ic_map_pin_fill_yellow
+    ),
+        listOf(
+            R.drawable.ic_map_pin_not_fill_blue,
+            R.drawable.ic_map_pin_not_fill_green,
+            R.drawable.ic_map_pin_not_fill_purple,
+            R.drawable.ic_map_pin_not_fill_red,
+            R.drawable.ic_map_pin_not_fill_yellow
+        ))
 
     constructor(map:GoogleMap, fragment: WishlistMapFragment):this(map,fragment.context!!){
         isWishlist=true

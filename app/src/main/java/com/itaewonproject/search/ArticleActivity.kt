@@ -13,10 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.*
 import com.itaewonproject.adapter.AdapterArticleList
+import com.itaewonproject.maputils.CategoryIcon
 import com.itaewonproject.model.receiver.Article
 import com.itaewonproject.model.receiver.Location
-import com.itaewonproject.player.ArticleConnector
-import com.itaewonproject.player.BasketConnector
+import com.itaewonproject.rests.GetStrategy
+import com.itaewonproject.rests.WebResponce
+import com.itaewonproject.rests.get.GetArticleConnector
+import com.itaewonproject.rests.post.PostBasketConnector
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -45,6 +48,7 @@ class ArticleActivity : AppCompatActivity() {
     private lateinit var usedTime: TextView
     private lateinit var title: TextView
     private lateinit var buttonAddBasket: TextView
+    private lateinit var category:ImageView
     private var list = ArrayList<com.itaewonproject.model.receiver.Article>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,9 +74,11 @@ class ArticleActivity : AppCompatActivity() {
         title = findViewById(R.id.title_location) as TextView
         buttonAddBasket = findViewById(R.id.button_addBucket) as TextView
         tableInfo = findViewById(R.id.table_info) as TableLayout
+        category = findViewById(R.id.image_category)
 
+        category.setImageResource(CategoryIcon.get(location.category!!))
         title.text = location.name
-        usedTime.text = "예상 소요시간: ${APIs.secToString(location.used.toInt())}"
+        usedTime.text = "예상 소요시간: ${APIs.secToString(location.usedTime.toInt())}"
 
         address.setMovementMethod(ScrollingMovementMethod());
 
@@ -84,9 +90,8 @@ class ArticleActivity : AppCompatActivity() {
         websiteRow.visibility=View.GONE
         tableInfo.visibility=View.GONE
 
-
         buttonAddBasket.setOnClickListener({
-            BasketConnector().addBasketByLocation(1, location)
+            PostBasketConnector().post((application as Routepang).customer.customerId, location)
         })
 
         setListViewOption()
@@ -94,31 +99,29 @@ class ArticleActivity : AppCompatActivity() {
         jsonParsing(GoogleInfo().get(placeId))
     }
 
-    inner class GoogleInfo : WebConnectStrategy() {
-        override fun get(vararg params: Any): String {
-            isOffline=false
-            val placeID = params[0] as String
+    inner class GoogleInfo : GetStrategy() {
+        override var param = ""
+        override val inner: String = "maps/api/place/details/"
+        override lateinit var mockData: String
+        private val key = getString(R.string.google_key)
+        init {
+            mockData = ""
             domain = "https://maps.googleapis.com/"
+        }
+        override fun get(vararg params: Any): WebResponce {
+            val placeID = params[0] as String
             param = "json?placeid=$placeID&fields=name,formatted_phone_number,formatted_address,permanently_closed,opening_hours,website&key=$key&language=ko"
 
             var task = Task()
             task.execute()
             Log.i("google info", domain + inner + param)
-            return task.get()
+            return WebResponce(task.get(),statusCode)
         }
 
-        override var param = ""
-        override var method: String = "GET"
-        override var inner: String = "maps/api/place/details/"
-        override lateinit var mockData: String
-        private val key = getString(R.string.google_key)
-        init {
-            mockData = ""
-        }
     }
     private fun setListViewOption() {
         recyclerView = findViewById(R.id.recyclerview_article_list) as RecyclerView
-        list = JsonParser().listJsonParsing(ArticleConnector().get(location.locationId), Article::class.java)
+        list = JsonParser().listJsonParsing(GetArticleConnector().get(location.placeId), Article::class.java)
 
         val adapter = AdapterArticleList(this, list)
 
@@ -137,9 +140,10 @@ class ArticleActivity : AppCompatActivity() {
         recyclerView.setHasFixedSize(false)
     }
 
-    fun jsonParsing(str: String) {
+    fun jsonParsing(result: WebResponce){
+        if(result.responceCode!=200) return
         try {
-            val json = JSONObject(str).getJSONObject("result") as JSONObject
+            val json = JSONObject(result.body).getJSONObject("result") as JSONObject
             val phoneNumber = json.optString("formatted_phone_number")
             val address = json.optString("formatted_address")
             val website  = json.optString("website")

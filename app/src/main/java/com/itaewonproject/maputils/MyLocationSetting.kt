@@ -1,4 +1,4 @@
-package com.itaewonproject
+package com.itaewonproject.maputils
 
 import android.Manifest
 import android.location.Location
@@ -10,28 +10,15 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.location.LocationServices
 import android.content.pm.PackageManager
-import android.Manifest.permission
-import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import androidx.core.app.ActivityCompat
-import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.app.Activity
 import android.content.Context
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.CameraUpdate
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import android.location.LocationManager
 import android.content.Context.LOCATION_SERVICE
-import android.content.DialogInterface
-import android.content.Intent
-import android.location.Address
-import androidx.core.content.ContextCompat.getSystemService
-import android.widget.Toast
-import android.location.Geocoder
-import android.net.Uri
 import android.os.Build
 import androidx.core.content.ContextCompat
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks.CAUSE_NETWORK_LOST
@@ -75,14 +62,16 @@ interface MyLocationSetting : OnMapReadyCallback,GoogleApiClient.ConnectionCallb
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-                val hasFineLocationPermission = ContextCompat.checkSelfPermission(con!!,
+                val hasFineLocationPermission = ContextCompat.checkSelfPermission(
+                    con!!,
                         Manifest.permission.ACCESS_FINE_LOCATION);
 
                 if (hasFineLocationPermission == PackageManager.PERMISSION_DENIED) {
 
                     ActivityCompat.requestPermissions((con as Activity),
                             arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                            PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+                        PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
+                    );
 
                 } else {
 
@@ -136,7 +125,7 @@ interface MyLocationSetting : OnMapReadyCallback,GoogleApiClient.ConnectionCallb
     }
 
     override fun onLocationChanged(location: Location?) {
-        currentPosition= LatLng( location!!.getLatitude(), location!!.getLongitude());
+        currentPosition = LatLng( location!!.getLatitude(), location!!.getLongitude());
 
 
         Log.d(TAG, "onLocationChanged : ");
@@ -222,7 +211,7 @@ interface MyLocationSetting : OnMapReadyCallback,GoogleApiClient.ConnectionCallb
             val cameraUpdate = CameraUpdateFactory.newLatLng(currentLatLng)
             map!!.moveCamera(cameraUpdate)
         }
-        mMoveMapByAPI=false
+        mMoveMapByAPI =false
     }
 
 

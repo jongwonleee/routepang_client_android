@@ -1,5 +1,5 @@
 
-package com.itaewonproject
+package com.itaewonproject.rests
 
 import android.util.Log
 import java.io.BufferedReader
@@ -8,6 +8,8 @@ import java.io.InputStreamReader
 import java.io.OutputStream
 import java.net.*
 
+
+var authorization= ""
 class HttpClient {
 
         var httpStatusCode: Int = 0
@@ -56,6 +58,7 @@ class HttpClient {
 
         private fun setContentType(connection: HttpURLConnection) {
             connection.setRequestProperty("Content-Type", "application/json")
+            connection.setRequestProperty("Authorization", authorization)
         }
 
         private fun setRequestMethod(connection: HttpURLConnection) {

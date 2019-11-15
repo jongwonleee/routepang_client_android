@@ -2,8 +2,7 @@ package com.itaewonproject.model.receiver
 
 import android.util.Log
 import com.google.android.gms.maps.model.LatLng
-import com.itaewonproject.LocationCategory
-import org.locationtech.jts.geom.*
+import com.itaewonproject.maputils.LocationCategory
 import java.io.Serializable
 
 /*
@@ -23,7 +22,7 @@ class Location : Serializable {
     var cate = 0
     var category: LocationCategory? =null
     var articleCount = 0
-    var used = 0.0
+    var usedTime = 0.0
     var locationId: Long = 0
     var address = ""
     constructor()
@@ -45,7 +44,7 @@ class Location : Serializable {
         ret.locationId = locationId
         ret.placeId = placeId
         ret.category = category
-        ret.used = used
+        ret.usedTime = usedTime
         //ret.coordinates = coordinates
 
         return ret

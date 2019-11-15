@@ -1,7 +1,7 @@
 package com.itaewonproject.model.sender;
 
 
-import com.itaewonproject.LocationCategory;
+import com.itaewonproject.maputils.LocationCategory;
 
 import org.locationtech.jts.geom.Point;
 
@@ -17,7 +17,7 @@ public class Location {
 
     public String name;
 
-    public double used;
+    public double usedTime;
 
     public LocationCategory category;
 

@@ -1,28 +1,14 @@
-package com.itaewonproject.player
+package com.itaewonproject.rests.get
 
 import com.google.android.gms.maps.model.LatLng
-import com.itaewonproject.APIs
-import com.itaewonproject.WebConnectStrategy
+import com.itaewonproject.rests.GetStrategy
+import com.itaewonproject.rests.WebResponce
 
-class LocationConnector : WebConnectStrategy() {
+class GetLocationConnector : GetStrategy() {
 
-    /*override fun getResult(params: List<Any>): Any {
-        val coordinate= params[0] as LatLng
-        val zoom = params[1] as Float
-
-        param = "latitude=${coordinate.longitude}&&longitude=${coordinate.latitude}"
-        var task = Task()
-        task.execute()
-
-        var result = task.get()
-        var ret = JsonParser<Location>().locationJsonParsing(result)
-
-        return ret
-    }*/
 
     override var param = ""
-    override var method: String = "GET"
-    override var inner: String = "location/getLocationByCoordinate/"
+    override val inner: String = "location/"
     override var mockData: String = """
 [
     {
@@ -125,26 +111,15 @@ class LocationConnector : WebConnectStrategy() {
     }
 ]
         """.trimIndent()
-    init {
-    }
-    override fun get(vararg params: Any): String {
+
+    override fun get(vararg params: Any): WebResponce {
         val coordinate = params[0] as LatLng
         val zoom = params[1] as Float
 
-        param = "latitude=${coordinate.longitude}&&longitude=${coordinate.latitude}"
+        param = "${coordinate.longitude}&&${coordinate.latitude}&&1000/coordinates"
         var task = Task()
         task.execute()
 
-        return task.get()
+        return WebResponce(task.get(), statusCode)
     }
-    /*fun getByLatLng(coordinate: LatLng, zoom:Float):ArrayList<Location>{
-        param = "latitude=${coordinate.longitude}&&longitude=${coordinate.latitude}"
-        var task = Task()
-        task.execute()
-
-        var result = task.get()
-        var arr= JsonParser().listJsonParsing(result,Location::class.java)
-
-        return arr
-    }*/
 }

@@ -11,10 +11,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.APIs
+import com.itaewonproject.JsonParser
 import com.itaewonproject.R
+import com.itaewonproject.Routepang
 import com.itaewonproject.adapter.AdapterRouteList
 import com.itaewonproject.model.receiver.Folder
 import com.itaewonproject.model.receiver.Route
+import com.itaewonproject.rests.get.GetRouteConnector
 
 class RouteListFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
@@ -24,7 +27,8 @@ class RouteListFragment : Fragment() {
     private lateinit var buttonDelete: ImageView
     private lateinit var viewDivider:View
     private fun setListViewOption(view: View) {
-        list = APIs.B_API1(1)
+        val ret = GetRouteConnector().get((activity!!.application as Routepang).customer.customerId)
+        list = JsonParser().listJsonParsing(ret,Folder::class.java)
         adapter = AdapterRouteList(view.context, list)
         adapter.setOnItemClickClickListener(object : AdapterRouteList.onItemClickListener {
             override fun onItemLongClick(size: Int) {

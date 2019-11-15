@@ -1,29 +1,28 @@
-package com.itaewonproject
+package com.itaewonproject.rests
 
 import android.os.AsyncTask
 import android.util.Log
 
 const val IS_OFFLINE: Boolean = false
-
+const val CLASS_DOMAIN:String = "http://www.routepang.com:9090/"
 /* jsonParsing 따로 객체화 시키기 : apiUtils
  * stretegy화. getResult method로 통일
  */
-abstract class WebConnectStrategy {
-    abstract var method: String
+abstract class WebStrategy {
     var domain: String
-    abstract var inner: String
+    abstract val inner: String
     abstract var param: String
-    abstract var mockData: String
-    var isOffline: Boolean = IS_OFFLINE
+    abstract val mockData: String
     var statusCode: Int? = null
+    abstract val method:String
     companion object {
-        val classDomain: String = "http://www.routepang.com:9090/"
+        val classDomain: String = CLASS_DOMAIN
+        val isOffline: Boolean = IS_OFFLINE
+
     }
 
-    abstract fun get(vararg params: Any): String
-
     init {
-        domain = WebConnectStrategy.classDomain
+        domain = classDomain
     }
 
     private fun createUrl(param: String): String {
@@ -36,7 +35,8 @@ abstract class WebConnectStrategy {
         override fun doInBackground(vararg p0: String?): String {
             if (isOffline) return mockData
             else {
-                val http = HttpClient.Builder(method, createUrl(param)) // 포트번호,서블릿주소
+                val http =
+                    HttpClient.Builder(method, createUrl(param)) // 포트번호,서블릿주소
                 Log.i("!!url", http.url)
                 // Parameter 를 전송한다.
                 if (p0.size> 0)

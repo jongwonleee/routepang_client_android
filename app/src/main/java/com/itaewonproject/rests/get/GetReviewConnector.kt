@@ -1,15 +1,16 @@
-package com.itaewonproject.player
+package com.itaewonproject.rests.get
 
 import android.util.Log
 import com.google.gson.Gson
 import com.itaewonproject.APIs
-import com.itaewonproject.WebConnectStrategy
 import com.itaewonproject.model.sender.Link
+import com.itaewonproject.rests.GetStrategy
+import com.itaewonproject.rests.WebResponce
 
-class ReviewConnector : WebConnectStrategy() {
+class GetReviewConnector : GetStrategy() {
 
     override var method: String = "GET"
-    override var inner: String = "article/getArticleByCustomerId/"
+    override var inner: String = "article/"
     override var param = ""
     override lateinit var mockData: String
     init {
@@ -129,27 +130,14 @@ class ReviewConnector : WebConnectStrategy() {
         Log.i("!!!", mockData)
     }
 
-    override fun get(vararg params: Any): String {
+    override fun get(vararg params: Any): WebResponce {
         val id = params[0] as Long
-        param = "customerId=$id"
+        param = "$id/customers"
 
         var task = Task()
         task.execute()
 
-        return task.get()
+        return WebResponce(task.get(), statusCode)
     }
-/*
 
-    fun getByCustomerId(id:Long):ArrayList<Article>{
-        param = "$id"
-
-        var task = Task()
-        task.execute()
-
-        var result = task.get()
-
-
-        return JsonParser().listJsonParsing(result,Article::class.java)//articleJsonParsing(result)
-    }
-*/
 }

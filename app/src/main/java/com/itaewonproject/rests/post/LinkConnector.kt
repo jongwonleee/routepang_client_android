@@ -1,21 +1,20 @@
-package com.itaewonproject.player
+package com.itaewonproject.rests.post
 
 import android.util.Log
 import com.google.gson.Gson
-import com.itaewonproject.WebConnectStrategy
-import com.itaewonproject.linkshare.LinkManager
 import com.itaewonproject.model.sender.Link
+import com.itaewonproject.rests.PostStrategy
+import com.itaewonproject.rests.WebResponce
 
-class LinkConnector : WebConnectStrategy() {
+class LinkConnector : PostStrategy() {
 
     override var param = ""
-    override var method: String = "POST"
-    override var inner: String = "link/postLink"
+    override val inner: String = "link/postLink"
     override lateinit var mockData: String
     init {
         offlineMock("https://www.instagram.com/p/BuEAfrTDuvRGi-rjsieqDz_s0mWVZYnaoHiJyY0/")
     }
-    override fun get(vararg params: Any): String {
+    override fun post(vararg params: Any): WebResponce {
         param = ""
         val url = params[0] as String
         if (isOffline) {
@@ -24,20 +23,8 @@ class LinkConnector : WebConnectStrategy() {
         var task = Task()
         task.execute("[${Gson().toJson(url)}]")
 
-        return task.get()
+        return WebResponce(task.get(), statusCode)
     }
-    /*
-    fun postByLink(url:String): Link {
-        param = ""
-        if(isOffline){
-            offlineMock(url)
-        }
-        var task = Task()
-        task.execute("[${Gson().toJson(url)}]")
-
-        var result = task.get()
-        return JsonParser().objectJsonParsing(result,Link::class.java)!!
-    }*/
 
     private fun offlineMock(url: String) {
         var link = Link()

@@ -3,7 +3,6 @@ package com.itaewonproject.mypage
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,15 +15,14 @@ import com.itaewonproject.R
 import com.itaewonproject.adapter.AdapterArticleList
 import com.itaewonproject.linkshare.LinkShareActivity
 import com.itaewonproject.model.receiver.Article
-import com.itaewonproject.player.ReviewConnector
+import com.itaewonproject.rests.get.GetReviewConnector
 
 class ReviewFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var list: ArrayList<com.itaewonproject.model.receiver.Article>
 
     private fun setListViewOption(view: View) {
-        list = JsonParser().listJsonParsing(ReviewConnector().get((1).toLong()), Article::class.java)
-        Log.i("list", "${list[0].summary}")
+        list = JsonParser().listJsonParsing(GetReviewConnector().get((1).toLong()), Article::class.java)
         recyclerView = view.findViewById(R.id.review_RecyclerView) as RecyclerView
         val adapter = AdapterArticleList(view.context, list)
 

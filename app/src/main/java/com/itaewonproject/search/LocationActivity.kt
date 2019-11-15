@@ -23,19 +23,22 @@ import com.google.android.material.appbar.AppBarLayout
 import com.itaewonproject.*
 import com.itaewonproject.R
 import com.itaewonproject.adapter.AdapterLocationList
+import com.itaewonproject.maputils.MarkerUtils
+import com.itaewonproject.maputils.MyLocationSetting
 import com.itaewonproject.model.receiver.Location
-import com.itaewonproject.player.LocationConnector
-import com.itaewonproject.MyLocationSetting.Companion.TAG
-import com.itaewonproject.MyLocationSetting.Companion.con
-import com.itaewonproject.MyLocationSetting.Companion.mGoogleApiClient
-import com.itaewonproject.MyLocationSetting.Companion.mMoveMapByAPI
-import com.itaewonproject.MyLocationSetting.Companion.mRequestingLocationUpdates
-import com.itaewonproject.MyLocationSetting.Companion.map
+import com.itaewonproject.rests.get.GetLocationConnector
+import com.itaewonproject.maputils.MyLocationSetting.Companion.TAG
+import com.itaewonproject.maputils.MyLocationSetting.Companion.con
+import com.itaewonproject.maputils.MyLocationSetting.Companion.mGoogleApiClient
+import com.itaewonproject.maputils.MyLocationSetting.Companion.mMoveMapByAPI
+import com.itaewonproject.maputils.MyLocationSetting.Companion.mRequestingLocationUpdates
+import com.itaewonproject.maputils.MyLocationSetting.Companion.map
 import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
 
-class LocationActivity : AppCompatActivity(),  Serializable,MyLocationSetting{
+class LocationActivity : AppCompatActivity(),  Serializable,
+    MyLocationSetting {
 
 
 
@@ -128,8 +131,6 @@ class LocationActivity : AppCompatActivity(),  Serializable,MyLocationSetting{
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.setHasFixedSize(true)
 
-        var dividerItemDeco = DividerItemDecoration(applicationContext, linearLayoutManager.orientation)
-        recyclerView.addItemDecoration(dividerItemDeco)
 
         buttonSort.setOnClickListener {
             list.sortBy { it.rating }
@@ -163,7 +164,7 @@ class LocationActivity : AppCompatActivity(),  Serializable,MyLocationSetting{
     }
 
     private fun mapSearching() {
-        list = JsonParser().listJsonParsing(LocationConnector().get(map!!.cameraPosition.target, map!!.cameraPosition.zoom), Location::class.java)
+        list = JsonParser().listJsonParsing(GetLocationConnector().get(map!!.cameraPosition.target, map!!.cameraPosition.zoom), Location::class.java)
         adapter.output = list
         map!!.clear()
         for (l in list) {

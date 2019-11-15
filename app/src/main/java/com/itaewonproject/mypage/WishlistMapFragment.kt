@@ -15,7 +15,6 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
@@ -24,15 +23,18 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.itaewonproject.*
-import com.itaewonproject.MyLocationSetting.Companion.TAG
-import com.itaewonproject.MyLocationSetting.Companion.con
-import com.itaewonproject.MyLocationSetting.Companion.mGoogleApiClient
-import com.itaewonproject.MyLocationSetting.Companion.mMoveMapByAPI
-import com.itaewonproject.MyLocationSetting.Companion.mRequestingLocationUpdates
-import com.itaewonproject.MyLocationSetting.Companion.map
+import com.itaewonproject.maputils.MyLocationSetting.Companion.TAG
+import com.itaewonproject.maputils.MyLocationSetting.Companion.con
+import com.itaewonproject.maputils.MyLocationSetting.Companion.mGoogleApiClient
+import com.itaewonproject.maputils.MyLocationSetting.Companion.mMoveMapByAPI
+import com.itaewonproject.maputils.MyLocationSetting.Companion.mRequestingLocationUpdates
+import com.itaewonproject.maputils.MyLocationSetting.Companion.map
 import com.itaewonproject.R
 import com.itaewonproject.customviews.CustomMapView
 import com.itaewonproject.customviews.RoundedImageView
+import com.itaewonproject.maputils.CategoryIcon
+import com.itaewonproject.maputils.MarkerUtils
+import com.itaewonproject.maputils.MyLocationSetting
 import com.itaewonproject.model.receiver.Location
 import com.squareup.picasso.Picasso
 import java.util.*
@@ -118,7 +120,7 @@ class WishlistMapFragment : Fragment(), MyLocationSetting {
         mMoveMapByAPI=false
         setMapReady()
 
-        markerUtils = MarkerUtils(map!!,this)
+        markerUtils = MarkerUtils(map!!, this)
 
         map!!.clear()
         map!!.setOnMapClickListener {
@@ -168,7 +170,7 @@ class WishlistMapFragment : Fragment(), MyLocationSetting {
             this.title.text = location.name
             this.rating.rating = location.rating
             this.imageCategory.setImageResource(CategoryIcon.get(location.category!!))
-            this.usedTime.text = "평균 소요 시간: ${APIs.secToString(location.used.toInt())}"
+            this.usedTime.text = "평균 소요 시간: ${APIs.secToString(location.usedTime.toInt())}"
             if(location.imgUrl.size>0){
                 imagePreview.visibility=View.VISIBLE
                 Picasso.with(context)

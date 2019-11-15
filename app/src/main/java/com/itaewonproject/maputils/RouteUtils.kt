@@ -1,4 +1,4 @@
-package com.itaewonproject
+package com.itaewonproject.maputils
 
 import android.app.Activity
 import android.graphics.*
@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.ProgressBar
 import androidx.constraintlayout.widget.Constraints.TAG
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -21,7 +20,7 @@ import com.google.maps.PendingResult
 import com.google.maps.internal.PolylineEncoding
 import com.google.maps.model.DirectionsResult
 import com.google.maps.model.TravelMode
-import com.itaewonproject.customviews.CustomTextView
+import com.itaewonproject.R
 import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.mypage.RouteMapFragment
 
@@ -31,10 +30,34 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
     val latLoc = HashMap<LatLng, Location>()
     val latIndex = HashMap<LatLng, Int>()
     val latWishlist = HashMap<LatLng, Int>()
-    val imageList = listOf(listOf(R.drawable.ic_map_pin_fill_blue,R.drawable.ic_map_pin_fill_green,R.drawable.ic_map_pin_fill_purple,R.drawable.ic_map_pin_fill_red,R.drawable.ic_map_pin_fill_yellow),
-        listOf(R.drawable.ic_map_pin_fill_blue_minus, R.drawable.ic_map_pin_fill_green_minus, R.drawable.ic_map_pin_fill_purple_minus, R.drawable.ic_map_pin_fill_red_minus, R.drawable.ic_map_pin_fill_yellow_minus),
-        listOf(R.drawable.ic_map_pin_fill_blue_plus, R.drawable.ic_map_pin_fill_green_plus, R.drawable.ic_map_pin_fill_purple_plus, R.drawable.ic_map_pin_fill_red_plus, R.drawable.ic_map_pin_fill_yellow_plus),
-        listOf(R.drawable.ic_map_pin_not_fill_blue,R.drawable.ic_map_pin_not_fill_green,R.drawable.ic_map_pin_not_fill_purple,R.drawable.ic_map_pin_not_fill_red,R.drawable.ic_map_pin_not_fill_yellow))
+    val imageList = listOf(listOf(
+        R.drawable.ic_map_pin_fill_blue,
+        R.drawable.ic_map_pin_fill_green,
+        R.drawable.ic_map_pin_fill_purple,
+        R.drawable.ic_map_pin_fill_red,
+        R.drawable.ic_map_pin_fill_yellow
+    ),
+        listOf(
+            R.drawable.ic_map_pin_fill_blue_minus,
+            R.drawable.ic_map_pin_fill_green_minus,
+            R.drawable.ic_map_pin_fill_purple_minus,
+            R.drawable.ic_map_pin_fill_red_minus,
+            R.drawable.ic_map_pin_fill_yellow_minus
+        ),
+        listOf(
+            R.drawable.ic_map_pin_fill_blue_plus,
+            R.drawable.ic_map_pin_fill_green_plus,
+            R.drawable.ic_map_pin_fill_purple_plus,
+            R.drawable.ic_map_pin_fill_red_plus,
+            R.drawable.ic_map_pin_fill_yellow_plus
+        ),
+        listOf(
+            R.drawable.ic_map_pin_not_fill_blue,
+            R.drawable.ic_map_pin_not_fill_green,
+            R.drawable.ic_map_pin_not_fill_purple,
+            R.drawable.ic_map_pin_not_fill_red,
+            R.drawable.ic_map_pin_not_fill_yellow
+        ))
     var editMode = false
         set(value) {
             field = value

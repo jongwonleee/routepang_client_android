@@ -1,7 +1,6 @@
 package com.itaewonproject.linkshare
 
 import android.animation.ObjectAnimator
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
@@ -15,25 +14,18 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.common.api.Status
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.itaewonproject.APIs
-import com.itaewonproject.IS_OFFLINE
-import com.itaewonproject.MyLocationSetting
+import com.itaewonproject.rests.IS_OFFLINE
 import com.itaewonproject.R
 import com.itaewonproject.adapter.AdapterAddressList
-import com.itaewonproject.adapter.AdapterImageList
 import com.itaewonproject.model.sender.Article
 import com.itaewonproject.model.sender.Link
 import com.itaewonproject.model.sender.Location
-import com.itaewonproject.player.ArticleConnector
+import com.itaewonproject.rests.post.PostArticleConnector
 import com.squareup.picasso.Picasso
 import java.util.*
 
@@ -159,7 +151,8 @@ class LinkShareActivity : AppCompatActivity(){
             article.link = link
             article.locationId = 1
             article.summary = link.summary
-            ArticleConnector().postByCustomerId(article)
+            val ret = PostArticleConnector().post(article)
+            //if(ret.responceCode)
             finish()
         })
         layoutRating.visibility = View.GONE

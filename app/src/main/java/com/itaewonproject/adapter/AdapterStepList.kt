@@ -1,21 +1,18 @@
 package com.itaewonproject.adapter
 
 import android.content.Context
-import android.media.Image
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import com.google.maps.model.DirectionsStep
 import com.google.maps.model.TravelMode
 import com.google.maps.model.VehicleType
 import com.itaewonproject.R
 import com.itaewonproject.RatioTransformation
-import com.itaewonproject.VehicleIcon
+import com.itaewonproject.maputils.VehicleIcon
 import com.squareup.picasso.Picasso
 import java.lang.NullPointerException
 

@@ -29,18 +29,20 @@ import com.itaewonproject.*
 import com.itaewonproject.R
 import com.itaewonproject.adapter.AdapterMarkerList
 import com.itaewonproject.model.receiver.Location
-import com.itaewonproject.player.LocationConnector
-import com.itaewonproject.MyLocationSetting.Companion.TAG
-import com.itaewonproject.MyLocationSetting.Companion.con
-import com.itaewonproject.MyLocationSetting.Companion.mGoogleApiClient
-import com.itaewonproject.MyLocationSetting.Companion.mMoveMapByAPI
-import com.itaewonproject.MyLocationSetting.Companion.mRequestingLocationUpdates
+import com.itaewonproject.rests.get.GetLocationConnector
+import com.itaewonproject.maputils.MyLocationSetting.Companion.TAG
+import com.itaewonproject.maputils.MyLocationSetting.Companion.con
+import com.itaewonproject.maputils.MyLocationSetting.Companion.mGoogleApiClient
+import com.itaewonproject.maputils.MyLocationSetting.Companion.mMoveMapByAPI
+import com.itaewonproject.maputils.MyLocationSetting.Companion.mRequestingLocationUpdates
 import com.itaewonproject.customviews.CustomMapView
-import com.itaewonproject.customviews.RoundedImageView
-import com.squareup.picasso.Picasso
+import com.itaewonproject.maputils.CategoryIcon
+import com.itaewonproject.maputils.MyLocationSetting
+import com.itaewonproject.maputils.RouteUtils
 import java.util.*
 
-class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLocationSetting {
+class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,
+    MyLocationSetting {
 
 
     private lateinit var map: GoogleMap
@@ -81,7 +83,7 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLoc
         super.setUserVisibleHint(isVisibleToUser)
         if (isResumed && isVisibleToUser) {
             try{
-                val temp = JsonParser().listJsonParsing(LocationConnector().get(LatLng(41.374902, 2.170370), 14f), Location::class.java)
+                val temp = JsonParser().listJsonParsing(GetLocationConnector().get(LatLng(41.374902, 2.170370), 14f), Location::class.java)
                 for (i in 0..temp.size - 1) {
                     // XXX:
                     if (i <temp.size / 2) {
@@ -209,7 +211,7 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,MyLoc
             this.title.text = location.name
             this.rating.rating = location.rating
             this.imageCategory.setImageResource(CategoryIcon.get(location.category!!))
-            this.usedTime.text = "${APIs.secToString(location.used.toInt())}"
+            this.usedTime.text = "${APIs.secToString(location.usedTime.toInt())}"
         }
     }
 

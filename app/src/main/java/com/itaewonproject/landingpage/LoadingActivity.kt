@@ -17,8 +17,16 @@ import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.google.gson.Gson
+import com.itaewonproject.JsonParser
 import com.itaewonproject.R
+import com.itaewonproject.Routepang
 import com.itaewonproject.linkshare.ClipboardListener
+import com.itaewonproject.mainservice.MainActivity
+import com.itaewonproject.model.sender.Customer
+import com.itaewonproject.rests.authorization
+import com.itaewonproject.rests.get.GetCustomerConnector
+import java.lang.Exception
 
 class LoadingActivity : AppCompatActivity() {
 
@@ -38,10 +46,28 @@ class LoadingActivity : AppCompatActivity() {
         slogan.text= Html.fromHtml("원하는 정보만 <b>루팡!</b><br>나만의 루트가 <b>팡팡!</b>",Html.FROM_HTML_MODE_LEGACY)
 
         isAutoLogin = sharedPreferences.getBoolean("autoLoginCheck",false)
+
         if(isAutoLogin){
-            val id = sharedPreferences.getString("autoLoginID","")
-            val pw = sharedPreferences.getString("autoLoginPW","")
-            Log.i("autoLoginMode","auto Login as $id")
+            try{
+                val token = sharedPreferences.getString("loginToken","")
+                val customer = JsonParser().objectJsonParsing(sharedPreferences.getString("autoLoginCustomer","{}")!!,Customer::class.java)
+                authorization = token!!
+                (application as Routepang).token = token!!
+                (application as Routepang).customer = customer!!
+                Log.i("autoLoginMode","auto Login as ${customer.customerId}")
+
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(R.anim.translate_in_from_right,R.anim.translate_out_to_left)
+                finish()
+            }catch (e:Exception){
+                Toast.makeText(this,"자동 로그인에 실패했습니다. 다시 로그인해주세요.",Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(R.anim.translate_in_from_right,R.anim.translate_out_to_left)
+                finish()
+            }
+
         }
 
         //FIXME 나중에 로그인 완성되면 삭제

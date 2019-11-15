@@ -8,6 +8,6 @@ public class Customer {
 
     public String password;
 
-    public String name;
+    public String reference;
 
 }

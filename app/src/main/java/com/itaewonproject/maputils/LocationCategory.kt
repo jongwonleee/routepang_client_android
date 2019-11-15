@@ -1,4 +1,4 @@
-package com.itaewonproject
+package com.itaewonproject.maputils
 
 enum class LocationCategory {
     UNKNOWN, ATTRACTION, FOOD, ACTIVITY, SHOPPING,TRAFFIC,RELIGIOUS,MEDICAL,PUBLIC,LODGE,ENTERTAINMENT,UTILITY,SERVICE

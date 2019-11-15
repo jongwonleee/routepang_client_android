@@ -1,16 +1,13 @@
-package com.itaewonproject.player
+package com.itaewonproject.rests.get
 
-import com.google.gson.Gson
-import com.itaewonproject.APIs
-import com.itaewonproject.WebConnectStrategy
-import com.itaewonproject.model.receiver.Location
+import com.itaewonproject.rests.GetStrategy
+import com.itaewonproject.rests.WebResponce
 
-class BasketConnector : WebConnectStrategy() {
+class GetBasketConnector : GetStrategy() {
 
-    override var method: String = "GET"
-    override var inner: String = "customer/getBasketListByCustomerId/"
+    override val inner: String = "basket/"
     override var param = ""
-    override var mockData: String = """
+    override val mockData: String = """
 [
     {
         "locationId": 2,
@@ -122,16 +119,14 @@ class BasketConnector : WebConnectStrategy() {
 ]
         """.trimIndent()
 
-    override fun get(vararg params: Any): String {
+    override fun get(vararg params: Any): WebResponce {
         val id = params[0] as Long
-        method = "GET"
-        inner = "customer/getBasketListByCustomerId/"
-        param = "customerId=$id"
+        param = "$id/customers"
 
         var task = Task()
         task.execute()
 
-        return task.get()
+        return WebResponce(task.get(), statusCode)
     } /*
 
     fun getByCustomerId(id:Long):ArrayList<Location>{
@@ -148,12 +143,5 @@ class BasketConnector : WebConnectStrategy() {
         return JsonParser().listJsonParsing(result,Location::class.java)
     }
 */
-    fun addBasketByLocation(id: Long, location: Location) {
-        method = "POST"
-        inner = "customer/addBasket/"
-        param = "customerId=$id"
-        var task = Task()
-        task.execute(Gson().toJson(location.getServerModel()))
-        task.get()
-    }
+
 }

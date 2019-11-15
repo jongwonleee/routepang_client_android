@@ -4,11 +4,12 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 
-import com.itaewonproject.HttpClient;
+import com.itaewonproject.rests.HttpClient;
 import com.itaewonproject.NaverTranslater;
 import com.itaewonproject.R;
 import com.itaewonproject.model.sender.Link;
 import com.itaewonproject.model.sender.Location;
+import com.itaewonproject.rests.WebStrategyKt;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,11 +19,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 
-import static com.itaewonproject.WebConnectStrategyKt.IS_OFFLINE;
 
 
 public class LinkManager {
@@ -33,7 +31,7 @@ public class LinkManager {
 
 
     public LinkPlaces LinkApi(String url) {
-        if(IS_OFFLINE) return null;
+        if(WebStrategyKt.IS_OFFLINE) return null;
         System.out.println("url req");
 
         Task task = new Task();

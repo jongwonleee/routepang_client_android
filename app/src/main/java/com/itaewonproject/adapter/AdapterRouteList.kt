@@ -17,6 +17,7 @@ import com.itaewonproject.R
 import com.itaewonproject.model.receiver.Folder
 import com.itaewonproject.model.receiver.Route
 import com.itaewonproject.model.receiver.RouteListBase
+import com.itaewonproject.model.receiver.RouteType
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -50,18 +51,18 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Folder>) :
         val checkedList = isChecked.toMutableList()
         var folder: Folder? = null
         for (l in checkedList) {
-            if (l.type == 1) {
+            if (l.type == RouteType.FOLDER) {
                 folder = l as Folder
                 checkedList.remove(l)
                 break
             }
         }
         if (folder == null) {
-            folder = Folder("새로운 폴더", "바르셀로나", -1, arrayListOf(checkedList[0] as Route))
+            folder = Folder("새로운 폴더", "바르셀로나", -1, arrayListOf(checkedList[0] as Route),checkedList[0].customerId,checkedList[0].regDate)
             checkedList.removeAt(0)
         }
         for (l in checkedList) {
-            if (l.type == 1)
+            if (l.type ==  RouteType.FOLDER)
                 folder.routes.addAll((l as Folder).routes)
             else folder.routes.add((l as Route))
         }
@@ -95,7 +96,7 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Folder>) :
     }
 
     override fun getItemViewType(position: Int): Int {
-        return list[position].type
+        return if(list[position].type==RouteType.ROUTE) 0 else 1
     }
 
     interface onItemClickListener {
@@ -126,8 +127,8 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Folder>) :
         override fun bind(pos: Int) {
             var route = list[pos]
             title.text = route.title
-            location.text = route.location
-            updated.text = route.date
+            location.text = route.boundary
+            updated.text = route.getDateString()
             itemView.setOnClickListener({
                 listener.onItemClick(itemView, pos)
             })
@@ -181,8 +182,8 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Folder>) :
             var route = list[pos]
             textTitle.text = route.title
             editTitle.text = Editable.Factory.getInstance().newEditable(route.title)
-            location.text = route.location
-            updated.text = route.date
+            location.text = route.boundary
+            updated.text = route.getDateString()
             if (isChecked.contains(list[pos])) viewChecked.visibility = View.VISIBLE
             else viewChecked.visibility = View.INVISIBLE
 
@@ -234,7 +235,7 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Folder>) :
             list.clear()
             opened.clear()
             for (f in folders) {
-                f.parIndex = -1
+                f.parentId = -1
                 if (f.routes.size == 1) {
                     list.add(f.routes[0])
                     indexFolder.put(list.size - 1, f)
@@ -245,7 +246,7 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Folder>) :
                 if (f.opened) {
                     opened.add(true)
                     for (c in f.routes) {
-                        c.parIndex = list.indexOf(f)
+                        c.parentId = list.indexOf(f)
                         list.add(c)
                         opened.add(true)
                         indexFolder.put(list.size - 1, f)
@@ -267,10 +268,10 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Folder>) :
         }
 
         fun remove(pos: Int) {
-            if (list[pos].parIndex == -1) {
+            if (list[pos].parentId == -1) {
                 folders.remove(indexFolder[pos]!!)
             } else {
-                val par = list[list[pos].parIndex] as Folder
+                val par = list[list[pos].parentId] as Folder
                 folders[folders.indexOf(par)].routes.remove(list[pos] as Route)
             }
         }

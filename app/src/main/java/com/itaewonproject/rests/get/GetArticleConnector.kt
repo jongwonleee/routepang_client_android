@@ -1,16 +1,14 @@
-package com.itaewonproject.player
+package com.itaewonproject.rests.get
 
-import com.google.gson.Gson
 import com.itaewonproject.APIs
-import com.itaewonproject.WebConnectStrategy
-import com.itaewonproject.model.receiver.Article
 import com.itaewonproject.model.sender.Link
+import com.itaewonproject.rests.GetStrategy
+import com.itaewonproject.rests.WebResponce
 
-class ArticleConnector : WebConnectStrategy() {
+class GetArticleConnector : GetStrategy() {
 
     override var param = ""
-    override var method: String = "GET"
-    override var inner: String = "article/getArticleByLocationId/"
+    override val inner: String = "article/"
     override lateinit var mockData: String
     init {
         val ref = listOf<String>("https://facebookbrand.com/wp-content/themes/fb-branding/assets/images/fb-logo.png?v2",
@@ -126,41 +124,13 @@ class ArticleConnector : WebConnectStrategy() {
         """.trimIndent()
     }
 
-    override fun get(vararg params: Any): String {
-        val id = params[0] as Long
-        param = "locationId=$id"
+    override fun get(vararg params: Any): WebResponce {
+        val id = params[0] as String
+        param = "$id/places"
 
         var task = Task()
         task.execute()
 
-        return task.get()
-    }
-/*
-
-
-    fun getByLocationId(id:Long):ArrayList<Article>{
-        param = "$id"
-
-        var task = Task()
-        task.execute()
-
-        var result = task.get()
-
-
-        return JsonParser().listJsonParsing(result,Article::class.java)
-    }
-*/
-
-    fun postByCustomerId(article: com.itaewonproject.model.sender.Article) {
-        method = "POST"
-        inner = "customer/postArticle/"
-        param = "customerId=${article.customerId}&&linkId=${article.link.linkId}"
-        article.customerId = 1
-        var task = Task()
-        task.execute(Gson().toJson(article))
-        // task.get()
-        /*var result = task.get()
-        var arr= locationJsonParsing(result)
-        var ret = ArrayList<com.itaewonproject.ServerResult.Location>()*/
+        return WebResponce(task.get(), statusCode)
     }
 }

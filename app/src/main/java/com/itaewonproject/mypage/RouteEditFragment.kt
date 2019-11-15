@@ -5,11 +5,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.InflateException
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.Constraints
@@ -27,7 +25,7 @@ import com.itaewonproject.JsonParser
 import com.itaewonproject.R
 import com.itaewonproject.adapter.AdapterRouteEdit
 import com.itaewonproject.model.receiver.Location
-import com.itaewonproject.player.LocationConnector
+import com.itaewonproject.rests.get.GetLocationConnector
 import java.lang.NullPointerException
 
 class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
@@ -57,7 +55,7 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
         super.setUserVisibleHint(isVisibleToUser)
         try{
             if (isVisibleToUser && isResumed ) {
-                list = JsonParser().listJsonParsing(LocationConnector().get(LatLng(41.374902, 2.170370), 14f),Location::class.java)
+                list = JsonParser().listJsonParsing(GetLocationConnector().get(LatLng(41.374902, 2.170370), 14f),Location::class.java)
                 adapter!!.list = list
                 adapter!!.resetSteplist()
                 adapter!!.notifyDataSetChanged()
@@ -138,7 +136,7 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
         Log.i("!!!", "$list")
         for (l in list) {
             arrayPoints.add(l.latlng())
-            durations += l.used.toLong()
+            durations += l.usedTime.toLong()
         }
 
         // FIXME: context variable
