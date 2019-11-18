@@ -120,8 +120,9 @@ class WishlistMapFragment : Fragment(), MyLocationSetting {
         mMoveMapByAPI=false
         setMapReady()
 
-        markerUtils = MarkerUtils(map!!, context!!)
+        markerUtils = MarkerUtils(map!!, this.context!!)
         markerUtils.isWishlist=true
+        markerUtils.fragment=this
 
         map!!.clear()
         map!!.setOnMapClickListener {

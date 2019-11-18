@@ -1,13 +1,5 @@
 package com.itaewonproject
 
-import android.graphics.Bitmap
-import android.graphics.Color
-import android.util.Log
-import com.google.gson.Gson
-import com.itaewonproject.model.receiver.Folder
-import com.itaewonproject.model.receiver.Route
-import java.sql.Timestamp
-
 object APIs {
     val bmp1 = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStn_0SD5sQvwVChtojSWcxUR5Hkw5JMw4bNJsuoSiI2A1sahk49Q"
     val bmp2 = "https://www.fcbarcelona.com/photo-resources/fcbarcelona/photo/2019/04/27/2b3900dc-06d6-417c-906e-477241e279a8/mini_2019-04-27-BARCELONA-LEVANTE-69.JPG?width=1200&height=750"

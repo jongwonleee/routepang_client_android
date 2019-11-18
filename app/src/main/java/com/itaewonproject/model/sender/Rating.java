@@ -4,9 +4,9 @@ public class Rating {
 
     public long ratingId;
 
-    public long location;
+    public Location location;
 
-    public long customer;
+    public Customer customer;
 
     public float rating;
 

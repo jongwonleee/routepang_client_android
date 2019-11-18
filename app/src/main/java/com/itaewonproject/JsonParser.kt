@@ -17,14 +17,10 @@ class JsonParser {
     }
     fun <T> listJsonParsing(result: WebResponce, cls: Class<T>): ArrayList<T> {
         var arr:ArrayList<T>? = null
-        Log.i("!!@@!!@@!!","0")
-
         if(!(result.responceCode==200 || result.responceCode==201))return arrayListOf()
         try {
-            Log.i("!!@@!!@@!!","1")
 
             arr = Gson().fromJson(result.body, TypeToken.getParameterized(ArrayList::class.java, cls).type)
-            Log.i("!!@@!!@@!!",arr!!.size.toString())
         } catch (e: JsonParseException) {
             e.printStackTrace()
         }

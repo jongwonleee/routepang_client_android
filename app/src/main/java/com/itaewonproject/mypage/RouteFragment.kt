@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.itaewonproject.R
 import com.itaewonproject.adapter.TabPagerAdapter
-import com.itaewonproject.model.receiver.Folder
 import com.itaewonproject.model.receiver.Route
 
 class RouteFragment : Fragment() {
@@ -16,7 +15,7 @@ class RouteFragment : Fragment() {
     // private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager
     private lateinit var adapter: TabPagerAdapter
-    lateinit var route: Folder
+    lateinit var route: Route
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -31,7 +30,7 @@ class RouteFragment : Fragment() {
         viewPager.adapter = adapter
     }
 
-    fun toEditFragment(item: Folder) {
+    fun toEditFragment(item: Route) {
         route = item
         viewPager.setCurrentItem(1, true)
     }

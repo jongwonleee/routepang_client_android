@@ -1,6 +1,7 @@
 package com.itaewonproject.mypage
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +25,9 @@ class WishlistFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        list = JsonParser().listJsonParsing(GetBasketConnector().get((activity!!.application as Routepang).customer.customerId), Location::class.java)
+        val ret = GetBasketConnector().get((activity!!.application as Routepang).customer.customerId)
+        Log.i("wishlist!!!",ret.body)
+        list = JsonParser().listJsonParsing(ret, Location::class.java)
         tabLayout = view.findViewById(R.id.tabLayout) as TabLayout
         viewPager = view.findViewById(R.id.viewPager) as ViewPager
 

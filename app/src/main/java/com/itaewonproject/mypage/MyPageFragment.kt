@@ -10,9 +10,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
+import com.itaewonproject.JsonParser
 import com.itaewonproject.R
+import com.itaewonproject.Routepang
 import com.itaewonproject.adapter.TabPagerAdapter
 import com.itaewonproject.customviews.NonSwipeViewPager
+import com.itaewonproject.model.receiver.CustomerPage
+import com.itaewonproject.rests.get.GetCustomerPageConnector
 import com.itaewonproject.setting.SettingActivity
 
 class MyPageFragment : Fragment() {
@@ -50,9 +54,16 @@ class MyPageFragment : Fragment() {
             startActivity(intent)
         })
 
+        val ret = JsonParser().objectJsonParsing(GetCustomerPageConnector().get((activity!!.application as Routepang).customer.customerId).body!!,CustomerPage::class.java)
+        textName.text = ret?.reference
+        followingCount.text = ret?.followingCount.toString()
+        followerCount.text= ret?.follwerCount.toString()
+        val routeCount = ret?.routeCount
+        val wishlistCount = ret?.productCount
+        //val reviewCount = ret?.
         val adapter = TabPagerAdapter(childFragmentManager, 3)
-        adapter.addPage(RouteFragment(), "루트\n200")
-        adapter.addPage(WishlistFragment(), "위시리스트\n150")
+        adapter.addPage(RouteFragment(), "루트\n$routeCount")
+        adapter.addPage(WishlistFragment(), "위시리스트\n$wishlistCount")
         adapter.addPage(ReviewFragment(), "후기\n100")
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)

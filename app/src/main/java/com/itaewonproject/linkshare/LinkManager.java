@@ -31,22 +31,22 @@ public class LinkManager {
     }
 
 
-    public LinkPlaces LinkApi(String url) {
-        if(WebStrategyKt.IS_OFFLINE) return null;
+    public void LinkApi(String url) {
+        if(WebStrategyKt.IS_OFFLINE) return;
         System.out.println("url req");
 
         Task task = new Task();
         task.execute(url);
 
         try{
-            return task.get();
+            LinkPlaces ret = task.get();
         }catch(ExecutionException e){
             e.printStackTrace();
         }catch (InterruptedException e){
             e.printStackTrace();
         }
 
-        return null;
+        return;
     }
 
     class Task extends AsyncTask<String, Integer, LinkPlaces> {
@@ -134,7 +134,7 @@ public class LinkManager {
 
                 }
 
-
+                ((LinkShareActivity) context).OnListManagerResult(linkPlaces);
                 return linkPlaces;
             }catch (IOException e){
                 e.printStackTrace();

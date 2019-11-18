@@ -7,6 +7,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.RestrictionsManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.util.Log
 import android.view.View
@@ -19,6 +21,7 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.google.maps.model.DirectionsResult
 import com.itaewonproject.APIs
 import com.itaewonproject.JsonParser
 import com.itaewonproject.rests.IS_OFFLINE
@@ -27,12 +30,11 @@ import com.itaewonproject.Routepang
 import com.itaewonproject.adapter.AdapterAddressList
 import com.itaewonproject.landingpage.LoginActivity
 import com.itaewonproject.maputils.LocationCategoryParser
-import com.itaewonproject.model.sender.Article
-import com.itaewonproject.model.sender.Customer
-import com.itaewonproject.model.sender.Link
-import com.itaewonproject.model.sender.Location
+import com.itaewonproject.model.sender.*
 import com.itaewonproject.rests.authorization
 import com.itaewonproject.rests.post.PostArticleConnector
+import com.itaewonproject.rests.post.PostProductConnector
+import com.itaewonproject.rests.post.PostRatingConnector
 import com.squareup.picasso.Picasso
 import java.util.*
 
@@ -91,44 +93,53 @@ class LinkShareActivity : AppCompatActivity(){
         }
         Places.initialize(applicationContext, getString(R.string.google_key))
         Places.createClient(this)
+
     }
 
     private fun LinkSetter(url:String){
-        val linkPlaces = LinkManager(this).LinkApi(url)
-        if (linkPlaces == null) {
-            textLink.text = Editable.Factory.getInstance().newEditable("")
-            Toast.makeText(this,"링크를 가져올 수 없습니다. 다시 시도해주세요",Toast.LENGTH_LONG).show()
-            return
-        }
+        LinkManager(this).LinkApi(url)
 
-        link = linkPlaces.link!!
-        address.clear()
-        address.addAll(linkPlaces.list)
-        Picasso.with(applicationContext)
-            .load(link.image)
-            .into(image)
-        Picasso.with(applicationContext)
-            .load(link.favicon)
-            .into(buttonRef)
-        summary.text = link.summary
+    }
 
-        adapter = AdapterAddressList(this, address)
-
-        recyclerView.adapter = adapter
-
-        val linearLayoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        recyclerView.layoutManager = linearLayoutManager
-        recyclerView.setHasFixedSize(true)
-
-        var intent = Autocomplete.IntentBuilder(
-            AutocompleteActivityMode.OVERLAY,
-            Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS,Place.Field.LAT_LNG,Place.Field.TYPES)).build(this)
-        adapter?.setOnItemClickListener(object:AdapterAddressList.OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                startActivityForResult(intent, 1)
+    fun OnListManagerResult(linkPlaces:LinkPlaces){
+        Handler(Looper.getMainLooper()).post(Runnable {
+            if (linkPlaces == null) {
+                textLink.text = Editable.Factory.getInstance().newEditable("")
+                Toast.makeText(this,"링크를 가져올 수 없습니다. 다시 시도해주세요",Toast.LENGTH_LONG).show()
+                return@Runnable
             }
-        }
-        )
+
+            link = linkPlaces.link!!
+            address.clear()
+            address.addAll(linkPlaces.list)
+            Picasso.with(applicationContext)
+                .load(link.image)
+                .into(image)
+            Picasso.with(applicationContext)
+                .load(link.favicon)
+                .into(buttonRef)
+            summary.text = link.summary
+
+            adapter = AdapterAddressList(this, address)
+
+            recyclerView.adapter = adapter
+
+
+            val linearLayoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+            recyclerView.layoutManager = linearLayoutManager
+            recyclerView.setHasFixedSize(true)
+
+            val intent = Autocomplete.IntentBuilder(
+                AutocompleteActivityMode.OVERLAY,
+                Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS,Place.Field.LAT_LNG,Place.Field.TYPES)).build(this)
+            adapter?.setOnItemClickListener(object:AdapterAddressList.OnItemClickListener {
+                override fun onItemClick(position: Int) {
+                    startActivityForResult(intent, 1)
+                }
+            }
+            )
+
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -190,20 +201,31 @@ class LinkShareActivity : AppCompatActivity(){
                 return@setOnClickListener
             }
             val ret = PostArticleConnector().post(article)
-            if(ret.responceCode==201)
-            {
-                Toast.makeText(this,"저장 완료!",Toast.LENGTH_LONG).show()
-            }else
+            if(ret.responceCode!=201)
             {
                 Toast.makeText(this,"다시 한번 시도해주세요.",Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
             if(checkVisited.isChecked){
-
+                val rating = Rating()
+                rating.rating = this.rating.rating
+                rating.usedTime = usedTime.progress.toDouble()
+                rating.location = adapter!!.getCheckedItem()
+                rating.customer = (application as Routepang).customer
+                val ret = PostRatingConnector().post(rating)
+                if(ret.responceCode!=201){
+                    Toast.makeText(this,"별점을 줄 수 없습니다.",Toast.LENGTH_LONG).show()
+                }
             }
             if(checkWishlist.isChecked){
-                
+                val product = Product()
+                product.location=adapter!!.getCheckedItem()
+                val ret = PostProductConnector().post(product,(application as Routepang).customer.customerId)
+                if(ret.responceCode!=201){
+                    Toast.makeText(this,"위시리스트에 추가할 수 없습니다.",Toast.LENGTH_LONG).show()
+                }
             }
+            finish()
         })
         layoutRating.visibility = View.GONE
         checkVisited.setOnClickListener({
@@ -214,8 +236,7 @@ class LinkShareActivity : AppCompatActivity(){
                 layoutRating.visibility = View.GONE
             }
         })
-
-
+        checkWishlist.setOnClickListener({checkWishlist.toggle()})
         rating.max = 5
         usedTime.max = 3600
         usedTime.progress = 1800

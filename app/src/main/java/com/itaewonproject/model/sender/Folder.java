@@ -4,7 +4,3 @@ package com.itaewonproject.model.sender;
 // @Setter
 // @ToString
 // @NoArgsConstructor
-public class Folder {
-
-    // TODO route와 연관성 추가
-}

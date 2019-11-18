@@ -46,12 +46,13 @@ class AdapterLocationList(val context: Context, var output: ArrayList<Location>)
     }
 
     inner class ViewHolder(itemView: View) : BaseViewHolder(itemView) {
-        var title: TextView
-        var imgList: RecyclerView
-        var rating: RatingBar
+        val title: TextView
+        val imgList: RecyclerView
+        val rating: RatingBar
         var placeId = ""
-        var imageCategory: ImageView
-        var usedTime: TextView
+        val imageCategory: ImageView
+        val usedTime: TextView
+        val articleCount : TextView
 
         init {
             title = itemView.findViewById(R.id.textView_title) as TextView
@@ -59,6 +60,7 @@ class AdapterLocationList(val context: Context, var output: ArrayList<Location>)
             imgList = itemView.findViewById(R.id.recyclerView_images) as RecyclerView
             imageCategory = itemView.findViewById(R.id.image_category) as ImageView
             usedTime = itemView.findViewById(R.id.text_used_time) as TextView
+            articleCount = itemView.findViewById(R.id.text_article_count)
             itemView.setOnClickListener({
                 val pos = adapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
@@ -73,6 +75,7 @@ class AdapterLocationList(val context: Context, var output: ArrayList<Location>)
             this.title.text = output.name
             this.rating.rating = output.rating
             this.placeId = output.placeId
+            this.articleCount.text = "${output.articleCount}개의 게시"
             this.imageCategory.setImageResource(CategoryIcon.get(output.category!!))
             this.usedTime.text = "평균 소요 시간: ${APIs.secToString(output.usedTime.toInt())}"
             Log.i("imageCount","${output.imgUrl.size}")

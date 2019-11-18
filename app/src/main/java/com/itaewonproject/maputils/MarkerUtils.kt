@@ -22,6 +22,7 @@ class MarkerUtils(val map: GoogleMap, val con: Context) {
     val latLoc = HashMap<LatLng, Location>()
     var selectedMarker: Marker?
     var isWishlist=false
+    var fragment:Fragment?=null
     val imageList = listOf(listOf(
         R.drawable.ic_map_pin_fill_blue,
         R.drawable.ic_map_pin_fill_green,
@@ -44,7 +45,7 @@ class MarkerUtils(val map: GoogleMap, val con: Context) {
         map.setOnMarkerClickListener {
             if (it != null && selectedMarker != null) {
                 if (selectedMarker!!.position == it.position) {
-                    if(isWishlist) (con as WishlistMapFragment).showDetail(null)
+                    if(isWishlist) (fragment as WishlistMapFragment).showDetail(null)
                     else (con as LocationActivity).showArticleActivity(latLoc[selectedMarker!!.position]!!)
                     changeSelectedMarker(null)
                     selectedMarker!!.remove()
@@ -70,7 +71,7 @@ class MarkerUtils(val map: GoogleMap, val con: Context) {
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFroview(view)))
         val marker = map.addMarker(markerOptions)
         marker.showInfoWindow()
-        if(isWishlist && isSelected) (con as WishlistMapFragment).showDetail(location)
+        if(isWishlist && isSelected) (fragment as WishlistMapFragment).showDetail(location)
         latLoc.put(position, location)
         return marker
     }

@@ -3,17 +3,17 @@ package com.itaewonproject.rests
 import android.os.AsyncTask
 import android.util.Log
 
-const val IS_OFFLINE: Boolean = true
+const val IS_OFFLINE: Boolean = false
 const val CLASS_DOMAIN:String = "http://www.routepang.com:9090/"
 /* jsonParsing 따로 객체화 시키기 : apiUtils
  * stretegy화. getResult method로 통일
  */
 abstract class WebStrategy {
-    var domain: String
-    abstract val inner: String
-    abstract var param: String
-    abstract val mockData: String
-    var statusCode: Int? = null
+    protected var domain: String
+    abstract protected val inner: String
+    abstract protected var param: String
+    abstract protected val mockData: String
+    protected var statusCode: Int? = null
     abstract val method:String
     companion object {
         val classDomain: String = CLASS_DOMAIN
