@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 
+import com.itaewonproject.maputils.LocationCategoryParser;
 import com.itaewonproject.rests.HttpClient;
 import com.itaewonproject.NaverTranslater;
 import com.itaewonproject.R;
@@ -45,7 +46,6 @@ public class LinkManager {
             e.printStackTrace();
         }
 
-        assert false;
         return null;
     }
 
@@ -120,6 +120,10 @@ public class LinkManager {
                                 location.placeId = locations.getJSONObject(i).optString("place_id");
                                 location.address = locations.getJSONObject(i).optString("formatted_address");
                                 location.name = locations.getJSONObject(i).getJSONArray("address_components").getJSONObject(0).optString("short_name");
+                                location.category = LocationCategoryParser.INSTANCE.get(locations.getJSONObject(i).getJSONArray("types").get(0).toString());
+                                Double lat = locations.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lat");
+                                Double lng = locations.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lng");
+                                location.coordinates = "POINT ("+lat+" "+lng+")";
                                 linkPlaces.getList().add(location);
                             }
                         }

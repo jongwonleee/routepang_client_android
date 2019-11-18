@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.JsonParser
 import com.itaewonproject.R
+import com.itaewonproject.Routepang
 import com.itaewonproject.adapter.AdapterArticleList
 import com.itaewonproject.linkshare.LinkShareActivity
 import com.itaewonproject.model.receiver.Article
@@ -22,7 +23,7 @@ class ReviewFragment : Fragment() {
     private lateinit var list: ArrayList<com.itaewonproject.model.receiver.Article>
 
     private fun setListViewOption(view: View) {
-        list = JsonParser().listJsonParsing(GetReviewConnector().get((1).toLong()), Article::class.java)
+        list = JsonParser().listJsonParsing(GetReviewConnector().get((activity!!.application as Routepang).customer.customerId), Article::class.java)
         recyclerView = view.findViewById(R.id.review_RecyclerView) as RecyclerView
         val adapter = AdapterArticleList(view.context, list)
 

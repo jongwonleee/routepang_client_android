@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/image_opposite"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_profile_pic_none"
+            app:civ_border_color="#f862b8"
+            app:civ_border_width="2dp"
+            app:isCircular="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/image_me"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_profile_pic_none"
+            app:civ_border_color="#f862b8"
+            app:civ_border_width="2dp"
+            app:isCircular="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/box_grey_left_top_not_curved"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/image_me"
+            app:layout_constraintStart_toEndOf="@+id/image_opposite"
+            app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+                android:id="@+id/text_message"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:maxLines="5"
+                android:text="새로운 메세지가 도착했습니다.새로운 메세지가 도착했습니다.새로운 메세지가 도착했습니다.새로운 메세지가 도착했습니다.새로운 메세지가 도착했습니다.새로운 메세지가 도착했습니다.새로운 메세지가 도착했습니다.새로운 메세지가 도착했습니다.새로운 메세지가 도착했습니다.새로운 메세지가 도착했습니다."
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_time"
+                app:lineHeight="18sp" />
+
+        <TextView
+                android:id="@+id/text_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosanscjkkr_regular"
+                android:text="12시간 전"
+                android:textColor="#909090"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:lineHeight="12sp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

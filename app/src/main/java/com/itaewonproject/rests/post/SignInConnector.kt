@@ -9,7 +9,7 @@ import com.itaewonproject.rests.WebResponce
 class SignInConnector : PostStrategy() {
 
     override var param = ""
-    override val inner: String = "login"
+    override val inner: String = "signup"
     override lateinit var mockData: String
     init {
         mockData = """

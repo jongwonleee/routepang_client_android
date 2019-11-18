@@ -4,10 +4,12 @@ public class Rating {
 
     public long ratingId;
 
-    public long locationId;
+    public long location;
 
-    public long customerId;
+    public long customer;
 
     public float rating;
+
+    public double usedTime;
 
 }

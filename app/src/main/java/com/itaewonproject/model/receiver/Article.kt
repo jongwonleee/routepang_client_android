@@ -1,5 +1,6 @@
 package com.itaewonproject.model.receiver
 
+import com.itaewonproject.model.sender.Customer
 import com.itaewonproject.model.sender.Link
 import java.sql.Timestamp
 
@@ -7,9 +8,9 @@ class Article {
 
     var articleId: Long = 0
 
-    var locationId: Long = 0
+    var location = Location()
 
-    var customerId: Long = 0
+    var customer = Customer()
 
     var image: String = ""
 

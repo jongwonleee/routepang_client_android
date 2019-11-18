@@ -15,6 +15,7 @@ import com.itaewonproject.R
 import com.itaewonproject.Routepang
 import com.itaewonproject.mainservice.MainActivity
 import com.itaewonproject.model.sender.Customer
+import com.itaewonproject.rests.IS_OFFLINE
 import com.itaewonproject.rests.authorization
 import com.itaewonproject.rests.get.GetCustomerConnector
 import com.itaewonproject.rests.post.LogInConnector
@@ -77,15 +78,27 @@ class LoginActivity : AppCompatActivity() {
                     editor.putString("autoLoginCustomer", Gson().toJson((application as Routepang).customer))
                     editor.apply()
                 }
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                overridePendingTransition(R.anim.translate_in_from_right,R.anim.translate_out_to_left)
-                finish()
+                if (intent.getStringExtra(Intent.EXTRA_TEXT) != null) {
+                    finish()
+                }else
+                {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    overridePendingTransition(R.anim.translate_in_from_right,R.anim.translate_out_to_left)
+                    finish()
+                }
+
             }else
             {
                 Toast.makeText(this,"로그인에 실패했습니다. 다시 시도해주세요.",Toast.LENGTH_LONG).show()
                 editID.text=empty
                 editPW.text=empty
+                if(IS_OFFLINE) {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    overridePendingTransition(R.anim.translate_in_from_right,R.anim.translate_out_to_left)
+                    finish()
+                }
             }
 
         })

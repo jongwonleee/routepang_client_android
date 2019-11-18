@@ -149,38 +149,14 @@ class GetRouteConnector : GetStrategy() {
             },
             {
                 "routeId": 3,
-                "customerId"1,
-                "type": "FOLDER",
+                "customerId" : 1,
+                "type": "ROUTE",
                 "title": "구엘공원",
                 "boundary": "Barcelona",
                 "regDate": 1565937752000,
                 "startDate": 1566024152000,
                 "endDate": 1566110552000,
-                "parentId": 1,
-                "routes": [
-                    {
-                        "routeId": 8,
-                        "customerId": 1,
-                        "type": "ROUTE",
-                        "title": "구엘공원 A지점",
-                        "boundary": "Barcelona",
-                        "regDate": 1565937752000,
-                        "startDate": 1565937752000,
-                        "endDate": 1565952152000,
-                        "parentId": 3
-                    },
-                    {
-                        "routeId": 9,
-                        "customerId": 1,
-                        "type": "ROUTE",
-                        "title": "구엘공원 B지점",
-                        "boundary": "Barcelona",
-                        "regDate": 1565937752000,
-                        "startDate": 1566009752000,
-                        "endDate": 1566024152000,
-                        "parentId": 3
-                    }
-                ]
+                "parentId": 1
             },
             {
                 "routeId": 4,
@@ -230,11 +206,12 @@ class GetRouteConnector : GetStrategy() {
     }
 ]
         """.trimIndent()
+
         }
 
     override fun get(vararg params: Any): WebResponce {
         val id = params[0] as Long
-        param = "$id/cutomers"
+        param = "$id/customers"
 
         var task = Task()
         task.execute()

@@ -17,6 +17,7 @@ class SignInActivity : AppCompatActivity() {
     lateinit var editPWCheck: ClearEditText
     lateinit var editName: ClearEditText
     lateinit var buttonSignin: Button
+    lateinit var editEmail:ClearEditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
@@ -24,6 +25,7 @@ class SignInActivity : AppCompatActivity() {
         editPW = findViewById(R.id.edit_password) as ClearEditText
         editPWCheck = findViewById(R.id.edit_password_check) as ClearEditText
         editName = findViewById(R.id.edit_name) as ClearEditText
+        editEmail = findViewById(R.id.edit_email) as ClearEditText
         buttonSignin = findViewById(R.id.button_link_share) as Button
         buttonSignin.setOnClickListener({
             val empty = Editable.Factory.getInstance().newEditable("")
@@ -31,6 +33,7 @@ class SignInActivity : AppCompatActivity() {
             val pw = editPW.text.toString().trim()
             val check = editPWCheck.text.toString().trim()
             val name = editName.text.toString().trim()
+            val email = editEmail.text.toString().trim()
             if(id.length<6){
                 Toast.makeText(this,"ID를 다시 입력하세요.",Toast.LENGTH_LONG).show()
                 editID.text=empty
@@ -41,7 +44,7 @@ class SignInActivity : AppCompatActivity() {
                 editPW.text=empty
                 return@setOnClickListener
             }
-            if(name.length<4){
+            if(name.length<3){
                 Toast.makeText(this,"이름을 다시 입력하세요.",Toast.LENGTH_LONG).show()
                 editName.text=empty
                 return@setOnClickListener
@@ -56,6 +59,7 @@ class SignInActivity : AppCompatActivity() {
             customer.account=id
             customer.reference=name
             customer.password=pw
+            customer.email=email
             val ret = SignInConnector().post(customer)
             if(ret.responceCode==201){
                 Toast.makeText(this,"환영합니다!",Toast.LENGTH_LONG).show()

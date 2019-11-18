@@ -9,6 +9,7 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.itaewonproject.JsonParser
 import com.itaewonproject.R
+import com.itaewonproject.Routepang
 import com.itaewonproject.adapter.TabPagerAdapter
 import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.rests.get.GetBasketConnector
@@ -23,7 +24,7 @@ class WishlistFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        list = JsonParser().listJsonParsing(GetBasketConnector().get((1).toLong()), Location::class.java)
+        list = JsonParser().listJsonParsing(GetBasketConnector().get((activity!!.application as Routepang).customer.customerId), Location::class.java)
         tabLayout = view.findViewById(R.id.tabLayout) as TabLayout
         viewPager = view.findViewById(R.id.viewPager) as ViewPager
 

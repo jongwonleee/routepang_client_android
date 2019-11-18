@@ -10,4 +10,6 @@ public class Customer {
 
     public String reference;
 
+    public String email;
+
 }

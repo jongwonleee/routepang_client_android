@@ -3,6 +3,7 @@ package com.itaewonproject.linkshare
 import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.RestrictionsManager
 import android.os.Bundle
@@ -19,12 +20,18 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.itaewonproject.APIs
+import com.itaewonproject.JsonParser
 import com.itaewonproject.rests.IS_OFFLINE
 import com.itaewonproject.R
+import com.itaewonproject.Routepang
 import com.itaewonproject.adapter.AdapterAddressList
+import com.itaewonproject.landingpage.LoginActivity
+import com.itaewonproject.maputils.LocationCategoryParser
 import com.itaewonproject.model.sender.Article
+import com.itaewonproject.model.sender.Customer
 import com.itaewonproject.model.sender.Link
 import com.itaewonproject.model.sender.Location
+import com.itaewonproject.rests.authorization
 import com.itaewonproject.rests.post.PostArticleConnector
 import com.squareup.picasso.Picasso
 import java.util.*
@@ -35,6 +42,7 @@ class LinkShareActivity : AppCompatActivity(){
     lateinit var image: ImageView
     lateinit var summary: TextView
     lateinit var checkVisited: CheckedTextView
+    lateinit var checkWishlist: CheckedTextView
     lateinit var layoutRating: LinearLayout
     lateinit var rating: RatingBar
     lateinit var usedTime: SeekBar
@@ -64,7 +72,22 @@ class LinkShareActivity : AppCompatActivity(){
             val url = intent.getStringExtra(Intent.EXTRA_TEXT)
             textLink.text = Editable.Factory.getInstance().newEditable(url)
             textLink.isEnabled = false
-            LinkSetter(url)
+            val sharedPreferences =  getSharedPreferences("autoLogin", Context.MODE_PRIVATE)
+            val isAutoLogin = sharedPreferences.getBoolean("autoLoginCheck",false)
+            if(isAutoLogin){
+                val token = sharedPreferences.getString("loginToken","")
+                val customer = JsonParser().objectJsonParsing(sharedPreferences.getString("autoLoginCustomer","{}")!!,
+                    Customer::class.java)
+                authorization = token!!
+                (application as Routepang).token = token!!
+                (application as Routepang).customer = customer!!
+                LinkSetter(url)
+            }else
+            {
+                Toast.makeText(this,"로그인이 되지 않아 로그인 창으로 이동합니다.",Toast.LENGTH_LONG).show()
+                val intent = Intent(this,LoginActivity::class.java)
+                startActivity(intent)
+            }
         }
         Places.initialize(applicationContext, getString(R.string.google_key))
         Places.createClient(this)
@@ -72,6 +95,12 @@ class LinkShareActivity : AppCompatActivity(){
 
     private fun LinkSetter(url:String){
         val linkPlaces = LinkManager(this).LinkApi(url)
+        if (linkPlaces == null) {
+            textLink.text = Editable.Factory.getInstance().newEditable("")
+            Toast.makeText(this,"링크를 가져올 수 없습니다. 다시 시도해주세요",Toast.LENGTH_LONG).show()
+            return
+        }
+
         link = linkPlaces.link!!
         address.clear()
         address.addAll(linkPlaces.list)
@@ -93,7 +122,7 @@ class LinkShareActivity : AppCompatActivity(){
 
         var intent = Autocomplete.IntentBuilder(
             AutocompleteActivityMode.OVERLAY,
-            Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS)).build(this)
+            Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS,Place.Field.LAT_LNG,Place.Field.TYPES)).build(this)
         adapter?.setOnItemClickListener(object:AdapterAddressList.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 startActivityForResult(intent, 1)
@@ -112,6 +141,9 @@ class LinkShareActivity : AppCompatActivity(){
                 location.address = place.address
                 location.name=place.name
                 location.placeId=place.id
+                location.category = LocationCategoryParser.get(place.types!![0].name)
+                location.coordinates = "POINT (${place.latLng!!.latitude} ${place.latLng!!.longitude})"
+
                 adapter?.addAddress(location)
 
             } else if (requestCode == RestrictionsManager.RESULT_ERROR) {
@@ -138,7 +170,8 @@ class LinkShareActivity : AppCompatActivity(){
         buttonSend = findViewById(R.id.button_send)as Button
         buttonRef = findViewById(R.id.imageButton_ref)as ImageView
         recyclerView =findViewById(R.id.recyclerview_address)
-
+        checkWishlist = findViewById(R.id.check_wishlist) as CheckedTextView
+        checkWishlist.isChecked=true
         buttonSend.setOnClickListener({
             LinkSetter(textLink.text.toString())
         })
@@ -146,14 +179,31 @@ class LinkShareActivity : AppCompatActivity(){
         buttonCancel.setOnClickListener({ finish() })
         buttonOk.setOnClickListener({
             var article = Article()
-            article.customerId = 1
+            article.customer = (application as Routepang).customer
             article.image = link.image
             article.link = link
-            article.locationId = 1
+            article.location = adapter!!.getCheckedItem()
             article.summary = link.summary
+            if(article.location==null)
+            {
+                Toast.makeText(this,"위치를 지정해주세요",Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
             val ret = PostArticleConnector().post(article)
-            //if(ret.responceCode)
-            finish()
+            if(ret.responceCode==201)
+            {
+                Toast.makeText(this,"저장 완료!",Toast.LENGTH_LONG).show()
+            }else
+            {
+                Toast.makeText(this,"다시 한번 시도해주세요.",Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+            if(checkVisited.isChecked){
+
+            }
+            if(checkWishlist.isChecked){
+                
+            }
         })
         layoutRating.visibility = View.GONE
         checkVisited.setOnClickListener({

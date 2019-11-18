@@ -55,12 +55,18 @@ class LoadingActivity : AppCompatActivity() {
                 (application as Routepang).token = token!!
                 (application as Routepang).customer = customer!!
                 Log.i("autoLoginMode","auto Login as ${customer.customerId}")
-
+                if(token=="") throw NullPointerException()
+                if (customer.account=="") throw java.lang.NullPointerException()
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 overridePendingTransition(R.anim.translate_in_from_right,R.anim.translate_out_to_left)
                 finish()
             }catch (e:Exception){
+                val editor = sharedPreferences.edit()
+                editor.putString("loginToken", "")
+                editor.putString("autoLoginCustomer", "")
+                editor.putBoolean("autoLoginCheck",false)
+                editor.apply()
                 Toast.makeText(this,"자동 로그인에 실패했습니다. 다시 로그인해주세요.",Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)

@@ -9,12 +9,12 @@ interface RouteListBase {
     var type: RouteType
     var title: String
     var boundary: String
-    var regDate: Timestamp
-    var startDate: Timestamp
-    var endDate:Timestamp
+    var regDate: Long
+    var startDate: Long
+    var endDate:Long
     var parentId: Int
-    fun getDate(time: Timestamp): String {
-        return SimpleDateFormat("yyyy-mm-dd").format(time)
+    fun getDate(time: Long): String {
+        return SimpleDateFormat("yyyy-mm-dd").format(Timestamp(time))
     }
     fun getDateString():String{
         if (endDate.equals(startDate)) {

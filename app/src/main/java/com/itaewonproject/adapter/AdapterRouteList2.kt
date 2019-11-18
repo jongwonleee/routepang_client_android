@@ -1,3 +1,4 @@
+/*
 package com.itaewonproject.adapter
 
 import android.content.Context
@@ -22,14 +23,14 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class AdapterRouteList(val context: Context, folderArray: ArrayList<Folder>) :
+class AdapterRouteList2(val context: Context, folderArray: ArrayList<Folder>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private lateinit var listener: onItemClickListener
 
-    var list: ArrayList<Folder>
+    var list: ArrayList<RouteListBase>
     var folder: FolderListManager
-    val isChecked: HashSet<Folder>
+    val isChecked: HashSet<RouteListBase>
     init {
         list = ArrayList()
         isChecked = hashSetOf()
@@ -58,15 +59,15 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Folder>) :
             }
         }
         if (folder == null) {
-            folder = Folder("새로운 폴더", "바르셀로나", -1, arrayListOf(checkedList[0]),checkedList[0].customerId,checkedList[0].regDate)
+            folder = Folder("새로운 폴더", "바르셀로나", -1, arrayListOf(checkedList[0] as Route),checkedList[0].customerId,checkedList[0].regDate)
             checkedList.removeAt(0)
         }
         for (l in checkedList) {
             if (l.type ==  RouteType.FOLDER)
                 folder.routes.addAll((l as Folder).routes)
-            else folder.routes.add((l))
+            else folder.routes.add((l as Route))
         }
-        folder.calculateDate()
+        //folder.calculateDate()
         this.folder.removeChecked()
         this.folder.folders.add(folder)
         this.folder.setList()
@@ -235,7 +236,7 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Folder>) :
             list.clear()
             opened.clear()
             for (f in folders) {
-                /*f.parentId = 0
+                f.parentId = 0
                 if (f.routes==null) {
                     list.add(f)
                     indexFolder.put(list.size - 1, f)
@@ -252,21 +253,7 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Folder>) :
                         indexFolder.put(list.size - 1, f)
                     }
                 } else
-                    opened.add(false)*/
-                list.add(f)
-                indexFolder.put(list.size - 1, f)
-
-                if(f.opened){
-                    opened.add(true)
-                    for (c in f.routes) {
-                        list.add(c)
-                        opened.add(true)
-                        indexFolder.put(list.size - 1, f)
-                    }
-                }else
-                {
                     opened.add(false)
-                }
             }
         }
 
@@ -282,12 +269,13 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Folder>) :
         }
 
         fun remove(pos: Int) {
-            if (list[pos].parentId == 0) {
+            if (list[pos].parentId == -1) {
                 folders.remove(indexFolder[pos]!!)
             } else {
-                val par = list[list[pos].parentId]
-                folders[folders.indexOf(par)].routes.remove(list[pos])
+                val par = list[list[pos].parentId] as Folder
+                folders[folders.indexOf(par)].routes.remove(list[pos] as Route)
             }
         }
     }
 }
+*/

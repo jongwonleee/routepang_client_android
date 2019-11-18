@@ -23,19 +23,49 @@
                     android:id="@+id/constraintLayout3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#FFF"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                <Button
-                        android:id="@+id/button_sortList"
+                <View
+                        android:id="@+id/view22"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="#eeeeee"
+                        app:layout_constraintBottom_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                <LinearLayout
+                        android:id="@+id/button_sort"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="정보 많은 순"
+                        android:layout_marginBottom="1dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                            android:id="@+id/imageView12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="2dp"
+                            android:src="@drawable/ic_ico_filter_gray" />
+
+                    <TextView
+                            android:id="@+id/text_sort"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="날짜순"
+                            android:textColor="#6e6e6e"
+                            android:textSize="12sp" />
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

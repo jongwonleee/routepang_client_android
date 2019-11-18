@@ -9,7 +9,7 @@ public class Location {
 
     public long locationId;
 
-    public Point coordinates;
+    public String coordinates;
 
     public String placeId;
 

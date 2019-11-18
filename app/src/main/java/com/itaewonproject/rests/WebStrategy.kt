@@ -3,7 +3,7 @@ package com.itaewonproject.rests
 import android.os.AsyncTask
 import android.util.Log
 
-const val IS_OFFLINE: Boolean = false
+const val IS_OFFLINE: Boolean = true
 const val CLASS_DOMAIN:String = "http://www.routepang.com:9090/"
 /* jsonParsing 따로 객체화 시키기 : apiUtils
  * stretegy화. getResult method로 통일
@@ -33,7 +33,10 @@ abstract class WebStrategy {
     inner class Task : AsyncTask<String, Int, String>() {
 
         override fun doInBackground(vararg p0: String?): String {
-            if (isOffline) return mockData
+            if (isOffline){
+                statusCode=200
+                return mockData
+            }
             else {
                 val http =
                     HttpClient.Builder(method, createUrl(param)) // 포트번호,서블릿주소

@@ -40,19 +40,36 @@
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <com.itaewonproject.customviews.ClearEditText
+            android:id="@+id/edit_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/box_grey_radius_5dp"
+            android:ems="10"
+            android:fontFamily="@font/notosanscjkkr_regular"
+            android:hint="E-Mail"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_id" />
+
+    <com.itaewonproject.customviews.ClearEditText
             android:id="@+id/edit_password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="11dp"
             android:background="@drawable/box_grey_radius_5dp"
             android:ems="10"
+            android:fontFamily="@font/notosanscjkkr_regular"
             android:hint="password"
             android:inputType="textPassword"
             android:paddingLeft="20dp"
-            android:fontFamily="@font/notosanscjkkr_regular"
             app:layout_constraintEnd_toEndOf="@+id/edit_id"
             app:layout_constraintStart_toStartOf="@+id/edit_id"
-            app:layout_constraintTop_toBottomOf="@+id/edit_id" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_email" />
 
     <com.itaewonproject.customviews.ClearEditText
             android:id="@+id/edit_name"

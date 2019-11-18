@@ -6,7 +6,10 @@ import android.os.StrictMode
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -44,7 +47,8 @@ class LocationActivity : AppCompatActivity(),  Serializable,
 
     private lateinit var latlng: LatLng
     private lateinit var recyclerView: RecyclerView
-    private lateinit var buttonSort: Button
+    private lateinit var buttonSort: LinearLayout
+    private lateinit var textSort:TextView
     private lateinit var appBarLayout: AppBarLayout
     private lateinit var mapFragment: MapFragment
     private lateinit var centerLatlng: LatLng
@@ -52,10 +56,10 @@ class LocationActivity : AppCompatActivity(),  Serializable,
     private var centerZoom: Float = 0f
 
     private var list = ArrayList<Location>()
-    private var zoom = 20f
     private val context = this
     private lateinit var adapter: AdapterLocationList
-
+    private val arraySortname = listOf("별점 순","소요 시간 순","관련 게시글 순")
+    private var sortIndex = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location_list)
@@ -77,8 +81,9 @@ class LocationActivity : AppCompatActivity(),  Serializable,
         mapFragment = fragmentManager.findFragmentById(R.id.map) as MapFragment
         mapFragment.getMapAsync(this)
 
-        buttonSort = findViewById(R.id.button_sortList) as Button
-        appBarLayout = findViewById(R.id.appBar_layout) as AppBarLayout
+        buttonSort = findViewById(R.id.button_sort)
+        appBarLayout = findViewById(R.id.appBar_layout)
+        textSort = findViewById(R.id.text_sort)
 
 
 
@@ -108,6 +113,12 @@ class LocationActivity : AppCompatActivity(),  Serializable,
         })
     }
 
+    fun showArticleActivity(location: Location){
+        var intent = Intent(context, ArticleActivity::class.java)
+        intent.putExtra("Location", location)
+        startActivity(intent)
+    }
+
     private fun setListViewOption() {
         recyclerView = findViewById(R.id.recyclerView_locationList) as RecyclerView
         for (l in list) {
@@ -115,13 +126,11 @@ class LocationActivity : AppCompatActivity(),  Serializable,
         }
 
         adapter = AdapterLocationList(this, list)
+        sortList()
 
         adapter.setOnItemClickClickListener(object : AdapterLocationList.onItemClickListener {
             override fun onItemClick(v: View, position: Int) {
-                var intent = Intent(context, ArticleActivity::class.java)
-                intent.putExtra("Location", adapter.output[position])
-                startActivity(intent)
-
+                showArticleActivity(adapter.output[position])
             }
         })
 
@@ -132,12 +141,21 @@ class LocationActivity : AppCompatActivity(),  Serializable,
         recyclerView.setHasFixedSize(true)
 
 
-        buttonSort.setOnClickListener {
-            list.sortBy { it.rating }
-            list.reverse()
-            adapter.output = list
-            adapter.notifyDataSetChanged()
+        buttonSort.setOnClickListener {sortList()
         }
+    }
+
+    private fun sortList(){
+        when(sortIndex)
+        {
+            0->adapter.output.sortBy { it.rating}
+            1->adapter.output.sortBy { it.usedTime}
+            else->adapter.output.sortBy { it.articleCount}
+        }
+
+        textSort.text = arraySortname[sortIndex]
+        adapter.notifyDataSetChanged()
+        sortIndex = (sortIndex+1)%3
     }
 
     override fun onMapReady(googleMap: GoogleMap) {

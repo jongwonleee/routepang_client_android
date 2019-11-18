@@ -49,7 +49,8 @@ class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewon
         private var imgSmall: RoundedImageView
         private var imgBig: RoundedImageView
         private val imageMeasure:ImageView
-        private var buttonRef: ImageView
+        private val buttonRef: ImageView
+        private val textName:TextView
         private var layoutArticle: ConstraintLayout
         private var articleId: Long = 0
         var imgSmallWidth=0
@@ -59,6 +60,7 @@ class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewon
         val pixels = (70 * scale + 0.5f).toInt()
         init {
             summary = itemView.findViewById(R.id.text_summary) as TextView
+            textName = itemView.findViewById(R.id.text_name)
             imgSmall = itemView.findViewById(R.id.image_article_small) as RoundedImageView
             imgBig = itemView.findViewById(R.id.image_arcticle_big) as RoundedImageView
             buttonRef = itemView.findViewById(R.id.imageButton_ref) as ImageView
@@ -209,6 +211,7 @@ class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewon
             summary.text = output.summary
             summary.maxLines=3
             imgBig.visibility=View.GONE
+            textName.text = output.customer.reference
 
         }
     }

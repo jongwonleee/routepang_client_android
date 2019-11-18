@@ -3,9 +3,9 @@ package com.itaewonproject.model.sender;
 
 public class Article{
 
-    public long locationId;
+    public Location location;
 
-    public long customerId;
+    public Customer customer;
 
     public Link link;
 

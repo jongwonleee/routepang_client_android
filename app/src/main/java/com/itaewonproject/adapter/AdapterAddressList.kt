@@ -40,6 +40,11 @@ class AdapterAddressList(val context: Context, val locs: ArrayList<Location>) : 
         notifyDataSetChanged()
     }
 
+    fun getCheckedItem():Location?{
+        if(locs.size==0) return null
+        else return locs[checkedIndex]
+    }
+
     interface OnItemClickListener {
         fun onItemClick(position: Int)
     }

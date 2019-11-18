@@ -1,6 +1,7 @@
 package com.itaewonproject.mypage
 
 import android.os.Bundle
+import android.util.Log
 import android.view.InflateException
 import android.view.LayoutInflater
 import android.view.View
@@ -10,14 +11,15 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.itaewonproject.APIs
 import com.itaewonproject.JsonParser
 import com.itaewonproject.R
 import com.itaewonproject.Routepang
 import com.itaewonproject.adapter.AdapterRouteList
-import com.itaewonproject.model.receiver.Folder
-import com.itaewonproject.model.receiver.Route
+import com.itaewonproject.model.receiver.*
 import com.itaewonproject.rests.get.GetRouteConnector
+import java.sql.Timestamp
 
 class RouteListFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
@@ -28,7 +30,7 @@ class RouteListFragment : Fragment() {
     private lateinit var viewDivider:View
     private fun setListViewOption(view: View) {
         val ret = GetRouteConnector().get((activity!!.application as Routepang).customer.customerId)
-        list = JsonParser().listJsonParsing(ret,Folder::class.java)
+        list = JsonParser().listJsonParsing(ret, Folder::class.java)
         adapter = AdapterRouteList(view.context, list)
         adapter.setOnItemClickClickListener(object : AdapterRouteList.onItemClickListener {
             override fun onItemLongClick(size: Int) {
@@ -38,17 +40,14 @@ class RouteListFragment : Fragment() {
             }
 
             override fun onItemClick(v: View, position: Int) {
-                (parentFragment as RouteFragment).toEditFragment(adapter.list[position] as Route)
+                (parentFragment as RouteFragment).toEditFragment(adapter.list[position] as Folder)
             }
         })
 
         recyclerView.adapter = adapter
         val linearLayoutManager = LinearLayoutManager(view.context)
         recyclerView.layoutManager = linearLayoutManager
-        val dividerItemDecoration = DividerItemDecoration(context,linearLayoutManager.orientation)
-        dividerItemDecoration.setDrawable(context!!.resources.getDrawable(R.drawable.recycler_divider))
         recyclerView.setHasFixedSize(true)
-        recyclerView.addItemDecoration(dividerItemDecoration)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -8,18 +8,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import com.itaewonproject.R
 import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.mypage.WishlistMapFragment
+import com.itaewonproject.search.LocationActivity
 
 class MarkerUtils(val map: GoogleMap, val con: Context) {
     val view: View
     val image: ImageView
     val latLoc = HashMap<LatLng, Location>()
     var selectedMarker: Marker?
-    var wishlistMapFragment:WishlistMapFragment?=null
     var isWishlist=false
     val imageList = listOf(listOf(
         R.drawable.ic_map_pin_fill_blue,
@@ -36,10 +37,6 @@ class MarkerUtils(val map: GoogleMap, val con: Context) {
             R.drawable.ic_map_pin_not_fill_yellow
         ))
 
-    constructor(map:GoogleMap, fragment: WishlistMapFragment):this(map,fragment.context!!){
-        isWishlist=true
-        wishlistMapFragment = fragment
-    }
     init {
         view = LayoutInflater.from(con).inflate(R.layout.view_route_marker, null)
         image = view.findViewById(R.id.image) as ImageView
@@ -47,10 +44,11 @@ class MarkerUtils(val map: GoogleMap, val con: Context) {
         map.setOnMarkerClickListener {
             if (it != null && selectedMarker != null) {
                 if (selectedMarker!!.position == it.position) {
+                    if(isWishlist) (con as WishlistMapFragment).showDetail(null)
+                    else (con as LocationActivity).showArticleActivity(latLoc[selectedMarker!!.position]!!)
                     changeSelectedMarker(null)
                     selectedMarker!!.remove()
                     selectedMarker =null
-                    if(isWishlist) wishlistMapFragment!!.showDetail(null)
                 } else {
                     changeSelectedMarker(it)
 
@@ -71,7 +69,8 @@ class MarkerUtils(val map: GoogleMap, val con: Context) {
         markerOptions.position(position)
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFroview(view)))
         val marker = map.addMarker(markerOptions)
-        if(isWishlist && isSelected) wishlistMapFragment!!.showDetail(location)
+        marker.showInfoWindow()
+        if(isWishlist && isSelected) (con as WishlistMapFragment).showDetail(location)
         latLoc.put(position, location)
         return marker
     }
