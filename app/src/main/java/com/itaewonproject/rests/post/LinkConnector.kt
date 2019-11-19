@@ -3,7 +3,6 @@ package com.itaewonproject.rests.post
 import android.util.Log
 import com.google.gson.Gson
 import com.itaewonproject.model.sender.Link
-import com.itaewonproject.rests.PostStrategy
 import com.itaewonproject.rests.WebResponce
 
 class LinkConnector : PostStrategy() {

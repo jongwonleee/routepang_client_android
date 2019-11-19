@@ -1,7 +1,6 @@
 package com.itaewonproject.rests.get
 
 import com.google.android.gms.maps.model.LatLng
-import com.itaewonproject.rests.GetStrategy
 import com.itaewonproject.rests.WebResponce
 
 class GetLocationConnector : GetStrategy() {

@@ -2,7 +2,6 @@ package com.itaewonproject.rests.post
 
 import com.google.gson.Gson
 import com.itaewonproject.model.receiver.Location
-import com.itaewonproject.rests.PostStrategy
 import com.itaewonproject.rests.WebResponce
 
 class PostBasketConnector : PostStrategy() {

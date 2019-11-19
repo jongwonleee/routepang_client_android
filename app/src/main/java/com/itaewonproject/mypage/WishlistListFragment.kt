@@ -19,11 +19,11 @@ import java.lang.NullPointerException
 class WishlistListFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     lateinit var list: ArrayList<Location>
-    var adapter:AdapterLocationList? =null
+    lateinit var adapter:AdapterLocationList
     private fun setListViewOption(view: View) {
         list = (parentFragment as WishlistFragment).list
         recyclerView = view.findViewById(R.id.wishlist_RecyclerView) as RecyclerView
-        val adapter = AdapterLocationList(view.context, list)
+        adapter = AdapterLocationList(view.context, list)
         adapter.setOnItemClickClickListener(object : AdapterLocationList.onItemClickListener {
             override fun onItemClick(v: View, position: Int) {
                 var intent = Intent(context, ArticleActivity::class.java)
@@ -57,7 +57,7 @@ class WishlistListFragment : Fragment() {
         Log.i("is wishlist list resumed?","yes!!!!")
         try{
             list = (parentFragment as WishlistFragment).list
-            if(adapter!=null) adapter!!.refreshList(list)
+            adapter.refreshList(list)
         }catch (e: NullPointerException){
             e.printStackTrace()
         }

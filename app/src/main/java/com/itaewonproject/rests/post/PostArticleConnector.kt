@@ -1,9 +1,7 @@
 package com.itaewonproject.rests.post
 
 import com.google.gson.Gson
-import com.itaewonproject.APIs
 import com.itaewonproject.model.sender.Article
-import com.itaewonproject.rests.PostStrategy
 import com.itaewonproject.rests.WebResponce
 
 class PostArticleConnector : PostStrategy() {

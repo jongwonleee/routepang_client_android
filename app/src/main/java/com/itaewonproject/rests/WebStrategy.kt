@@ -40,7 +40,7 @@ abstract class WebStrategy {
             else {
                 val http =
                     HttpClient.Builder(method, createUrl(param)) // 포트번호,서블릿주소
-                Log.i("!!url", http.url)
+                Log.i("rest url", method+":: "+http.url)
                 // Parameter 를 전송한다.
                 if (p0.size> 0)
                     http.setParameters(p0[0])
@@ -54,7 +54,7 @@ abstract class WebStrategy {
 
                 // 응답 상태코드 가져오기
                 statusCode = post.httpStatusCode
-
+                Log.i("rest status",statusCode.toString())
                 // 응답 본문 가져오기
                 return post.body
             }

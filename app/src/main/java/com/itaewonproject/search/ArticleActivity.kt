@@ -17,10 +17,10 @@ import com.itaewonproject.maputils.CategoryIcon
 import com.itaewonproject.model.receiver.Article
 import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.model.sender.Product
-import com.itaewonproject.rests.GetStrategy
+import com.itaewonproject.rests.get.GetStrategy
 import com.itaewonproject.rests.WebResponce
+import com.itaewonproject.rests.delete.DeleteProductConnector
 import com.itaewonproject.rests.get.GetArticleConnector
-import com.itaewonproject.rests.post.PostBasketConnector
 import com.itaewonproject.rests.post.PostProductConnector
 import org.json.JSONArray
 import org.json.JSONException
@@ -51,6 +51,8 @@ class ArticleActivity : AppCompatActivity() {
     private lateinit var title: TextView
     private lateinit var buttonAddBasket: TextView
     private lateinit var category:ImageView
+
+    private var product:com.itaewonproject.model.receiver.Product? = null
     private var list = ArrayList<com.itaewonproject.model.receiver.Article>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,6 +61,7 @@ class ArticleActivity : AppCompatActivity() {
         setContentView(R.layout.activity_article_list)
 
         location = intent.getSerializableExtra("Location") as Location
+        product = (application as Routepang).hasProduct(location.getServerModel())
         placeId = location.placeId
 
         rating = findViewById(R.id.ratingBar_location) as RatingBar
@@ -92,18 +95,39 @@ class ArticleActivity : AppCompatActivity() {
         websiteRow.visibility=View.GONE
         tableInfo.visibility=View.GONE
 
+        buttonAddBasket.text = if(product!=null) "-제거" else "+추가"
+
         buttonAddBasket.setOnClickListener({
-            val product = Product()
-            product.location=location.getServerModel()
-            val ret = PostProductConnector().post(product,(application as Routepang).customer.customerId)
-            if(ret.responceCode!=201){
-                Toast.makeText(this,"위시리스트에 추가할 수 없습니다.",Toast.LENGTH_LONG).show()
+            if(product!=null){
+                val ret = DeleteProductConnector().delete(product!!.toSenderModel(),(application as Routepang).customer.customerId)
+                if(ret.responceCode!=200){
+                    Toast.makeText(this,"위시리스트에서 제거할 수 없습니다.",Toast.LENGTH_LONG).show()
+                }
+                else
+                {
+                    Toast.makeText(this,"위시리스트에서 제거했습니다!",Toast.LENGTH_LONG).show()
+                    (application as Routepang).wishlist.remove(product!!)
+                    Log.i("wishlist count",(application as Routepang).wishlist.size.toString())
+                    product=null
+                }
             }
             else
             {
-                Toast.makeText(this,"위시리스트에 추가했습니다!",Toast.LENGTH_LONG).show()
-                (application as Routepang).wishlist.add(product.receiverModel)
+                val product = Product()
+                product.location=location.getServerModel()
+                val ret = PostProductConnector().post(product,(application as Routepang).customer.customerId)
+                if(ret.responceCode!=201){
+                    Toast.makeText(this,"위시리스트에 추가할 수 없습니다.",Toast.LENGTH_LONG).show()
+                }
+                else
+                {
+                    Toast.makeText(this,"위시리스트에 추가했습니다!",Toast.LENGTH_LONG).show()
+                    (application as Routepang).wishlist.add(product.receiverModel)
+                    this.product=product.receiverModel
+                }
             }
+            buttonAddBasket.text = if(product!=null) "-제거" else "+추가"
+
         })
 
         setListViewOption()

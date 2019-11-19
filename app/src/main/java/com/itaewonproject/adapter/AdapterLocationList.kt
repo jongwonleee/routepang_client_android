@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.APIs
 import com.itaewonproject.maputils.CategoryIcon
 import com.itaewonproject.R
+import com.itaewonproject.Routepang
 import com.itaewonproject.model.receiver.Location
 
 class AdapterLocationList(val context: Context, var output: ArrayList<Location>) : RecyclerView.Adapter<AdapterLocationList.ViewHolder>() {
@@ -39,6 +40,7 @@ class AdapterLocationList(val context: Context, var output: ArrayList<Location>)
 
     fun refreshList(list:ArrayList<Location>){
         this.output =list
+        Log.i("wishlist count",list.size.toString())
         notifyDataSetChanged()
     }
 

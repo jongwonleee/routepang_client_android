@@ -1,6 +1,5 @@
 package com.itaewonproject.rests.get
 
-import com.itaewonproject.rests.GetStrategy
 import com.itaewonproject.rests.WebResponce
 
 class GetMypageConnector : GetStrategy() {

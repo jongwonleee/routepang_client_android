@@ -1,10 +1,8 @@
 package com.itaewonproject.rests.get
 
-import android.util.Log
 import com.google.gson.Gson
 import com.itaewonproject.APIs
 import com.itaewonproject.model.sender.Link
-import com.itaewonproject.rests.GetStrategy
 import com.itaewonproject.rests.WebResponce
 
 class GetReviewConnector : GetStrategy() {

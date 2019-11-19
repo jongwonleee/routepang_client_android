@@ -80,6 +80,7 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
 
         selectedMarker = null
         map.setOnMarkerClickListener {
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(it.position,if(map.cameraPosition.zoom<15f)15f else map.cameraPosition.zoom))
             if (editMode) {
                 if (it != null && selectedMarker != null) {
                     if (selectedMarker!!.position == it.position) {

@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import com.itaewonproject.R
@@ -43,6 +44,7 @@ class MarkerUtils(val map: GoogleMap, val con: Context) {
         image = view.findViewById(R.id.image) as ImageView
         selectedMarker = null
         map.setOnMarkerClickListener {
+            map.moveCamera(CameraUpdateFactory.newLatLng(it.position))
             if (it != null && selectedMarker != null) {
                 if (selectedMarker!!.position == it.position) {
                     if(isWishlist) (fragment as WishlistMapFragment).showDetail(null)

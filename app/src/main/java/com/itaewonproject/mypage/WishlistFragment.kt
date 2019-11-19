@@ -25,6 +25,8 @@ class WishlistFragment : Fragment() {
     private lateinit var viewPager: ViewPager
     var list: ArrayList<Location> = arrayListOf()
 
+    private val listFragment = WishlistListFragment()
+    private val mapFragment= WishlistMapFragment()
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
@@ -51,13 +53,26 @@ class WishlistFragment : Fragment() {
         viewPager = view.findViewById(R.id.viewPager) as ViewPager
 
         var adapter = TabPagerAdapter(childFragmentManager, 2)
-        adapter.addPage(WishlistListFragment(), "리스트")
-        adapter.addPage(WishlistMapFragment(), "지도")
+        adapter.addPage(listFragment, "리스트")
+        adapter.addPage(mapFragment, "지도")
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)
         tabLayout.clipToOutline=true
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.i("is wishlist resumed?","yes!!!!")
+        try{
+            val products = (activity!!.application as Routepang).wishlist
+            list.clear()
+            for( p in products){
+                list.add(p.location)
+            }
+        }catch (e: NullPointerException){
+            e.printStackTrace()
+        }
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_wishlist, container, false)
     }
