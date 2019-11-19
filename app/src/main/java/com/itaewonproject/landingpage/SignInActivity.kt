@@ -12,22 +12,22 @@ import com.itaewonproject.rests.post.SignInConnector
 
 class SignInActivity : AppCompatActivity() {
 
-    lateinit var editID: ClearEditText
-    lateinit var editPW: ClearEditText
-    lateinit var editPWCheck: ClearEditText
-    lateinit var editName: ClearEditText
-    lateinit var buttonSignin: Button
-    lateinit var editEmail:ClearEditText
+    private lateinit var editID: ClearEditText
+    private lateinit var editPW: ClearEditText
+    private lateinit var editPWCheck: ClearEditText
+    private lateinit var editName: ClearEditText
+    private lateinit var buttonSignin: Button
+    private lateinit var editEmail:ClearEditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
-        editID = findViewById(R.id.edit_id) as ClearEditText
-        editPW = findViewById(R.id.edit_password) as ClearEditText
-        editPWCheck = findViewById(R.id.edit_password_check) as ClearEditText
-        editName = findViewById(R.id.edit_name) as ClearEditText
-        editEmail = findViewById(R.id.edit_email) as ClearEditText
-        buttonSignin = findViewById(R.id.button_link_share) as Button
-        buttonSignin.setOnClickListener({
+        editID = findViewById<ClearEditText>(R.id.edit_id)
+        editPW = findViewById<ClearEditText>(R.id.edit_password)
+        editPWCheck = findViewById<ClearEditText>(R.id.edit_password_check)
+        editName = findViewById<ClearEditText>(R.id.edit_name)
+        editEmail = findViewById<ClearEditText>(R.id.edit_email)
+        buttonSignin = findViewById<Button>(R.id.button_link_share)
+        buttonSignin.setOnClickListener {
             val empty = Editable.Factory.getInstance().newEditable("")
             val id = editID.text.toString().trim()
             val pw = editPW.text.toString().trim()
@@ -49,7 +49,7 @@ class SignInActivity : AppCompatActivity() {
                 editName.text=empty
                 return@setOnClickListener
             }
-            if(!pw.equals(check)){
+            if(pw != check){
                 Toast.makeText(this,"비밀번호가 일치하지 않습니다.",Toast.LENGTH_LONG).show()
                 editPW.text = empty
                 editPWCheck.text = empty
@@ -64,14 +64,13 @@ class SignInActivity : AppCompatActivity() {
             if(ret.responceCode==201){
                 Toast.makeText(this,"환영합니다!",Toast.LENGTH_LONG).show()
                 finish()
-            }else
-            {
+            }else {
                 Toast.makeText(this,"회원가입에 실패했습니다. 다시 시도해주세요.",Toast.LENGTH_LONG).show()
                 editName.text=empty
                 editID.text=empty
                 editPWCheck.text=empty
                 editPW.text=empty
             }
-        })
+        }
     }
 }

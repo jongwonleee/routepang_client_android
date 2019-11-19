@@ -73,7 +73,7 @@ class HttpClient {
 
             val parameter = builder!!.getParameters()
             Log.i("setting body", parameter)
-            if (parameter != null && parameter.length > 0) {
+            if (parameter.isNotEmpty()) {
                 var outputStream: OutputStream? = null
                 try {
                     outputStream = connection!!.outputStream
@@ -144,10 +144,6 @@ class HttpClient {
                 if (param != null) {
                     this.parameters = param
                 }
-            }
-
-            fun appendParameter(param: String) {
-                this.parameters.plus(param)
             }
 
             fun getParameters(): String {

@@ -1,6 +1,8 @@
 package com.itaewonproject.model.sender;
 
-public class Customer {
+import java.io.Serializable;
+
+public class Customer implements Serializable {
 
     public long customerId;
 

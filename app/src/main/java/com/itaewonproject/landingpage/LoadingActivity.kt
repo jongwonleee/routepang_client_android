@@ -19,8 +19,6 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.messaging.FirebaseMessaging
-import com.google.gson.Gson
 import com.itaewonproject.JsonParser
 import com.itaewonproject.R
 import com.itaewonproject.Routepang
@@ -28,23 +26,22 @@ import com.itaewonproject.linkshare.ClipboardListener
 import com.itaewonproject.mainservice.MainActivity
 import com.itaewonproject.model.sender.Customer
 import com.itaewonproject.rests.authorization
-import com.itaewonproject.rests.get.GetCustomerConnector
 import java.lang.Exception
 
 class LoadingActivity : AppCompatActivity() {
 
     private lateinit var slogan:TextView
     lateinit var clipboard: ClipboardManager
-    lateinit var sharedPreferences: SharedPreferences
+    private lateinit var sharedPreferences: SharedPreferences
 
     private var isAutoLogin = false
 
-    lateinit var serviceIntent: Intent
+    private lateinit var serviceIntent: Intent
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loading)
         //getHashKey(this)
-        slogan = findViewById(R.id.text_slogan) as TextView
+        slogan = findViewById<TextView>(R.id.text_slogan)
         sharedPreferences = getSharedPreferences("autoLogin", Context.MODE_PRIVATE)
         slogan.text= Html.fromHtml("원하는 정보만 <b>루팡!</b><br>나만의 루트가 <b>팡팡!</b>",Html.FROM_HTML_MODE_LEGACY)
 
@@ -69,7 +66,7 @@ class LoadingActivity : AppCompatActivity() {
                 val token = sharedPreferences.getString("loginToken","")
                 val customer = JsonParser().objectJsonParsing(sharedPreferences.getString("autoLoginCustomer","{}")!!,Customer::class.java)
                 authorization = token!!
-                (application as Routepang).token = token!!
+                (application as Routepang).token = token
                 (application as Routepang).customer = customer!!
                 Log.i("autoLoginMode","auto Login as ${customer.customerId}")
                 Log.i("autoLoginMode","auto Login as $token")
@@ -95,11 +92,11 @@ class LoadingActivity : AppCompatActivity() {
         }
 
         //FIXME 나중에 로그인 완성되면 삭제
-        slogan.setOnClickListener({
+        slogan.setOnClickListener {
             val intent = Intent(this,LoginActivity::class.java)
             startActivity(intent)
             finish()
-        })
+        }
         getPermissions()
     }
 
@@ -108,12 +105,12 @@ class LoadingActivity : AppCompatActivity() {
     private fun getPermissions() {
         val pm = applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
         var isWhiteListing = false
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             isWhiteListing = pm.isIgnoringBatteryOptimizations(applicationContext.packageName)
         }
         if (!isWhiteListing) {
             val intent = Intent()
-            intent.action = android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+            intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
             intent.data = Uri.parse("package:" + applicationContext.packageName)
             startActivity(intent)
 
@@ -128,7 +125,7 @@ class LoadingActivity : AppCompatActivity() {
         }
     }
 
-    val REQUEST_CODE = 10101
+    private val REQUEST_CODE = 10101
 
     @TargetApi(Build.VERSION_CODES.M)
     @RequiresApi(Build.VERSION_CODES.M)

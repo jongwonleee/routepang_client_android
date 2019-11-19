@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.R
 import com.itaewonproject.RatioTransformation
@@ -23,10 +22,10 @@ class AdapterImageList(val context: Context, var images: ArrayList<String>?) : R
     }
 
     override fun getItemCount(): Int {
-        if (images != null) {
-            return images!!.size
+        return if (images != null) {
+            images!!.size
         } else {
-            return 0
+            0
         }
     }
 

@@ -32,7 +32,7 @@ class RouteListFragment : Fragment() {
         val ret = GetRouteListConnector().get((activity!!.application as Routepang).customer.customerId)
         list = JsonParser().listJsonParsing(ret, Route::class.java)
         adapter = AdapterRouteList(view.context, list)
-        adapter.setOnItemClickClickListener(object : AdapterRouteList.onItemClickListener {
+        adapter.setOnItemClickClickListener(object : AdapterRouteList.OnItemClickListener {
             override fun onItemLongClick(size: Int) {
                 buttonMakeRoute.visibility = if (size> 1) View.VISIBLE else View.GONE
                 buttonDelete.visibility = if(size>0) View.VISIBLE else View.GONE
@@ -40,7 +40,7 @@ class RouteListFragment : Fragment() {
             }
 
             override fun onItemClick(v: View, position: Int) {
-                (parentFragment as RouteFragment).toEditFragment(adapter.list[position] as Route)
+                (parentFragment as RouteFragment).toEditFragment(adapter.list[position])
             }
         })
 
@@ -58,21 +58,21 @@ class RouteListFragment : Fragment() {
         buttonNewRoute = view.findViewById(R.id.button_new_route)
         buttonMakeRoute.visibility = View.GONE
         buttonDelete.visibility = View.GONE
-        buttonMakeRoute.setOnClickListener({
+        buttonMakeRoute.setOnClickListener {
             adapter.folderChecked()
             buttonMakeRoute.visibility = View.GONE
             buttonDelete.visibility = View.GONE
-        })
-        buttonDelete.setOnClickListener({
+        }
+        buttonDelete.setOnClickListener {
             adapter.removeRoutes()
             buttonMakeRoute.visibility = View.GONE
             buttonDelete.visibility = View.GONE
-        })
-        buttonNewRoute.setOnClickListener({
+        }
+        buttonNewRoute.setOnClickListener {
             adapter.newRoute()
             val ret = PostRouteListConnector().post(adapter.folder.folders,(activity!!.application as Routepang).customer.customerId)
             Log.i("post routes","${ret.responceCode} ${ret.body}")
-        })
+        }
         setListViewOption(view)
     }
 

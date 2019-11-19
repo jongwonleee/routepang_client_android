@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
@@ -30,7 +29,6 @@ import com.itaewonproject.*
 import com.itaewonproject.R
 import com.itaewonproject.adapter.AdapterMarkerList
 import com.itaewonproject.model.receiver.Location
-import com.itaewonproject.rests.get.GetLocationConnector
 import com.itaewonproject.maputils.MyLocationSetting.Companion.TAG
 import com.itaewonproject.maputils.MyLocationSetting.Companion.con
 import com.itaewonproject.maputils.MyLocationSetting.Companion.mGoogleApiClient
@@ -147,55 +145,53 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,
             .build()
 
 
-        buttonEdit.setOnClickListener({
+        buttonEdit.setOnClickListener {
             editMode = !editMode
             if (editMode) {
-                    layoutMarkerList.visibility = View.VISIBLE
-                    layoutDetail.visibility=View.GONE
-                    textTitle.visibility = View.INVISIBLE
-                    editTitle.visibility = View.VISIBLE
-                    buttonEditor.visibility = View.GONE
-                } else {
-                    layoutMarkerList.visibility = View.GONE
-                    layoutDetail.visibility=View.GONE
-                    textTitle.visibility = View.VISIBLE
-                    editTitle.visibility = View.INVISIBLE
-                    buttonEditor.visibility = View.VISIBLE
-                    routeUtils.setBoundary(list)
-                    for( p in list){
-                        val ret = PutRouteConnector().put(p.toSenderModel(),(parentFragment as RouteFragment).route.routeId)
-                        if(ret.responceCode==200 || ret.responceCode==201)
-                        {
-                            Toast.makeText(con,"루트에 반영되었습니다.",Toast.LENGTH_LONG).show()
-                        }else
-                        {
-                            Toast.makeText(con,"루트에 반영 실패했습니다.",Toast.LENGTH_LONG).show()
-                        }
+                layoutMarkerList.visibility = View.VISIBLE
+                layoutDetail.visibility=View.GONE
+                textTitle.visibility = View.INVISIBLE
+                editTitle.visibility = View.VISIBLE
+                buttonEditor.visibility = View.GONE
+            } else {
+                layoutMarkerList.visibility = View.GONE
+                layoutDetail.visibility=View.GONE
+                textTitle.visibility = View.VISIBLE
+                editTitle.visibility = View.INVISIBLE
+                buttonEditor.visibility = View.VISIBLE
+                routeUtils.setBoundary(list)
+                for( p in list){
+                    val ret = PutRouteConnector().put(p.toSenderModel(),(parentFragment as RouteFragment).route.routeId)
+                    if(ret.responceCode==200 || ret.responceCode==201) {
+                        Toast.makeText(con,"루트에 반영되었습니다.",Toast.LENGTH_LONG).show()
+                    }else {
+                        Toast.makeText(con,"루트에 반영 실패했습니다.",Toast.LENGTH_LONG).show()
                     }
                 }
+            }
             routeUtils.editMode = editMode
-        })
+        }
         textTitle.visibility = View.VISIBLE
         editTitle.visibility = View.INVISIBLE
         layoutMarkerList.visibility = View.GONE
         layoutDetail.visibility=View.GONE
 
         buttonEditor = view.findViewById(R.id.image_editor)
-        buttonEditor.setOnClickListener({
+        buttonEditor.setOnClickListener {
             if (!editMode)(parentFragment as RouteFragment).toFragment(false)
-        })
-        buttonBack.setOnClickListener({
+        }
+        buttonBack.setOnClickListener {
             (parentFragment as RouteFragment).toListFragment()
-        })
+        }
 
         autoCompleteButton = view.findViewById(R.id.button_search) as CardView
 
         Places.initialize(activity!!.applicationContext, context!!.getString(R.string.google_key))
         Places.createClient(context!!)
-        var intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG)).build(context!!)
-       autoCompleteButton.setOnClickListener({
-            startActivityForResult(intent, 1)
-        })
+        val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG)).build(context!!)
+       autoCompleteButton.setOnClickListener {
+           startActivityForResult(intent, 1)
+       }
 
         setListViewOption(view)
     }
@@ -215,21 +211,21 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,
             this.title.text = location.name
             this.rating.rating = location.rating
             this.imageCategory.setImageResource(CategoryIcon.get(location.category!!))
-            this.usedTime.text = "${APIs.secToString(location.usedTime.toInt())}"
+            this.usedTime.text = APIs.secToString(location.usedTime.toInt())
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
-                var place = Autocomplete.getPlaceFromIntent(data!!)
+                val place = Autocomplete.getPlaceFromIntent(data!!)
                 if (place.latLng != null) {
                     map.clear()
                     map.moveCamera(CameraUpdateFactory.newLatLng(place.latLng))
                     map.animateCamera(CameraUpdateFactory.zoomTo(15f))
                 }
             } else if (requestCode == RESULT_ERROR) {
-                var status = Autocomplete.getStatusFromIntent(data!!)
+                val status = Autocomplete.getStatusFromIntent(data!!)
                 Log.e(TAG, status.statusMessage)
             }
         }
@@ -266,23 +262,23 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,
 
 
     override fun onStart() {
-        if(mGoogleApiClient != null && mGoogleApiClient!!.isConnected== false){
+        if(mGoogleApiClient != null && !mGoogleApiClient!!.isConnected){
 
-            Log.d(TAG, "onStart: mGoogleApiClient connect");
-            mGoogleApiClient!!.connect();
+            Log.d(TAG, "onStart: mGoogleApiClient connect")
+            mGoogleApiClient!!.connect()
         }
 
-        super.onStart();
+        super.onStart()
     }
 
     override fun onResume() {
         mapView.onResume()
-        super.onResume();
+        super.onResume()
         mMoveMapByAPI=true
-        if (mGoogleApiClient!!.isConnected()) {
+        if (mGoogleApiClient!!.isConnected) {
 
-            Log.d(TAG, "onResume : call startLocationUpdates");
-            if (!mRequestingLocationUpdates) startLocationUpdates();
+            Log.d(TAG, "onResume : call startLocationUpdates")
+            if (!mRequestingLocationUpdates) startLocationUpdates()
         }
 
     }
@@ -290,16 +286,16 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,
     override fun onStop() {
         if (mRequestingLocationUpdates) {
 
-            Log.d(TAG, "onStop : call stopLocationUpdates");
-            stopLocationUpdates();
+            Log.d(TAG, "onStop : call stopLocationUpdates")
+            stopLocationUpdates()
         }
 
-        if ( mGoogleApiClient!!.isConnected()) {
+        if ( mGoogleApiClient!!.isConnected) {
 
-            Log.d(TAG, "onStop : mGoogleApiClient disconnect");
-            mGoogleApiClient!!.disconnect();
+            Log.d(TAG, "onStop : mGoogleApiClient disconnect")
+            mGoogleApiClient!!.disconnect()
         }
 
-        super.onStop();
+        super.onStop()
     }
 }

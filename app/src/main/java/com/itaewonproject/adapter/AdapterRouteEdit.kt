@@ -24,7 +24,7 @@ import kotlin.collections.ArrayList
 class AdapterRouteEdit(val context: Context, val fragment: RouteEditFragment) :
     RecyclerView.Adapter<BaseViewHolder>(),
     EditItemTouchHelperCallback.OnItemMoveListener {
-    private lateinit var listener: onItemClickListener
+    private lateinit var listener: OnItemClickListener
     private var startDragListener: OnStartDragListener
     private var editMode = false
     var stepList: ArrayList<List<DirectionsStep>>
@@ -33,9 +33,9 @@ class AdapterRouteEdit(val context: Context, val fragment: RouteEditFragment) :
         startDragListener = fragment
         list = fragment.list
         stepList = arrayListOf()
-        for (i in 0..list.size - 1) stepList.add(listOf())
+        for (i in 0 until list.size) stepList.add(listOf())
     }
-    override fun OnItemDrag(): Boolean {
+    override fun onItemDrag(): Boolean {
         resetSteplist()
         notifyDataSetChanged()
         return true
@@ -43,7 +43,7 @@ class AdapterRouteEdit(val context: Context, val fragment: RouteEditFragment) :
 
     fun resetSteplist() {
         stepList = arrayListOf()
-        for (i in 0..list.size - 1) stepList.add(listOf())
+        for (i in 0 until list.size) stepList.add(listOf())
     }
 
     override fun onViewAttachedToWindow(holder: BaseViewHolder) {
@@ -51,7 +51,7 @@ class AdapterRouteEdit(val context: Context, val fragment: RouteEditFragment) :
         super.onViewAttachedToWindow(holder)
     }
 
-    override fun OnItemMove(from: Int, to: Int): Boolean {
+    override fun onItemMove(from: Int, to: Int): Boolean {
         Log.i("Moving", "$from, $to")
         Collections.swap(list, from, to)
         resetSteplist()
@@ -61,7 +61,7 @@ class AdapterRouteEdit(val context: Context, val fragment: RouteEditFragment) :
         return true
     }
 
-    override fun OnItemSwipe(pos: Int): Boolean {
+    override fun onItemSwipe(pos: Int): Boolean {
         Log.i("Removing", "$pos, ${list[pos].name}")
         list.removeAt(pos)
         resetSteplist()
@@ -88,7 +88,7 @@ class AdapterRouteEdit(val context: Context, val fragment: RouteEditFragment) :
         return list.size
     }
 
-    interface onItemClickListener {
+    interface OnItemClickListener {
         fun onItemClick(v: View, position: Int)
     }
 
@@ -96,7 +96,7 @@ class AdapterRouteEdit(val context: Context, val fragment: RouteEditFragment) :
         fun OnStartDrag(viewHolder: RecyclerView.ViewHolder)
     }
 
-    fun setOnItemClickClickListener(listener: onItemClickListener) {
+    fun setOnItemClickClickListener(listener: OnItemClickListener) {
         this.listener = listener
     }
 
@@ -125,12 +125,12 @@ class AdapterRouteEdit(val context: Context, val fragment: RouteEditFragment) :
             recyclerView.visibility = View.GONE
             adapter = AdapterStepList(context, listOf())
             val linearLayoutManager = LinearLayoutManager(context)
-            recyclerView.layoutManager = linearLayoutManager!!
+            recyclerView.layoutManager = linearLayoutManager
             recyclerView.adapter = adapter
         }
 
         override fun bind(pos: Int) {
-            var edit = list[pos]
+            val edit = list[pos]
             title.text = edit.name
             usedTime.text = "약 ${APIs.secToString(edit.usedTime.toInt())}"
             if (pos == 0) {
@@ -154,13 +154,13 @@ class AdapterRouteEdit(val context: Context, val fragment: RouteEditFragment) :
                 background.isClickable = true
             }
 
-            drag.setOnTouchListener({ view: View, motionEvent: MotionEvent ->
+            drag.setOnTouchListener { view: View, motionEvent: MotionEvent ->
                 if (motionEvent.actionMasked == MotionEvent.ACTION_DOWN) {
                     startDragListener.OnStartDrag(this)
                 }
                 return@setOnTouchListener false
-            })
-            background.setOnClickListener({
+            }
+            background.setOnClickListener {
                 showSteps = !showSteps
                 if (showSteps) {
                     adapter.list = stepList[pos]
@@ -169,7 +169,7 @@ class AdapterRouteEdit(val context: Context, val fragment: RouteEditFragment) :
                 } else {
                     recyclerView.visibility = View.GONE
                 }
-            })
+            }
         }
     }
 }

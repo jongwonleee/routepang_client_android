@@ -13,12 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.APIs
 import com.itaewonproject.maputils.CategoryIcon
 import com.itaewonproject.R
-import com.itaewonproject.Routepang
 import com.itaewonproject.model.receiver.Location
 
 class AdapterLocationList(val context: Context, var output: ArrayList<Location>) : RecyclerView.Adapter<AdapterLocationList.ViewHolder>() {
 
-    private lateinit var listener: onItemClickListener
+    private lateinit var listener: OnItemClickListener
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)
@@ -45,22 +44,22 @@ class AdapterLocationList(val context: Context, var output: ArrayList<Location>)
     }
 
 
-    interface onItemClickListener {
+    interface OnItemClickListener {
         fun onItemClick(v: View, position: Int)
     }
 
-    fun setOnItemClickClickListener(listener: onItemClickListener) {
+    fun setOnItemClickClickListener(listener: OnItemClickListener) {
         this.listener = listener
     }
 
     inner class ViewHolder(itemView: View) : BaseViewHolder(itemView) {
         val title: TextView
-        val imgList: RecyclerView
+        private val imgList: RecyclerView
         val rating: RatingBar
-        var placeId = ""
-        val imageCategory: ImageView
+        private var placeId = ""
+        private val imageCategory: ImageView
         val usedTime: TextView
-        val articleCount : TextView
+        private val articleCount : TextView
 
         init {
             title = itemView.findViewById(R.id.textView_title) as TextView
@@ -69,17 +68,15 @@ class AdapterLocationList(val context: Context, var output: ArrayList<Location>)
             imageCategory = itemView.findViewById(R.id.image_category) as ImageView
             usedTime = itemView.findViewById(R.id.text_used_time) as TextView
             articleCount = itemView.findViewById(R.id.text_article_count)
-            itemView.setOnClickListener({
+            itemView.setOnClickListener {
                 val pos = adapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
-                    if (listener != null) {
                         listener.onItemClick(it, pos)
-                    }
                 }
-            })
+            }
         }
         override fun bind(pos: Int) {
-            var output = output[pos]
+            val output = output[pos]
             this.title.text = output.name
             this.rating.rating = output.rating
             this.placeId = output.placeId

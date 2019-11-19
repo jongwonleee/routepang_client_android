@@ -31,16 +31,16 @@ interface MyLocationSetting : OnMapReadyCallback,GoogleApiClient.ConnectionCallb
     LocationListener{
 
     companion object{
-        val TAG = "myLocation:"
+        const val TAG = "myLocation:"
         var map: GoogleMap?=null
 
         var con: Context? = null
 
         var mGoogleApiClient: GoogleApiClient? = null
 
-        val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 2002
-        val UPDATE_INTERVAL_MS = 1000  // 1초
-        val FASTEST_UPDATE_INTERVAL_MS = 500 // 0.5초
+        const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 2002
+        private const val UPDATE_INTERVAL_MS = 1000  // 1초
+        private const val FASTEST_UPDATE_INTERVAL_MS = 500 // 0.5초
 
         var mRequestingLocationUpdates = false
         var mCurrentLocatiion: Location? = null
@@ -48,7 +48,7 @@ interface MyLocationSetting : OnMapReadyCallback,GoogleApiClient.ConnectionCallb
         var mMoveMapByAPI = true
         var currentPosition: LatLng? = null
 
-        var locationRequest = LocationRequest()
+        var locationRequest: LocationRequest = LocationRequest()
             .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
             .setInterval(UPDATE_INTERVAL_MS.toLong())
             .setFastestInterval(FASTEST_UPDATE_INTERVAL_MS.toLong())
@@ -58,60 +58,55 @@ interface MyLocationSetting : OnMapReadyCallback,GoogleApiClient.ConnectionCallb
 
 
     override fun onConnected(p0: Bundle?) {
-        if ( mRequestingLocationUpdates == false ) {
+        if (!mRequestingLocationUpdates) {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
                 val hasFineLocationPermission = ContextCompat.checkSelfPermission(
                     con!!,
-                        Manifest.permission.ACCESS_FINE_LOCATION);
+                        Manifest.permission.ACCESS_FINE_LOCATION)
 
                 if (hasFineLocationPermission == PackageManager.PERMISSION_DENIED) {
 
                     ActivityCompat.requestPermissions((con as Activity),
-                            arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                         PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
-                    );
+                    )
 
                 } else {
 
-                    Log.d(TAG, "onConnected : 퍼미션 가지고 있음");
-                    Log.d(TAG, "onConnected : call startLocationUpdates");
-                    startLocationUpdates();
-                    map!!.setMyLocationEnabled(true);
+                    Log.d(TAG, "onConnected : 퍼미션 가지고 있음")
+                    Log.d(TAG, "onConnected : call startLocationUpdates")
+                    startLocationUpdates()
+                    map!!.isMyLocationEnabled = true
                 }
 
             }else{
 
-                Log.d(TAG, "onConnected : call startLocationUpdates");
-                startLocationUpdates();
-                map!!.setMyLocationEnabled(true);
+                Log.d(TAG, "onConnected : call startLocationUpdates")
+                startLocationUpdates()
+                map!!.isMyLocationEnabled = true
             }
-        }else
-        {
-           /* Log.d(TAG, "onConnected : call startLocationUpdates");
-            startLocationUpdates();
-            map!!.setMyLocationEnabled(true);*/
         }
     }
 
     override fun onConnectionSuspended(cause: Int) {
-        Log.d(TAG, "onConnectionSuspended");
+        Log.d(TAG, "onConnectionSuspended")
         if (cause == CAUSE_NETWORK_LOST){
-            Log.e(TAG, "onConnectionSuspended(): Google Play services " + "connection lost.  Cause: network lost.");
+            Log.e(TAG, "onConnectionSuspended(): Google Play services " + "connection lost.  Cause: network lost.")
 
         }
         else if (cause == CAUSE_SERVICE_DISCONNECTED){
-            Log.e(TAG, "onConnectionSuspended():  Google Play services " + "connection lost.  Cause: service disconnected");
+            Log.e(TAG, "onConnectionSuspended():  Google Play services " + "connection lost.  Cause: service disconnected")
         }
     }
 
     fun setMapReady() {
         setDefaultLocation()
 
-        map!!.getUiSettings().setMyLocationButtonEnabled(true)
+        map!!.uiSettings.isMyLocationButtonEnabled = true
         map!!.animateCamera(CameraUpdateFactory.zoomTo(15f))
-        map!!.setOnMyLocationButtonClickListener(GoogleMap.OnMyLocationButtonClickListener {
+        map!!.setOnMyLocationButtonClickListener({
             Log.d(TAG, "onMyLocationButtonClick : 위치에 따른 카메라 이동 활성화")
             mMoveMapByAPI = true
             true
@@ -125,12 +120,12 @@ interface MyLocationSetting : OnMapReadyCallback,GoogleApiClient.ConnectionCallb
     }
 
     override fun onLocationChanged(location: Location?) {
-        currentPosition = LatLng( location!!.getLatitude(), location!!.getLongitude());
+        currentPosition = LatLng( location!!.latitude, location.longitude)
 
         //현재 위치에 마커 생성하고 이동
-        setCurrentLocation(location);
+        setCurrentLocation(location)
 
-        mCurrentLocatiion = location;
+        mCurrentLocatiion = location
     }
 
 
@@ -164,7 +159,7 @@ interface MyLocationSetting : OnMapReadyCallback,GoogleApiClient.ConnectionCallb
             )
             mRequestingLocationUpdates = true
 
-            map!!.setMyLocationEnabled(true)
+            map!!.isMyLocationEnabled = true
 
         }
 

@@ -14,6 +14,8 @@ import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.itaewonproject.R;
 
+import java.util.Objects;
+
 
 /**
  * Created by TedPark on 16. 4. 11..
@@ -55,7 +57,7 @@ public class ClearEditText extends AppCompatEditText implements TextWatcher, Vie
 
         setPadding(25,25,0,25);
         Drawable tempDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_ico_close_circle_fill_s);
-        clearDrawable = DrawableCompat.wrap(tempDrawable);
+        clearDrawable = DrawableCompat.wrap(Objects.requireNonNull(tempDrawable));
         DrawableCompat.setTintList(clearDrawable,getHintTextColors());
         clearDrawable.setBounds(-40, 0, clearDrawable.getIntrinsicWidth()-40, clearDrawable.getIntrinsicHeight());
         setClearIconVisible(false);
@@ -70,7 +72,7 @@ public class ClearEditText extends AppCompatEditText implements TextWatcher, Vie
     @Override
     public void onFocusChange(final View view, final boolean hasFocus) {
         if (hasFocus) {
-            setClearIconVisible(getText().length() > 0);
+            setClearIconVisible(Objects.requireNonNull(getText()).length() > 0);
         } else {
             setClearIconVisible(false);
         }

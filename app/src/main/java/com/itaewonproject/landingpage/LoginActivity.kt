@@ -22,13 +22,13 @@ import com.itaewonproject.rests.post.LogInConnector
 
 class LoginActivity : AppCompatActivity() {
 
-    lateinit var editID: ClearEditText
-    lateinit var editPW: ClearEditText
-    lateinit var buttonLogin: Button
-    lateinit var buttonLoginKaKao: ConstraintLayout
-    lateinit var buttonSignin: TextView
-    lateinit var buttonFind:TextView
-    lateinit var checkAutoLogin: CheckBox
+    private lateinit var editID: ClearEditText
+    private lateinit var editPW: ClearEditText
+    private lateinit var buttonLogin: Button
+    private lateinit var buttonLoginKaKao: ConstraintLayout
+    private lateinit var buttonSignin: TextView
+    private lateinit var buttonFind:TextView
+    private lateinit var checkAutoLogin: CheckBox
 
     private lateinit var sharedPreferences:SharedPreferences
 
@@ -36,20 +36,20 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        editID = findViewById(R.id.edit_id) as ClearEditText
-        editPW = findViewById(R.id.edit_password) as ClearEditText
-        buttonLogin = findViewById(R.id.button_login) as Button
-        buttonLoginKaKao = findViewById(R.id.button_login_kakao) as ConstraintLayout
-        buttonSignin = findViewById(R.id.button_signin) as TextView
-        buttonFind = findViewById(R.id.button_find) as TextView
-        checkAutoLogin = findViewById(R.id.check_autologin) as CheckBox
+        editID = findViewById<ClearEditText>(R.id.edit_id)
+        editPW = findViewById<ClearEditText>(R.id.edit_password)
+        buttonLogin = findViewById<Button>(R.id.button_login)
+        buttonLoginKaKao = findViewById<ConstraintLayout>(R.id.button_login_kakao)
+        buttonSignin = findViewById<TextView>(R.id.button_signin)
+        buttonFind = findViewById<TextView>(R.id.button_find)
+        checkAutoLogin = findViewById<CheckBox>(R.id.check_autologin)
 
         sharedPreferences = getSharedPreferences("autoLogin", MODE_PRIVATE)
         checkAutoLogin.isChecked = sharedPreferences.getBoolean("autoLoginCheck",false)
 
         buttonSignin.text= Html.fromHtml("<u>회원가입</u>",Html.FROM_HTML_MODE_LEGACY)
         buttonFind.text=Html.fromHtml("<u>ID, 비밀번호 찾기</u>",Html.FROM_HTML_MODE_LEGACY)
-        buttonLogin.setOnClickListener({
+        buttonLogin.setOnClickListener {
             val empty = Editable.Factory.getInstance().newEditable("")
             val id = editID.text.toString().trim()
             val pw = editPW.text.toString().trim()
@@ -67,8 +67,7 @@ class LoginActivity : AppCompatActivity() {
             customer.account=id
             customer.password=pw
             val ret = LogInConnector().post(customer)
-            if(ret.responceCode ==200)
-            {
+            if(ret.responceCode ==200) {
                 (application as Routepang).token = ret.body!!
                 authorization = ret.body!!
                 (application as Routepang).customer = JsonParser().objectJsonParsing(GetCustomerConnector().get(id).body!!,Customer::class.java)!!
@@ -80,16 +79,14 @@ class LoginActivity : AppCompatActivity() {
                 }
                 if (intent.getStringExtra(Intent.EXTRA_TEXT) != null) {
                     finish()
-                }else
-                {
+                }else {
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     overridePendingTransition(R.anim.translate_in_from_right,R.anim.translate_out_to_left)
                     finish()
                 }
 
-            }else
-            {
+            }else {
                 Toast.makeText(this,"로그인에 실패했습니다. 다시 시도해주세요.",Toast.LENGTH_LONG).show()
                 editID.text=empty
                 editPW.text=empty
@@ -101,25 +98,25 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
 
-        })
+        }
 
-        buttonSignin.setOnClickListener({
+        buttonSignin.setOnClickListener {
             val intent = Intent(this, SignInActivity::class.java)
             startActivity(intent)
 
-        })
+        }
 
-        buttonFind.setOnClickListener({
+        buttonFind.setOnClickListener {
             val intent = Intent(this, IdFindActivity::class.java)
             startActivity(intent)
 
-        })
+        }
 
-        checkAutoLogin.setOnCheckedChangeListener({ compoundButton: CompoundButton, isChecked: Boolean ->
+        checkAutoLogin.setOnCheckedChangeListener { compoundButton: CompoundButton, isChecked: Boolean ->
             val editor = sharedPreferences.edit()
             editor.putBoolean("autoLoginCheck",isChecked)
             editor.apply()
-        })
+        }
 
     }
 

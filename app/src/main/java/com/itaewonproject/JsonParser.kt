@@ -1,6 +1,5 @@
 package com.itaewonproject
 
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.google.gson.reflect.TypeToken
@@ -24,7 +23,7 @@ class JsonParser {
         } catch (e: JsonParseException) {
             e.printStackTrace()
         }
-        if(arr==null) return arrayListOf()
-        else return arr
+        return if(arr==null) arrayListOf()
+        else arr
     }
 }

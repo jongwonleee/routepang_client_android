@@ -20,16 +20,16 @@ import com.itaewonproject.rests.get.GetReviewConnector
 
 class ReviewFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var list: ArrayList<com.itaewonproject.model.receiver.Article>
+    private lateinit var list: ArrayList<Article>
 
     private fun setListViewOption(view: View) {
         list = JsonParser().listJsonParsing(GetReviewConnector().get((activity!!.application as Routepang).customer.customerId), Article::class.java)
         recyclerView = view.findViewById(R.id.review_RecyclerView) as RecyclerView
         val adapter = AdapterArticleList(view.context, list)
 
-        adapter.setOnItemClickClickListener(object : AdapterArticleList.onItemClickListener {
+        adapter.setOnItemClickClickListener(object : AdapterArticleList.OnItemClickListener {
             override fun onItemClick(v: View, position: Int) {
-                var intent = Intent(Intent.ACTION_VIEW, Uri.parse(list[position].link.linkUrl))
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(list[position].link.linkUrl))
                 startActivity(intent)
             }
         })
@@ -43,10 +43,10 @@ class ReviewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val button = view.findViewById(R.id.button_link_share) as CardView
-        button.setOnClickListener({
+        button.setOnClickListener {
             val intent = Intent(context, LinkShareActivity::class.java)
             startActivity(intent)
-        })
+        }
         setListViewOption(view)
     }
 

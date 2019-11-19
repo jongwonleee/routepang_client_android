@@ -39,9 +39,9 @@ class MainActivity : AppCompatActivity(),TabLayout.OnTabSelectedListener {
     private lateinit var buttonSearch:ImageView
     private lateinit var buttonMessage:ImageView
 
-    val titles = listOf("마이 페이지","뉴스피드", "인기 루트")
-    val iconsOff = listOf(R.drawable.ic_ico_user_off,R.drawable.ic_ico_newsfeed_off,R.drawable.ic_ico_pin_off)
-    val iconsOn = listOf(R.drawable.ic_ico_user_on,R.drawable.ic_ico_newsfeed_on,R.drawable.ic_ico_pin_on)
+    private val titles = listOf("마이 페이지","뉴스피드", "인기 루트")
+    private val iconsOff = listOf(R.drawable.ic_ico_user_off,R.drawable.ic_ico_newsfeed_off,R.drawable.ic_ico_pin_off)
+    private val iconsOn = listOf(R.drawable.ic_ico_user_on,R.drawable.ic_ico_newsfeed_on,R.drawable.ic_ico_pin_on)
 /*
         /////원래
     val titles = listOf("뉴스피드", "인기 루트", "마이 페이지")
@@ -52,12 +52,12 @@ class MainActivity : AppCompatActivity(),TabLayout.OnTabSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        tabLayout = findViewById(R.id.tabLayout) as TabLayout
-        viewPager = findViewById(R.id.viewPager) as ViewPager
-        buttonSearch = findViewById(R.id.button_search) as ImageView
-        buttonMessage=findViewById(R.id.button_message) as ImageView
+        tabLayout = findViewById<TabLayout>(R.id.tabLayout)
+        viewPager = findViewById<ViewPager>(R.id.viewPager)
+        buttonSearch = findViewById<ImageView>(R.id.button_search)
+        buttonMessage= findViewById<ImageView>(R.id.button_message)
 
-        var adapter = TabPagerAdapter(supportFragmentManager, 3)
+        val adapter = TabPagerAdapter(supportFragmentManager, 3)
        /* adapter.addPage(NewsfeedFragment(), "")
         adapter.addPage(FavRouteFragment(), "")*/
         adapter.addPage(MyPageFragment(), "")
@@ -76,19 +76,18 @@ class MainActivity : AppCompatActivity(),TabLayout.OnTabSelectedListener {
         setTabView(1,false)
         setTabView(2,false)
 
-        buttonSearch.setOnClickListener({
+        buttonSearch.setOnClickListener {
             val intent = Intent(this,LocationActivity::class.java)
             startActivity(intent)
 
 
+        }
 
-        })
-
-        buttonMessage.setOnClickListener({
+        buttonMessage.setOnClickListener {
             val intent = Intent(this, MessageListActivity::class.java)
             startActivity(intent)
 
-        })
+        }
 
 
     }
@@ -103,7 +102,7 @@ class MainActivity : AppCompatActivity(),TabLayout.OnTabSelectedListener {
         title.setTextColor(Color.parseColor(if(selected)"#fd62b0" else "#8e8e93"))
         image.setImageResource(if(selected)iconsOn[pos] else iconsOff[pos])
         tabLayout.getTabAt(pos)?.customView=null
-        tabLayout.getTabAt(pos)?.setCustomView(view)
+        tabLayout.getTabAt(pos)?.customView = view
         tabLayout.refreshDrawableState()
     }
 }

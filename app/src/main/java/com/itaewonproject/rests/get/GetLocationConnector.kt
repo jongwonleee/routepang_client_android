@@ -116,7 +116,7 @@ class GetLocationConnector : GetStrategy() {
         val zoom = params[1] as Float
 
         param = "${coordinate.longitude}&&${coordinate.latitude}&&1000/coordinates"
-        var task = Task()
+        val task = Task()
         task.execute()
 
         return WebResponce(task.get(), statusCode)

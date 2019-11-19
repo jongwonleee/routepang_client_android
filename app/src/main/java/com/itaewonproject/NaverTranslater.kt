@@ -10,7 +10,7 @@ import java.net.URL
 import java.net.URLEncoder
 
 
-class NaverTranslater(val clientId:String, val clientSecret:String) {
+class NaverTranslater(private val clientId:String, private val clientSecret:String) {
 
 
     fun get(text:String): String{
@@ -22,24 +22,24 @@ class NaverTranslater(val clientId:String, val clientSecret:String) {
                 val apiURL = "https://openapi.naver.com/v1/papago/n2mt"
                 val url = URL(apiURL)
                 val con = url.openConnection() as HttpURLConnection
-                con.setRequestMethod("POST")
+                con.requestMethod = "POST"
                 con.setRequestProperty("X-Naver-Client-Id",clientId )
                 con.setRequestProperty("X-Naver-Client-Secret", clientSecret)
                 // post request
                 val postParams = "source=ko&target=en&text=$text"
-                con.setDoOutput(true)
-                val wr = DataOutputStream(con.getOutputStream())
+                con.doOutput = true
+                val wr = DataOutputStream(con.outputStream)
                 wr.writeBytes(postParams)
                 wr.flush()
                 wr.close()
-                val responseCode = con.getResponseCode()
+                val responseCode = con.responseCode
                 val br: BufferedReader
                 if (responseCode == 200) { // 정상 호출
                     Log.i("naver!!","no error")
-                    br = BufferedReader(InputStreamReader(con.getInputStream()))
+                    br = BufferedReader(InputStreamReader(con.inputStream))
 
                 } else {  // 에러 발생
-                    br = BufferedReader(InputStreamReader(con.getErrorStream()))
+                    br = BufferedReader(InputStreamReader(con.errorStream))
                     return "notTranslated"
                 }
                 val ret = br.use(BufferedReader::readText)

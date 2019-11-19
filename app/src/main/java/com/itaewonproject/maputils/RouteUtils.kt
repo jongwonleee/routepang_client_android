@@ -21,17 +21,16 @@ import com.google.maps.internal.PolylineEncoding
 import com.google.maps.model.DirectionsResult
 import com.google.maps.model.TravelMode
 import com.itaewonproject.R
-import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.model.receiver.Product
 import com.itaewonproject.mypage.RouteMapFragment
 
 class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
     val view: View
     val image: ImageView
-    val latLoc = HashMap<LatLng, Product>()
-    val latIndex = HashMap<LatLng, Int>()
-    val latWishlist = HashMap<LatLng, Int>()
-    val imageList = listOf(listOf(
+    private val latLoc = HashMap<LatLng, Product>()
+    private val latIndex = HashMap<LatLng, Int>()
+    private val latWishlist = HashMap<LatLng, Int>()
+    private val imageList = listOf(listOf(
         R.drawable.ic_map_pin_fill_blue,
         R.drawable.ic_map_pin_fill_green,
         R.drawable.ic_map_pin_fill_purple,
@@ -70,8 +69,8 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
                 addLine()
             }
         }
-    var geoApiContext: GeoApiContext
-    var selectedMarker: Marker?
+    private var geoApiContext: GeoApiContext
+    private var selectedMarker: Marker?
     init {
         geoApiContext = GeoApiContext.Builder().apiKey(fragment.context!!.getString(R.string.google_key)).build()
         view = LayoutInflater.from(fragment.context).inflate(R.layout.view_route_marker, null)
@@ -105,36 +104,36 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
             }
             return@setOnMarkerClickListener editMode
         }
-        map.setOnMapClickListener({
+        map.setOnMapClickListener {
             changeSelectedMarker(null)
             fragment.showDetail(null)
-        })
+        }
     }
 
     fun setList() {
         map.clear()
         selectedMarker = null
-        var list = fragment.list
-        for (l in 0..list.size - 1) {
+        val list = fragment.list
+        for (l in 0 until list.size) {
             addMarker(list[l], false, l, false)
         }
     }
 
     fun setWishList() {
         setList()
-        var list = fragment.wishlist
-        for (l in 0..list.size - 1) {
+        val list = fragment.wishlist
+        for (l in 0 until list.size) {
             addMarker(list[l], false, l, true)
         }
     }
 
-    fun removeWishList() {
+    private fun removeWishList() {
         setList()
         addLine()
     }
 
-    fun addMarker(product: Product, isSelected: Boolean, index: Int, isWishlist: Boolean): Marker {
-        Log.i("adding marker","${isSelected}, ${index}, ${isWishlist}")
+    private fun addMarker(product: Product, isSelected: Boolean, index: Int, isWishlist: Boolean): Marker {
+        Log.i("adding marker","${isSelected}, ${index}, $isWishlist")
         val position = product.location.latlng()
         val categoryColor = CategoryIcon.getIndex(product.location.category!!)
         image.setImageResource(if(isSelected){
@@ -151,14 +150,14 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
         markerOptions.position(position)
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(view)))
         val marker = map.addMarker(markerOptions)
-        if (isWishlist) latWishlist.put(position, index)
-        else latIndex.put(position, index)
+        if (isWishlist) latWishlist[position] = index
+        else latIndex[position] = index
         fragment.showDetail(product.location)
-        latLoc.put(position, product)
+        latLoc[position] = product
         return marker
     }
 
-    fun changeSelectedMarker(marker: Marker?) {
+    private fun changeSelectedMarker(marker: Marker?) {
         if (selectedMarker != null) {
             addEditMarker(selectedMarker!!, false)
             selectedMarker!!.remove()
@@ -167,9 +166,6 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
         if (marker != null) {
             selectedMarker = addEditMarker(marker, true)!!
             marker.remove()
-        }else
-        {
-
         }
     }
 
@@ -183,11 +179,11 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
 
     private fun addEditMarker(marker: Marker, isSelected: Boolean): Marker? {
         if (latLoc.containsKey(marker.position)) {
-            val location = latLoc.get(marker.position)
+            val location = latLoc[marker.position]
             if (location != null)
                 if (latWishlist.containsKey(marker.position))
                     return addMarker(location, isSelected, latWishlist.get(marker.position)!!, true)
-                else return addMarker(location, isSelected, latIndex.get(marker.position)!!, false)
+                else return addMarker(location, isSelected, latIndex[marker.position]!!, false)
         }
         return null
     }
@@ -207,7 +203,7 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
 
 
     fun addLine() {
-        var list = fragment.list
+        val list = fragment.list
 
         val arrayPoints = arrayListOf<LatLng>()
         for (l in list) {
@@ -248,7 +244,7 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
     }
 
     private fun addPolylinesToMap(result: DirectionsResult) {
-        Handler(Looper.getMainLooper()).post(Runnable {
+        Handler(Looper.getMainLooper()).post({
             val polylineOptions = PolylineOptions()
             polylineOptions.color(Color.argb(255,253,98,176))
             polylineOptions.width(10.0f)

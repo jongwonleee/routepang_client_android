@@ -5,12 +5,9 @@ import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.common.api.GoogleApiClient
@@ -39,6 +36,8 @@ import com.itaewonproject.maputils.MyLocationSetting.Companion.map
 import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.cos
+import kotlin.math.pow
 
 class LocationActivity : AppCompatActivity(),  Serializable,
     MyLocationSetting {
@@ -87,15 +86,16 @@ class LocationActivity : AppCompatActivity(),  Serializable,
 
 
 
-        Places.initialize(applicationContext, context!!.getString(R.string.google_key))
+        Places.initialize(applicationContext, context.getString(R.string.google_key))
         Places.createClient(this)
 
         val autoCompleteSupportFragment = supportFragmentManager.findFragmentById(R.id.autocomplete_location_search) as AutocompleteSupportFragment
         autoCompleteSupportFragment.setPlaceFields(
-            Arrays.asList(
+            listOf(
                 Place.Field.ID,
                 Place.Field.NAME,
-                Place.Field.LAT_LNG))
+                Place.Field.LAT_LNG)
+        )
 
         autoCompleteSupportFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
@@ -114,13 +114,13 @@ class LocationActivity : AppCompatActivity(),  Serializable,
     }
 
     fun showArticleActivity(location: Location){
-        var intent = Intent(context, ArticleActivity::class.java)
+        val intent = Intent(context, ArticleActivity::class.java)
         intent.putExtra("Location", location)
         startActivity(intent)
     }
 
     private fun setListViewOption() {
-        recyclerView = findViewById(R.id.recyclerView_locationList) as RecyclerView
+        recyclerView = findViewById<RecyclerView>(R.id.recyclerView_locationList)
         for (l in list) {
             markerUtils.addLocationMarker(l, false)
         }
@@ -128,7 +128,7 @@ class LocationActivity : AppCompatActivity(),  Serializable,
         adapter = AdapterLocationList(this, list)
         sortList()
 
-        adapter.setOnItemClickClickListener(object : AdapterLocationList.onItemClickListener {
+        adapter.setOnItemClickClickListener(object : AdapterLocationList.OnItemClickListener {
             override fun onItemClick(v: View, position: Int) {
                 showArticleActivity(adapter.output[position])
             }
@@ -163,12 +163,10 @@ class LocationActivity : AppCompatActivity(),  Serializable,
         markerUtils = MarkerUtils(map!!, context)
         list = arrayListOf()
         map!!.cameraPosition.zoom
-        appBarLayout.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener {
-            override fun onOffsetChanged(p0: AppBarLayout?, p1: Int) {
-                val mapPhoneRatio = 0.15654303392
-                var meterPerPixel = mapPhoneRatio * 1.8 * Math.cos(centerLatlng.latitude * Math.PI / 180) / Math.pow((2).toDouble(), centerZoom.toDouble())
-                map!!.moveCamera(CameraUpdateFactory.newLatLng(LatLng(centerLatlng.latitude - meterPerPixel*p1, centerLatlng.longitude)))
-            }
+        appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { p0, p1 ->
+            val mapPhoneRatio = 0.15654303392
+            var meterPerPixel = mapPhoneRatio * 1.8 * Math.cos(centerLatlng.latitude * Math.PI / 180) / Math.pow((2).toDouble(), centerZoom.toDouble())
+            map!!.moveCamera(CameraUpdateFactory.newLatLng(LatLng(centerLatlng.latitude - meterPerPixel*p1, centerLatlng.longitude)))
         })
         mMoveMapByAPI=true
         setMapReady()
@@ -195,22 +193,22 @@ class LocationActivity : AppCompatActivity(),  Serializable,
     }
 
     override fun onStart() {
-        if(mGoogleApiClient != null && mGoogleApiClient!!.isConnected== false){
+        if(mGoogleApiClient != null && !mGoogleApiClient!!.isConnected){
 
-            Log.d(TAG, "onStart: mGoogleApiClient connect");
-            mGoogleApiClient!!.connect();
+            Log.d(TAG, "onStart: mGoogleApiClient connect")
+            mGoogleApiClient!!.connect()
         }
 
-        super.onStart();
+        super.onStart()
     }
 
     override fun onResume() {
-        super.onResume();
+        super.onResume()
 
-        if (mGoogleApiClient!!.isConnected()) {
+        if (mGoogleApiClient!!.isConnected) {
 
-            Log.d(TAG, "onResume : call startLocationUpdates");
-            if (!mRequestingLocationUpdates) startLocationUpdates();
+            Log.d(TAG, "onResume : call startLocationUpdates")
+            if (!mRequestingLocationUpdates) startLocationUpdates()
         }
 
     }
@@ -218,16 +216,16 @@ class LocationActivity : AppCompatActivity(),  Serializable,
     override fun onStop() {
         if (mRequestingLocationUpdates) {
 
-            Log.d(TAG, "onStop : call stopLocationUpdates");
-            stopLocationUpdates();
+            Log.d(TAG, "onStop : call stopLocationUpdates")
+            stopLocationUpdates()
         }
 
-        if ( mGoogleApiClient!!.isConnected()) {
+        if ( mGoogleApiClient!!.isConnected) {
 
-            Log.d(TAG, "onStop : mGoogleApiClient disconnect");
-            mGoogleApiClient!!.disconnect();
+            Log.d(TAG, "onStop : mGoogleApiClient disconnect")
+            mGoogleApiClient!!.disconnect()
         }
 
-        super.onStop();
+        super.onStop()
     }
 }

@@ -2,10 +2,11 @@ package com.itaewonproject.customviews
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.appbar.AppBarLayout
+
+
 
 class NonSwipeViewPager(context: Context, attrs: AttributeSet) : ViewPager(context, attrs) {
     private var swipeEnabled = false

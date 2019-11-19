@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -18,7 +19,6 @@ import com.itaewonproject.customviews.NonSwipeViewPager
 import com.itaewonproject.model.receiver.CustomerPage
 import com.itaewonproject.rests.get.GetCustomerPageConnector
 import com.itaewonproject.setting.SettingActivity
-import java.time.LocalDateTime
 
 class MyPageFragment : Fragment() {
     // TODO: Rename and change types of parameters\
@@ -66,10 +66,10 @@ class MyPageFragment : Fragment() {
         followerCount = view.findViewById(R.id.text_follower) as TextView
         followingCount = view.findViewById(R.id.text_following) as TextView
 
-        settingButton.setOnClickListener({
+        settingButton.setOnClickListener {
             val intent = Intent(context,SettingActivity::class.java)
             startActivity(intent)
-        })
+        }
 
         adapter = TabPagerAdapter(childFragmentManager, 3)
         adapter.addPage(RouteFragment(), "루트")
@@ -79,6 +79,10 @@ class MyPageFragment : Fragment() {
         tabLayout.setupWithViewPager(viewPager)
         appBarLayout.setExpanded(true)
         viewPager.setAutoUnexpendingAppbar(appBarLayout)
+
+        tabLayout.setOnTouchListener { view: View, motionEvent: MotionEvent ->
+            return@setOnTouchListener true
+        }
     }
 
 }

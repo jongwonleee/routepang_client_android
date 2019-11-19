@@ -8,10 +8,8 @@ data class Page(var title: String, val fragment: Fragment)
 
 
 class TabPagerAdapter(fm: FragmentManager, behavior: Int) : FragmentStatePagerAdapter(fm, behavior) {
-    var pages: ArrayList<Page> = arrayListOf()
+    private var pages: ArrayList<Page> = arrayListOf()
 
-    init {
-    }
 
     override fun getItem(position: Int): Fragment {
         return pages[position].fragment

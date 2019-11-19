@@ -27,7 +27,7 @@ class CustomTextView : TextView {
         initView(context, attrs)
     }
 
-    constructor(context: Context) : super(context) {}
+    constructor(context: Context) : super(context)
 
     private fun initView(context: Context, attrs: AttributeSet) {
         val a = context.obtainStyledAttributes(attrs, R.styleable.CustomTextView)

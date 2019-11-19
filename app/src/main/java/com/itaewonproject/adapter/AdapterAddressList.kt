@@ -5,15 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.R
-import com.itaewonproject.RatioTransformation
-import com.itaewonproject.customviews.RoundedImageView
 import com.itaewonproject.model.sender.Location
-import com.squareup.picasso.Picasso
 
 
 
@@ -41,8 +37,8 @@ class AdapterAddressList(val context: Context, val locs: ArrayList<Location>) : 
     }
 
     fun getCheckedItem():Location?{
-        if(locs.size==0) return null
-        else return locs[checkedIndex]
+        return if(locs.size==0) null
+        else locs[checkedIndex]
     }
 
     interface OnItemClickListener {
@@ -71,13 +67,13 @@ class AdapterAddressList(val context: Context, val locs: ArrayList<Location>) : 
             layoutAddress=itemView.findViewById(R.id.layout_address)
         }
         override fun bind(pos: Int) {
-            layoutAdd.setOnClickListener({
+            layoutAdd.setOnClickListener {
                 mListener!!.onItemClick(pos)
-            })
-            layoutAddress.setOnClickListener({
+            }
+            layoutAddress.setOnClickListener {
                 checkedIndex=pos
                 notifyDataSetChanged()
-            })
+            }
             if (pos == locs.size) {
                 layoutAddress.visibility=View.INVISIBLE
                 layoutAdd.visibility=View.VISIBLE
@@ -87,8 +83,7 @@ class AdapterAddressList(val context: Context, val locs: ArrayList<Location>) : 
                 layoutAdd.visibility=View.INVISIBLE
                 name.text = locs[pos].name
                 address.text=locs[pos].address
-                if(pos==checkedIndex) checkBox.isChecked=true
-                else checkBox.isChecked=false
+                checkBox.isChecked = pos==checkedIndex
             }
         }
     }

@@ -15,9 +15,6 @@ import com.itaewonproject.Routepang
 import com.itaewonproject.mainservice.MainActivity
 import com.itaewonproject.model.receiver.Route
 import com.itaewonproject.model.receiver.RouteType
-import java.sql.Timestamp
-import java.time.Instant
-import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -25,7 +22,7 @@ import kotlin.collections.HashMap
 class AdapterRouteList(val context: Context, folderArray: ArrayList<Route>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    public lateinit var listener: onItemClickListener
+    lateinit var listener: OnItemClickListener
 
     var list: ArrayList<Route>
     var folder: RouteListManager
@@ -62,7 +59,7 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Route>) :
         var folder: Route? = null
         for (l in checkedList) {
             if (l.category == RouteType.FOLDER) {
-                folder = l as Route
+                folder = l
                 checkedList.remove(l)
                 break
             }
@@ -73,7 +70,7 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Route>) :
         }
         for (l in checkedList) {
             if (l.category ==  RouteType.FOLDER)
-                folder.routes.addAll((l as Route).routes)
+                folder.routes.addAll(l.routes)
             else folder.routes.add((l))
         }
         folder.calculateDate()
@@ -109,12 +106,12 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Route>) :
         return if(list[position].category==RouteType.ROUTE) 0 else 1
     }
 
-    interface onItemClickListener {
+    interface OnItemClickListener {
         fun onItemClick(v: View, position: Int)
         fun onItemLongClick(size: Int)
     }
 
-    fun setOnItemClickClickListener(listener: onItemClickListener) {
+    fun setOnItemClickClickListener(listener: OnItemClickListener) {
         this.listener = listener
     }
 
@@ -135,18 +132,18 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Route>) :
         }
 
         override fun bind(pos: Int) {
-            var route = list[pos]
+            val route = list[pos]
             title.text = route.title
             location.text = route.boundary
             updated.text = route.getDateString()
-            itemView.setOnClickListener({
+            itemView.setOnClickListener {
                 listener.onItemClick(itemView, pos)
-            })
+            }
 
             if (isChecked.contains(list[pos])) viewChecked.visibility = View.VISIBLE
             else viewChecked.visibility = View.INVISIBLE
 
-            itemView.setOnLongClickListener({
+            itemView.setOnLongClickListener {
                 if (isChecked.contains(list[pos])) {
                     isChecked.remove(list[pos])
                     viewChecked.visibility = View.INVISIBLE
@@ -156,7 +153,7 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Route>) :
                 }
                 listener.onItemLongClick(isChecked.size)
                 return@setOnLongClickListener true
-            })
+            }
             if (folder.isOpened(pos)) {
                 emptyView.visibility= if (folder.isOpened(pos+1)) View.GONE else View.VISIBLE
                 emptyLeft.visibility=View.VISIBLE
@@ -189,7 +186,7 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Route>) :
         }
 
         override fun bind(pos: Int) {
-            var route = list[pos]
+            val route = list[pos]
             textTitle.text = route.title
             editTitle.text = Editable.Factory.getInstance().newEditable(route.title)
             location.text = route.boundary
@@ -203,7 +200,7 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Route>) :
                 emptyView.visibility=View.VISIBLE
             }
 
-            itemView.setOnLongClickListener({
+            itemView.setOnLongClickListener {
                 if (isChecked.contains(list[pos])) {
                     isChecked.remove(list[pos])
                     viewChecked.visibility = View.INVISIBLE
@@ -213,8 +210,8 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Route>) :
                 }
                 listener.onItemLongClick(isChecked.size)
                 return@setOnLongClickListener true
-            })
-            itemView.setOnClickListener({
+            }
+            itemView.setOnClickListener {
                 folder.open(pos)
                 if (folder.isOpened(pos)) {
                     folderImage.setImageResource(R.drawable.ic_ico_folder_open)
@@ -226,13 +223,13 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Route>) :
                     textTitle.visibility = View.VISIBLE
                 }
                 notifyDataSetChanged()
-            })
+            }
         }
     }
 
     inner class RouteListManager(var folders: ArrayList<Route>) {
-        var opened = ArrayList<Boolean>()
-        var indexRoute = HashMap<Int, Route>()
+        private var opened = ArrayList<Boolean>()
+        private var indexRoute = HashMap<Int, Route>()
         init {
             setList()
         }
@@ -264,14 +261,14 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Route>) :
                 } else
                     opened.add(false)*/
                 list.add(f)
-                indexRoute.put(list.size - 1, f)
+                indexRoute[list.size - 1] = f
 
                 if(f.opened){
                     opened.add(true)
                     for (c in f.routes) {
                         list.add(c)
                         opened.add(true)
-                        indexRoute.put(list.size - 1, f)
+                        indexRoute[list.size - 1] = f
                     }
                 }else
                 {
@@ -291,7 +288,7 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Route>) :
                 if (list.contains(l)) remove(list.indexOf(l))
         }
 
-        fun remove(pos: Int) {
+        private fun remove(pos: Int) {
             if (list[pos].parentId == 0) {
                 folders.remove(indexRoute[pos]!!)
             } else {

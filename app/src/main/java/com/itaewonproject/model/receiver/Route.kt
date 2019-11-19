@@ -9,8 +9,8 @@ class Route(var title: String,  var boundary: String,  var routeId: Long, var cu
     var category = RouteType.ROUTE
     var parentId = 0
     var routes: ArrayList<Route> = arrayListOf()
-    var endDate: Long=0
-    var startDate: Long=0
+    private var endDate: Long=0
+    private var startDate: Long=0
     var opened = false
 
     constructor(title: String, boundary: String, routeId: Long,routes:ArrayList<Route>,customerId: Long,regDate: Long) : this(title,boundary, routeId, customerId, regDate){
@@ -29,15 +29,20 @@ class Route(var title: String,  var boundary: String,  var routeId: Long, var cu
             if (Timestamp(startDate).before(Timestamp(r.regDate))) startDate = r.regDate
         }
     }
-    fun getDate(time: Long): String {
+    private fun getDate(time: Long): String {
         return SimpleDateFormat("yyyy-mm-dd").format(Timestamp(time))
     }
     fun getDateString():String{
-        if (endDate.equals(startDate)) {
-            return getDate(startDate)
+        return if (endDate.equals(startDate)) {
+            getDate(startDate)
         } else {
-            return getDate(startDate) + " ~\n " + getDate(endDate)
+            getDate(startDate) + " ~\n " + getDate(endDate)
         }
+    }
+
+    override fun hashCode(): Int {
+        var result = routeId.hashCode()
+        return result
     }
 }
 enum class RouteType{ROUTE,FOLDER}

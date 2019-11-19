@@ -19,7 +19,7 @@ class RouteFragment : Fragment() {
     private lateinit var viewPager: ViewPager
     private lateinit var adapter: TabPagerAdapter
     lateinit var route: Route
-    var routeLocations = arrayListOf<Location>()
+    private var routeLocations = arrayListOf<Location>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }

@@ -17,7 +17,7 @@ class PostArticleConnector : PostStrategy() {
         val article = params[0] as Article
         param = ""
 
-        var task = Task()
+        val task = Task()
         task.execute(Gson().toJson(article))
 
         return WebResponce(task.get(), statusCode)

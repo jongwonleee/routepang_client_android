@@ -13,13 +13,13 @@ class EditItemTouchHelperCallback(var adapter: AdapterRouteEdit) : ItemTouchHelp
     }
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-        var dragFlag: Int = ItemTouchHelper.UP or ItemTouchHelper.DOWN
+        val dragFlag: Int = ItemTouchHelper.UP or ItemTouchHelper.DOWN
         return makeMovementFlags(dragFlag, ItemTouchHelper.LEFT)
     }
 
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
-        listener.OnItemDrag()
+        listener.onItemDrag()
     }
 
     override fun onMove(
@@ -27,7 +27,7 @@ class EditItemTouchHelperCallback(var adapter: AdapterRouteEdit) : ItemTouchHelp
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        return viewHolder.getItemViewType() == target.getItemViewType()
+        return viewHolder.itemViewType == target.itemViewType
     }
 
     override fun onMoved(
@@ -40,7 +40,7 @@ class EditItemTouchHelperCallback(var adapter: AdapterRouteEdit) : ItemTouchHelp
         y: Int
     ) {
 
-        listener.OnItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition())
+        listener.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
     }
 
     override fun isLongPressDragEnabled(): Boolean {
@@ -52,12 +52,12 @@ class EditItemTouchHelperCallback(var adapter: AdapterRouteEdit) : ItemTouchHelp
     }
 
     interface OnItemMoveListener {
-        fun OnItemMove(from: Int, to: Int): Boolean
-        fun OnItemSwipe(pos: Int): Boolean
-        fun OnItemDrag(): Boolean
+        fun onItemMove(from: Int, to: Int): Boolean
+        fun onItemSwipe(pos: Int): Boolean
+        fun onItemDrag(): Boolean
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        listener.OnItemSwipe(viewHolder.layoutPosition)
+        listener.onItemSwipe(viewHolder.layoutPosition)
     }
 }

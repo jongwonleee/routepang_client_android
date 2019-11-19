@@ -7,17 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.tabs.TabLayout
-import com.itaewonproject.JsonParser
 import com.itaewonproject.R
 import com.itaewonproject.Routepang
 import com.itaewonproject.adapter.TabPagerAdapter
 import com.itaewonproject.model.receiver.Location
-import com.itaewonproject.model.receiver.Product
-import com.itaewonproject.model.receiver.Route
-import com.itaewonproject.rests.get.GetBasketConnector
-import com.itaewonproject.rests.get.GetLocationConnector
 import java.lang.NullPointerException
 
 class WishlistFragment : Fragment() {
@@ -52,7 +46,7 @@ class WishlistFragment : Fragment() {
         tabLayout = view.findViewById(R.id.tabLayout) as TabLayout
         viewPager = view.findViewById(R.id.viewPager) as ViewPager
 
-        var adapter = TabPagerAdapter(childFragmentManager, 2)
+        val adapter = TabPagerAdapter(childFragmentManager, 2)
         adapter.addPage(listFragment, "리스트")
         adapter.addPage(mapFragment, "지도")
         viewPager.adapter = adapter

@@ -5,7 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFF"
-        tools:context=".message.messagingActivity">
+        tools:context=".message.MessagingActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/toolbar"
@@ -54,7 +54,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
         <EditText
-                android:id="@+id/editText"
+                android:id="@+id/edit_message"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -82,14 +82,15 @@
                 android:layout_marginEnd="22dp"
                 android:background="@drawable/box_lightpink_radius_4dp"
                 android:padding="4dp"
-                app:layout_constraintBottom_toBottomOf="@+id/editText"
+                app:layout_constraintBottom_toBottomOf="@+id/edit_message"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/editText"
+                app:layout_constraintTop_toTopOf="@+id/edit_message"
                 app:srcCompat="@drawable/ic_arrow_upward_black_24dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/layout_keyboard"

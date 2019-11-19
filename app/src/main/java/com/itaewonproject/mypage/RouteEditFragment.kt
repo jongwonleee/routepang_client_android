@@ -50,7 +50,7 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
     private var adapter: AdapterRouteEdit? =null
     private lateinit var callback: EditItemTouchHelperCallback
     private lateinit var geoApiContext: GeoApiContext
-    var editMode = false
+    private var editMode = false
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         try{
@@ -91,23 +91,23 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
         editTitle = view.findViewById(R.id.edit_title)
         textTotalTime = view.findViewById(R.id.text_totalTime)
         textTotalMove = view.findViewById(R.id.text_totalMove)
-        buttonMap.setOnClickListener({
+        buttonMap.setOnClickListener {
             if (!editMode) {
                 (parentFragment as RouteFragment).toFragment(true)
             }
-        })
-        buttonBack.setOnClickListener({
+        }
+        buttonBack.setOnClickListener {
             if (!editMode) (parentFragment as RouteFragment).toFragment(false)
-        })
-        buttonEdit.setOnClickListener({
+        }
+        buttonEdit.setOnClickListener {
             editMode = !editMode
             setEditMode()
-        })
+        }
         geoApiContext = GeoApiContext.Builder().apiKey(context!!.getString(R.string.google_key)).build()
         setListViewOption(view)
     }
 
-    fun setEditMode() {
+    private fun setEditMode() {
         callback.swipable = editMode
         if (editMode) {
             textTitle.visibility = View.INVISIBLE
@@ -129,7 +129,7 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
         return inflater.inflate(R.layout.fragment_route_edit, container, false)
     }
 
-    fun setTotals() {
+    private fun setTotals() {
         var durations: Long = 0
         distances = 0
         val arrayPoints = arrayListOf<LatLng>()
@@ -174,7 +174,7 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
 
     //TODO route.legs[]의 원본 저장하는 리스트 만들기
     fun setResult(result: DirectionsResult, pos: Int) {
-        Handler(Looper.getMainLooper()).post(Runnable {
+        Handler(Looper.getMainLooper()).post({
             val route = result.routes[0]
             assert(durations != null)
             assert(distances != null)

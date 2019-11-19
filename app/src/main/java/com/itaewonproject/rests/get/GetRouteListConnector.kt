@@ -98,7 +98,7 @@ class GetRouteListConnector : GetStrategy() {
         val id = params[0] as Long
         param = "$id/customers"
 
-        var task = Task()
+        val task = Task()
         task.execute()
 
         return WebResponce(task.get(), statusCode)

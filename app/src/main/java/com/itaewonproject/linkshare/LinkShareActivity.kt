@@ -21,7 +21,6 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
-import com.google.maps.model.DirectionsResult
 import com.itaewonproject.APIs
 import com.itaewonproject.JsonParser
 import com.itaewonproject.rests.IS_OFFLINE
@@ -40,24 +39,24 @@ import java.util.*
 
 class LinkShareActivity : AppCompatActivity(){
 
-    lateinit var textLink: EditText
+    private lateinit var textLink: EditText
     lateinit var image: ImageView
-    lateinit var summary: TextView
-    lateinit var checkVisited: CheckedTextView
-    lateinit var checkWishlist: CheckedTextView
-    lateinit var layoutRating: LinearLayout
+    private lateinit var summary: TextView
+    private lateinit var checkVisited: CheckedTextView
+    private lateinit var checkWishlist: CheckedTextView
+    private lateinit var layoutRating: LinearLayout
     lateinit var rating: RatingBar
     lateinit var usedTime: SeekBar
-    lateinit var buttonOk: Button
-    lateinit var buttonCancel: Button
+    private lateinit var buttonOk: Button
+    private lateinit var buttonCancel: Button
     lateinit var textSeekMax: TextView
     lateinit var textUsedTime: TextView
-    lateinit var buttonSend: Button
-    lateinit var buttonRef: ImageView
+    private lateinit var buttonSend: Button
+    private lateinit var buttonRef: ImageView
     lateinit var recyclerView: RecyclerView
     lateinit var link: Link
 
-    val address = arrayListOf<Location>()
+    private val address = arrayListOf<Location>()
     var adapter:AdapterAddressList?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,9 +80,9 @@ class LinkShareActivity : AppCompatActivity(){
                 val customer = JsonParser().objectJsonParsing(sharedPreferences.getString("autoLoginCustomer","{}")!!,
                     Customer::class.java)
                 authorization = token!!
-                (application as Routepang).token = token!!
+                (application as Routepang).token = token
                 (application as Routepang).customer = customer!!
-                LinkSetter(url)
+                linkSetter(url)
             }else
             {
                 Toast.makeText(this,"로그인이 되지 않아 로그인 창으로 이동합니다.",Toast.LENGTH_LONG).show()
@@ -96,20 +95,15 @@ class LinkShareActivity : AppCompatActivity(){
 
     }
 
-    private fun LinkSetter(url:String){
+    private fun linkSetter(url:String){
         LinkManager(this).LinkApi(url)
 
     }
 
-    fun OnListManagerResult(linkPlaces:LinkPlaces){
-        Handler(Looper.getMainLooper()).post(Runnable {
-            if (linkPlaces == null) {
-                textLink.text = Editable.Factory.getInstance().newEditable("")
-                Toast.makeText(this,"링크를 가져올 수 없습니다. 다시 시도해주세요",Toast.LENGTH_LONG).show()
-                return@Runnable
-            }
+    fun onListManagerResult(linkPlaces:LinkPlaces){
+        Handler(Looper.getMainLooper()).post( {
 
-            link = linkPlaces.link!!
+            link = linkPlaces.link
             address.clear()
             address.addAll(linkPlaces.list)
             Picasso.with(applicationContext)
@@ -131,7 +125,8 @@ class LinkShareActivity : AppCompatActivity(){
 
             val intent = Autocomplete.IntentBuilder(
                 AutocompleteActivityMode.OVERLAY,
-                Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS,Place.Field.LAT_LNG,Place.Field.TYPES)).build(this)
+                listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS,Place.Field.LAT_LNG,Place.Field.TYPES)
+            ).build(this)
             adapter?.setOnItemClickListener(object:AdapterAddressList.OnItemClickListener {
                 override fun onItemClick(position: Int) {
                     startActivityForResult(intent, 1)
@@ -146,7 +141,7 @@ class LinkShareActivity : AppCompatActivity(){
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
-                var place = Autocomplete.getPlaceFromIntent(data!!)
+                val place = Autocomplete.getPlaceFromIntent(data!!)
                 Log.i("id",place.id)
                 val location = Location()
                 location.address = place.address
@@ -158,7 +153,7 @@ class LinkShareActivity : AppCompatActivity(){
                 adapter?.addAddress(location)
 
             } else if (requestCode == RestrictionsManager.RESULT_ERROR) {
-                var status = Autocomplete.getStatusFromIntent(data!!)
+                val status = Autocomplete.getStatusFromIntent(data!!)
                 Log.e(ContentValues.TAG, status.statusMessage!!)
             }
         }
@@ -167,42 +162,40 @@ class LinkShareActivity : AppCompatActivity(){
 
 
     private fun initActivity() {
-        textLink = findViewById(R.id.text_link) as EditText
-        image = findViewById(R.id.image_article_small) as ImageView
-        summary = findViewById(R.id.text_summary) as TextView
-        checkVisited = findViewById(R.id.check_visited) as CheckedTextView
-        layoutRating = findViewById(R.id.layout_rating) as LinearLayout
-        rating = findViewById(R.id.ratingBar3) as RatingBar
-        usedTime = findViewById(R.id.seek_usedTime) as SeekBar
-        buttonCancel = findViewById(R.id.button_cancel) as Button
-        buttonOk = findViewById(R.id.button_ok) as Button
-        textSeekMax = findViewById(R.id.text_seekMax) as TextView
-        textUsedTime = findViewById(R.id.text_used_time) as TextView
-        buttonSend = findViewById(R.id.button_send)as Button
-        buttonRef = findViewById(R.id.imageButton_ref)as ImageView
+        textLink = findViewById<EditText>(R.id.text_link)
+        image = findViewById<ImageView>(R.id.image_article_small)
+        summary = findViewById<TextView>(R.id.text_summary)
+        checkVisited = findViewById<CheckedTextView>(R.id.check_visited)
+        layoutRating = findViewById<LinearLayout>(R.id.layout_rating)
+        rating = findViewById<RatingBar>(R.id.ratingBar3)
+        usedTime = findViewById<SeekBar>(R.id.seek_usedTime)
+        buttonCancel = findViewById<Button>(R.id.button_cancel)
+        buttonOk = findViewById<Button>(R.id.button_ok)
+        textSeekMax = findViewById<TextView>(R.id.text_seekMax)
+        textUsedTime = findViewById<TextView>(R.id.text_used_time)
+        buttonSend = findViewById<Button>(R.id.button_send)
+        buttonRef = findViewById<ImageView>(R.id.imageButton_ref)
         recyclerView =findViewById(R.id.recyclerview_address)
-        checkWishlist = findViewById(R.id.check_wishlist) as CheckedTextView
+        checkWishlist = findViewById<CheckedTextView>(R.id.check_wishlist)
         checkWishlist.isChecked=true
-        buttonSend.setOnClickListener({
-            LinkSetter(textLink.text.toString())
-        })
+        buttonSend.setOnClickListener {
+            linkSetter(textLink.text.toString())
+        }
 
-        buttonCancel.setOnClickListener({ finish() })
-        buttonOk.setOnClickListener({
+        buttonCancel.setOnClickListener { finish() }
+        buttonOk.setOnClickListener {
             var article = Article()
             article.customer = (application as Routepang).customer
             article.image = link.image
             article.link = link
             article.location = adapter!!.getCheckedItem()
             article.summary = link.summary
-            if(article.location==null)
-            {
+            if(article.location==null) {
                 Toast.makeText(this,"위치를 지정해주세요",Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
             val ret = PostArticleConnector().post(article)
-            if(ret.responceCode!=201)
-            {
+            if(ret.responceCode!=201) {
                 Toast.makeText(this,"다시 한번 시도해주세요.",Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
@@ -226,17 +219,17 @@ class LinkShareActivity : AppCompatActivity(){
                 }
             }
             finish()
-        })
+        }
         layoutRating.visibility = View.GONE
-        checkVisited.setOnClickListener({
+        checkVisited.setOnClickListener {
             checkVisited.toggle()
             if (checkVisited.isChecked) {
                 layoutRating.visibility = View.VISIBLE
             } else {
                 layoutRating.visibility = View.GONE
             }
-        })
-        checkWishlist.setOnClickListener({checkWishlist.toggle()})
+        }
+        checkWishlist.setOnClickListener {checkWishlist.toggle()}
         rating.max = 5
         usedTime.max = 3600
         usedTime.progress = 1800

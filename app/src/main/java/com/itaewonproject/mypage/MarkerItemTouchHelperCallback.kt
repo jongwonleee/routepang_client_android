@@ -13,13 +13,13 @@ class MarkerItemTouchHelperCallback(var adapter: AdapterMarkerList) : ItemTouchH
     }
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-        var dragFlag: Int = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        val dragFlag: Int = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
         return makeMovementFlags(dragFlag, 0)
     }
 
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
-        listener.OnItemDrag()
+        listener.onItemDrag()
     }
 
     override fun onMove(
@@ -27,7 +27,7 @@ class MarkerItemTouchHelperCallback(var adapter: AdapterMarkerList) : ItemTouchH
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        return viewHolder.getItemViewType() == target.getItemViewType()
+        return viewHolder.itemViewType == target.itemViewType
     }
 
     override fun onMoved(
@@ -40,7 +40,7 @@ class MarkerItemTouchHelperCallback(var adapter: AdapterMarkerList) : ItemTouchH
         y: Int
     ) {
 
-        listener.OnItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition())
+        listener.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
     }
 
     override fun isLongPressDragEnabled(): Boolean {
@@ -52,8 +52,8 @@ class MarkerItemTouchHelperCallback(var adapter: AdapterMarkerList) : ItemTouchH
     }
 
     interface OnItemMoveListener {
-        fun OnItemMove(from: Int, to: Int): Boolean
-        fun OnItemDrag(): Boolean
+        fun onItemMove(from: Int, to: Int): Boolean
+        fun onItemDrag(): Boolean
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {

@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.maputils.CategoryIcon
 import com.itaewonproject.R
 import com.itaewonproject.RatioTransformation
-import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.model.receiver.Product
 import com.itaewonproject.mypage.MarkerItemTouchHelperCallback
 import com.itaewonproject.mypage.RouteMapFragment
@@ -27,13 +26,13 @@ class AdapterMarkerList(val context: Context, val fragment: RouteMapFragment)
     var list: ArrayList<Product> = arrayListOf()
 
 
-    override fun OnItemMove(from: Int, to: Int): Boolean {
+    override fun onItemMove(from: Int, to: Int): Boolean {
         Collections.swap(list,from,to)
         notifyItemMoved(from,to)
         return true
     }
 
-    override fun OnItemDrag(): Boolean {
+    override fun onItemDrag(): Boolean {
         notifyDataSetChanged()
         fragment.routeUtils.setWishList()
         return true
@@ -58,20 +57,20 @@ class AdapterMarkerList(val context: Context, val fragment: RouteMapFragment)
 
     inner class ViewHolder(itemView: View) : BaseViewHolder(itemView) {
         val image: CircleImageView
-        val lineLeft: View
-        val lineRight: View
+        private val lineLeft: View
+        private val lineRight: View
         val title: TextView
-        var isSelected = false
+
         init {
             image = itemView.findViewById(R.id.image) as CircleImageView
             lineLeft = itemView.findViewById(R.id.line_left) as View
             lineRight = itemView.findViewById(R.id.line_right) as View
             title = itemView.findViewById(R.id.text_title) as TextView
 
-            itemView.setOnLongClickListener({
+            itemView.setOnLongClickListener {
                 startDragListener.OnStartDrag(this)
                 return@setOnLongClickListener true
-            })
+            }
         }
         override fun bind(pos: Int) {
             val product = list[pos]

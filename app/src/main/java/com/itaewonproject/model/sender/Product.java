@@ -24,7 +24,7 @@ public class Product {
      *  어떤 루트에 포함된 item인지
      */
 
-    public List<Route> route = new ArrayList<>();
+    public List<com.itaewonproject.model.receiver.Route> route = new ArrayList<>();
 
     public com.itaewonproject.model.receiver.Product getReceiverModel() {
         com.itaewonproject.model.receiver.Product product = new com.itaewonproject.model.receiver.Product();

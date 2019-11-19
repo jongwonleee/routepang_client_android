@@ -53,7 +53,7 @@ class ArticleActivity : AppCompatActivity() {
     private lateinit var category:ImageView
 
     private var product:com.itaewonproject.model.receiver.Product? = null
-    private var list = ArrayList<com.itaewonproject.model.receiver.Article>()
+    private var list = ArrayList<Article>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,28 +64,28 @@ class ArticleActivity : AppCompatActivity() {
         product = (application as Routepang).hasProduct(location.getServerModel())
         placeId = location.placeId
 
-        rating = findViewById(R.id.ratingBar_location) as RatingBar
-        address = findViewById(R.id.text_address) as TextView
-        openNow = findViewById(R.id.text_opennow) as TextView
-        restDays = findViewById(R.id.text_restdays) as TextView
-        phoneNumber = findViewById(R.id.text_phonenumber) as TextView
-        website = findViewById(R.id.text_website) as TextView
-        addressRow = findViewById(R.id.row_address) as TableRow
-        openNowRow = findViewById(R.id.row_opennow) as TableRow
-        restDaysRow = findViewById(R.id.row_restdays) as TableRow
-        phoneNumberRow = findViewById(R.id.row_phonenumber) as TableRow
-        websiteRow = findViewById(R.id.row_website) as TableRow
-        usedTime = findViewById(R.id.text_used_time) as TextView
-        title = findViewById(R.id.title_location) as TextView
-        buttonAddBasket = findViewById(R.id.button_addBucket) as TextView
-        tableInfo = findViewById(R.id.table_info) as TableLayout
+        rating = findViewById<RatingBar>(R.id.ratingBar_location)
+        address = findViewById<TextView>(R.id.text_address)
+        openNow = findViewById<TextView>(R.id.text_opennow)
+        restDays = findViewById<TextView>(R.id.text_restdays)
+        phoneNumber = findViewById<TextView>(R.id.text_phonenumber)
+        website = findViewById<TextView>(R.id.text_website)
+        addressRow = findViewById<TableRow>(R.id.row_address)
+        openNowRow = findViewById<TableRow>(R.id.row_opennow)
+        restDaysRow = findViewById<TableRow>(R.id.row_restdays)
+        phoneNumberRow = findViewById<TableRow>(R.id.row_phonenumber)
+        websiteRow = findViewById<TableRow>(R.id.row_website)
+        usedTime = findViewById<TextView>(R.id.text_used_time)
+        title = findViewById<TextView>(R.id.title_location)
+        buttonAddBasket = findViewById<TextView>(R.id.button_addBucket)
+        tableInfo = findViewById<TableLayout>(R.id.table_info)
         category = findViewById(R.id.image_category)
 
         category.setImageResource(CategoryIcon.get(location.category!!))
         title.text = location.name
         usedTime.text = "예상 소요시간: ${APIs.secToString(location.usedTime.toInt())}"
 
-        address.setMovementMethod(ScrollingMovementMethod());
+        address.movementMethod = ScrollingMovementMethod()
 
         rating.rating = location.rating
         addressRow.visibility=View.GONE
@@ -97,30 +97,24 @@ class ArticleActivity : AppCompatActivity() {
 
         buttonAddBasket.text = if(product!=null) "-제거" else "+추가"
 
-        buttonAddBasket.setOnClickListener({
+        buttonAddBasket.setOnClickListener {
             if(product!=null){
                 val ret = DeleteProductConnector().delete(product!!.toSenderModel(),(application as Routepang).customer.customerId)
                 if(ret.responceCode!=200){
                     Toast.makeText(this,"위시리스트에서 제거할 수 없습니다.",Toast.LENGTH_LONG).show()
-                }
-                else
-                {
+                } else {
                     Toast.makeText(this,"위시리스트에서 제거했습니다!",Toast.LENGTH_LONG).show()
                     (application as Routepang).wishlist.remove(product!!)
                     Log.i("wishlist count",(application as Routepang).wishlist.size.toString())
                     product=null
                 }
-            }
-            else
-            {
+            } else {
                 val product = Product()
                 product.location=location.getServerModel()
                 val ret = PostProductConnector().post(product,(application as Routepang).customer.customerId)
                 if(ret.responceCode!=201){
                     Toast.makeText(this,"위시리스트에 추가할 수 없습니다.",Toast.LENGTH_LONG).show()
-                }
-                else
-                {
+                } else {
                     Toast.makeText(this,"위시리스트에 추가했습니다!",Toast.LENGTH_LONG).show()
                     (application as Routepang).wishlist.add(product.receiverModel)
                     this.product=product.receiverModel
@@ -128,7 +122,7 @@ class ArticleActivity : AppCompatActivity() {
             }
             buttonAddBasket.text = if(product!=null) "-제거" else "+추가"
 
-        })
+        }
 
         setListViewOption()
 
@@ -148,7 +142,7 @@ class ArticleActivity : AppCompatActivity() {
             val placeID = params[0] as String
             param = "json?placeid=$placeID&fields=name,formatted_phone_number,formatted_address,permanently_closed,opening_hours,website&key=$key&language=ko"
 
-            var task = Task()
+            val task = Task()
             task.execute()
             Log.i("google info", domain + inner + param)
             return WebResponce(task.get(),statusCode)
@@ -156,14 +150,14 @@ class ArticleActivity : AppCompatActivity() {
 
     }
     private fun setListViewOption() {
-        recyclerView = findViewById(R.id.recyclerview_article_list) as RecyclerView
+        recyclerView = findViewById<RecyclerView>(R.id.recyclerview_article_list)
         list = JsonParser().listJsonParsing(GetArticleConnector().get(location.placeId), Article::class.java)
 
         val adapter = AdapterArticleList(this, list)
 
-        adapter.setOnItemClickClickListener(object : AdapterArticleList.onItemClickListener {
+        adapter.setOnItemClickClickListener(object : AdapterArticleList.OnItemClickListener {
             override fun onItemClick(v: View, position: Int) {
-                var intent = Intent(Intent.ACTION_VIEW, Uri.parse(list[position].link.linkUrl))
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(list[position].link.linkUrl))
                 startActivity(intent)
 
             }
@@ -176,7 +170,7 @@ class ArticleActivity : AppCompatActivity() {
         recyclerView.setHasFixedSize(false)
     }
 
-    fun jsonParsing(result: WebResponce){
+    private fun jsonParsing(result: WebResponce){
         if(result.responceCode!=200) return
         try {
             val json = JSONObject(result.body).getJSONObject("result") as JSONObject
@@ -184,14 +178,14 @@ class ArticleActivity : AppCompatActivity() {
             val address = json.optString("formatted_address")
             val website  = json.optString("website")
             var openNow = ""
-            var openArray = json.getJSONObject("opening_hours").getJSONArray("weekday_text") as JSONArray
+            val openArray = json.getJSONObject("opening_hours").getJSONArray("weekday_text") as JSONArray
             var restDays = ""
             var showTable =false
-            for (i in 0..openArray.length() - 1) {
+            for (i in 0 until openArray.length()) {
                 val str = openArray.getString(i)
                 if(str.contains("휴무일") || str.contains("Closed")) restDays += str.substring(0,str.indexOf(':'))+", "
             }
-            if(restDays.length>0){
+            if(restDays.isNotEmpty()){
                 restDays= restDays.substring(0,restDays.length-2)
                 restDays += " 휴무"
             }
@@ -203,28 +197,28 @@ class ArticleActivity : AppCompatActivity() {
             }
 
 
-            if(phoneNumber.length>0){
-                this.phoneNumber.text = "$phoneNumber"
+            if(phoneNumber.isNotEmpty()){
+                this.phoneNumber.text = phoneNumber
                 this.phoneNumberRow.visibility=View.VISIBLE
                 showTable=true
             }
-            if(address.length>0){
-                this.address.text = "$address"
+            if(address.isNotEmpty()){
+                this.address.text = address
                 this.addressRow.visibility=View.VISIBLE
                 showTable=true
             }
-            if(website.length>0){
-                this.website.text = "$website"
+            if(website.isNotEmpty()){
+                this.website.text = website
                 this.websiteRow.visibility=View.VISIBLE
                 showTable=true
             }
-            if(openNow.length>0){
-                this.openNow.text = "$openNow"
+            if(openNow.isNotEmpty()){
+                this.openNow.text = openNow
                 this.openNowRow.visibility=View.VISIBLE
                 showTable=true
             }
-            if(restDays.length>0){
-                this.restDays.text = "$restDays"
+            if(restDays.isNotEmpty()){
+                this.restDays.text = restDays
                 this.restDaysRow.visibility=View.VISIBLE
                 showTable=true
             }

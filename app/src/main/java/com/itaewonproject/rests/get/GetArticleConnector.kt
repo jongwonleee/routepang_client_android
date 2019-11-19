@@ -10,7 +10,7 @@ class GetArticleConnector : GetStrategy() {
     override val inner: String = "article/"
     override lateinit var mockData: String
     init {
-        val ref = listOf<String>("https://facebookbrand.com/wp-content/themes/fb-branding/assets/images/fb-logo.png?v2",
+        val ref = listOf("https://facebookbrand.com/wp-content/themes/fb-branding/assets/images/fb-logo.png?v2",
             "https://instagram-brand.com/wp-content/uploads/2016/11/Instagram_AppIcon_Aug2017.png?w=300")
         val l1 = Link()
         val l2 = Link()
@@ -127,7 +127,7 @@ class GetArticleConnector : GetStrategy() {
         val id = params[0] as String
         param = "$id/places"
 
-        var task = Task()
+        val task = Task()
         task.execute()
 
         return WebResponce(task.get(), statusCode)

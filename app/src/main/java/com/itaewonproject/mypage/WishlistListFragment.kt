@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.R
-import com.itaewonproject.Routepang
 import com.itaewonproject.adapter.AdapterLocationList
 import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.search.ArticleActivity
@@ -24,9 +23,9 @@ class WishlistListFragment : Fragment() {
         list = (parentFragment as WishlistFragment).list
         recyclerView = view.findViewById(R.id.wishlist_RecyclerView) as RecyclerView
         adapter = AdapterLocationList(view.context, list)
-        adapter.setOnItemClickClickListener(object : AdapterLocationList.onItemClickListener {
+        adapter.setOnItemClickClickListener(object : AdapterLocationList.OnItemClickListener {
             override fun onItemClick(v: View, position: Int) {
-                var intent = Intent(context, ArticleActivity::class.java)
+                val intent = Intent(context, ArticleActivity::class.java)
                 intent.putExtra("Location", adapter.output[position])
                 startActivity(intent)
             }

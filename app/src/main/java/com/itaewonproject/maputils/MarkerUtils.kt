@@ -17,14 +17,14 @@ import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.mypage.WishlistMapFragment
 import com.itaewonproject.search.LocationActivity
 
-class MarkerUtils(val map: GoogleMap, val con: Context) {
+class MarkerUtils(val map: GoogleMap, private val con: Context) {
     val view: View
     val image: ImageView
-    val latLoc = HashMap<LatLng, Location>()
-    var selectedMarker: Marker?
+    private val latLoc = HashMap<LatLng, Location>()
+    private var selectedMarker: Marker?
     var isWishlist=false
     var fragment:Fragment?=null
-    val imageList = listOf(listOf(
+    private val imageList = listOf(listOf(
         R.drawable.ic_map_pin_fill_blue,
         R.drawable.ic_map_pin_fill_green,
         R.drawable.ic_map_pin_fill_purple,
@@ -74,7 +74,7 @@ class MarkerUtils(val map: GoogleMap, val con: Context) {
         val marker = map.addMarker(markerOptions)
         marker.showInfoWindow()
         if(isWishlist && isSelected) (fragment as WishlistMapFragment).showDetail(location)
-        latLoc.put(position, location)
+        latLoc[position] = location
         return marker
     }
 
@@ -92,7 +92,7 @@ class MarkerUtils(val map: GoogleMap, val con: Context) {
 
     private fun addLocationMarker(marker: Marker, isSelected: Boolean): Marker? {
         if (latLoc.containsKey(marker.position)) {
-            val location = latLoc.get(marker.position)
+            val location = latLoc[marker.position]
             if (location != null)
                 return addLocationMarker(location, isSelected)
         }

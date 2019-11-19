@@ -18,7 +18,5 @@ class Article {
 
     var link: Link = Link()
 
-    var favicon_url: String = ""
-
     var reg_date: Timestamp? = null
 }

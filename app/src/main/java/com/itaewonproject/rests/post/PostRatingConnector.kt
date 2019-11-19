@@ -12,7 +12,7 @@ class PostRatingConnector : PostStrategy() {
 
     override fun post(vararg params: Any): WebResponce {
         val rating = params[0] as Rating
-        var task = Task()
+        val task = Task()
         task.execute(Gson().toJson(rating))
         return WebResponce(task.get(), statusCode)
     }

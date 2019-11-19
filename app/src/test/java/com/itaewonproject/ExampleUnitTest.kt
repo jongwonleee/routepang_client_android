@@ -34,9 +34,9 @@ class ExampleUnitTest {
 
     @Test
     fun test3(){
-        var c = GeometryFactory().createPoint()
+        val c = GeometryFactory().createPoint()
         c.coordinate
-        System.out.println(Gson().toJson(c))
+        println(Gson().toJson(c))
 
     }
    /* @Test

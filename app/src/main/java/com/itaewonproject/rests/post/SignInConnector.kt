@@ -18,7 +18,7 @@ class SignInConnector : PostStrategy() {
 
     override fun post(vararg params: Any): WebResponce{
         val customer = params[0] as Customer
-        var task = Task()
+        val task = Task()
         task.execute(Gson().toJson(customer))
 
         return WebResponce(task.get(), statusCode)

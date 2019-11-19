@@ -33,27 +33,27 @@ class MainActivityWithDrawer : AppCompatActivity(),NavigationView.OnNavigationIt
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_with_drawer)
-        tabLayout = findViewById(R.id.tabLayout) as TabLayout
-        viewPager = findViewById(R.id.viewPager) as ViewPager
-        drawerLayout=findViewById(R.id.drawer_layout) as DrawerLayout
-        navigationView=findViewById(R.id.nav_view) as NavigationView
-        buttonSearch = findViewById(R.id.button_search) as ImageView
-        buttonMessage=findViewById(R.id.button_message) as ImageView
+        tabLayout = findViewById<TabLayout>(R.id.tabLayout)
+        viewPager = findViewById<ViewPager>(R.id.viewPager)
+        drawerLayout= findViewById<DrawerLayout>(R.id.drawer_layout)
+        navigationView= findViewById<NavigationView>(R.id.nav_view)
+        buttonSearch = findViewById<ImageView>(R.id.button_search)
+        buttonMessage= findViewById<ImageView>(R.id.button_message)
 
         navigationView.setNavigationItemSelectedListener(this)
 
-        var adapter = TabPagerAdapter(supportFragmentManager, 3)
+        val adapter = TabPagerAdapter(supportFragmentManager, 3)
         adapter.addPage(RouteFragment(), "Route")
         adapter.addPage(WishlistFragment(), "Wish List")
         adapter.addPage(MyPageFragment(), "Mypage")
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)
 
-        buttonSearch.setOnClickListener({
+        buttonSearch.setOnClickListener {
             val intent = Intent(this,LocationActivity::class.java)
             startActivity(intent)
 
-        })
+        }
 
 
     }

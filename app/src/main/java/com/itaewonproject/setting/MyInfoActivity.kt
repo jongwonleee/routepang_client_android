@@ -15,8 +15,8 @@ class MyInfoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
-        buttonBack = findViewById(R.id.button_back) as ImageView
-        buttonBack.setOnClickListener({ finish()})
+        buttonBack = findViewById<ImageView>(R.id.button_back)
+        buttonBack.setOnClickListener { finish()}
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.settings, SettingsFragment())
@@ -31,7 +31,7 @@ class MyInfoActivity : AppCompatActivity() {
 
         override fun onPreferenceTreeClick(preference: Preference?): Boolean {
             if(preference!=null) {
-                when(preference!!.key){
+                when(preference.key){
                     "secure_quit" ->{
                         val intent = Intent(context,QuitActivity::class.java)
                         startActivity(intent)

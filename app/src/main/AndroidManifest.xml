@@ -26,7 +26,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-        <activity android:name=".message.messagingActivity"></activity>
+        <activity android:name=".message.MessagingActivity" />
         <activity android:name=".message.MessageListActivity" />
         <activity android:name=".setting.MyInfoActivity" />
         <activity android:name=".setting.QuitActivity" />

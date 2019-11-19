@@ -13,7 +13,7 @@ class PutRouteConnector : PutStrategy() {
     override fun put(vararg params: Any): WebResponce {
         val routes = params[0] as Product
         val id = params[1] as Long
-        var task = Task()
+        val task = Task()
         param = "$id/routes"
         task.execute(Gson().toJson(routes))
         return WebResponce(task.get(), statusCode)

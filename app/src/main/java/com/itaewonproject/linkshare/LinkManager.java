@@ -25,7 +25,7 @@ import java.util.concurrent.ExecutionException;
 
 
 public class LinkManager {
-    Context context;
+    private final Context context;
     LinkManager(Context context){
         this.context=context;
     }
@@ -39,14 +39,12 @@ public class LinkManager {
         task.execute(url);
 
         try{
-            LinkPlaces ret = task.get();
+            task.get();
         }catch(ExecutionException e){
             e.printStackTrace();
         }catch (InterruptedException e){
             e.printStackTrace();
         }
-
-        return;
     }
 
     class Task extends AsyncTask<String, Integer, LinkPlaces> {
@@ -59,7 +57,7 @@ public class LinkManager {
             link.linkUrl=url;
 
             try{
-                if(url.indexOf("https://") == -1)
+                if(!url.contains("https://"))
                     url = "https://" + url;
 
                 Document rawData = Jsoup.connect(url).get();
@@ -85,7 +83,7 @@ public class LinkManager {
 
                 if(favImage == null)
                     favImage = "No_Content";
-                else if(favImage.indexOf("https://") == -1)
+                else if(!favImage.contains("https://"))
                     favImage = base_url + favImage;
 
                 String main_img;
@@ -101,7 +99,7 @@ public class LinkManager {
 
                 String translated = new NaverTranslater(context.getString(R.string.naver_client_id),context.getString(R.string.naver_client_secret)).get(link.summary.replaceAll("#","+"));
 
-                if(translated!="notTranslated"){
+                if(!translated.equals("notTranslated")){
                     translated = translated.substring(translated.indexOf("translatedText")+17,translated.lastIndexOf('"'));
                     translated = translated.replaceAll(" ","+");
                     String address = "https://maps.googleapis.com/maps/api/geocode/json?key="+ context.getString(R.string.google_key) +"&language=ko&address="+translated+"+"+link.summary.replaceAll(" ","+").replaceAll("#","+");
@@ -121,8 +119,8 @@ public class LinkManager {
                                 location.address = locations.getJSONObject(i).optString("formatted_address");
                                 location.name = locations.getJSONObject(i).getJSONArray("address_components").getJSONObject(0).optString("short_name");
                                 location.category = LocationCategoryParser.INSTANCE.get(locations.getJSONObject(i).getJSONArray("types").get(0).toString());
-                                Double lat = locations.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lat");
-                                Double lng = locations.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lng");
+                                double lat = locations.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lat");
+                                double lng = locations.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lng");
                                 location.coordinates = "POINT ("+lat+" "+lng+")";
                                 linkPlaces.getList().add(location);
                             }
@@ -134,7 +132,7 @@ public class LinkManager {
 
                 }
 
-                ((LinkShareActivity) context).OnListManagerResult(linkPlaces);
+                ((LinkShareActivity) context).onListManagerResult(linkPlaces);
                 return linkPlaces;
             }catch (IOException e){
                 e.printStackTrace();

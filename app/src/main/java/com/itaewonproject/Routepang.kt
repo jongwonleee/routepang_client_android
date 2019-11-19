@@ -14,7 +14,7 @@ class Routepang: Application() {
     fun hasProduct(location:Location):Product?{
         val id = location.placeId
         for(w in wishlist){
-            if(w.location.placeId.equals(id)){
+            if(w.location.placeId == id){
                return w
             }
         }

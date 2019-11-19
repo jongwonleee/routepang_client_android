@@ -8,14 +8,13 @@ import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
 import android.util.AttributeSet
-import android.util.Log
 import android.widget.ImageView
 import com.itaewonproject.R
 
 class RoundedImageView: ImageView {
-    var imageRadius =0f
+    private var imageRadius =0f
 
-    var isCircular = false
+    private var isCircular = false
 
 
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int):super(context, attrs, defStyleAttr, defStyleRes){
@@ -29,14 +28,6 @@ class RoundedImageView: ImageView {
 
     }
 
-    override fun setImageBitmap(bm: Bitmap?) {
-        super.setImageBitmap(bm)
-    }
-
-    override fun setImageDrawable(drawable: Drawable?) {
-        super.setImageDrawable(drawable)
-
-    }
     private fun initView(context: Context?, attrs: AttributeSet?){
         val a = context!!.obtainStyledAttributes(attrs, R.styleable.RoundedImageView)
         imageRadius = a.getDimension(R.styleable.RoundedImageView_imageRadius,0f)
@@ -44,7 +35,7 @@ class RoundedImageView: ImageView {
         setRounds()
     }
     private fun setRounds(){
-        var drawable:Drawable
+        val drawable:Drawable
         if(isCircular){
             drawable = ShapeDrawable(OvalShape())
         }else

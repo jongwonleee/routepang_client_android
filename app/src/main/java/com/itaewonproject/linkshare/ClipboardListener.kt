@@ -14,7 +14,6 @@ import android.os.Handler
 import android.os.IBinder
 import android.util.Log
 import android.view.*
-import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -22,7 +21,7 @@ import com.itaewonproject.R
 import java.util.Calendar
 import java.util.regex.Pattern
 
-class ClipboardListener : Service() {
+open class ClipboardListener : Service() {
 
     private lateinit var windowManager: WindowManager
     private lateinit var floatyView: View
@@ -37,7 +36,7 @@ class ClipboardListener : Service() {
         cm = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
         cm.addPrimaryClipChangedListener {
-            val p = Pattern.compile("^(https?):\\/\\/([^:\\/\\s]+)(:([^\\/]*))?((\\/[^\\s/\\/]+)*)?\\/?([^#\\s\\?]*)(\\?([^#\\s]*))?(#(\\w*))?$")
+            val p = Pattern.compile("^(https?)://([^:/\\s]+)(:([^/]*))?((/[^\\s//]+)*)?/?([^#\\s?]*)(\\?([^#\\s]*))?(#(\\w*))?$")
             if (p.matcher(cm.primaryClip!!.getItemAt(0).text).matches()) {
                 isRunning = true
                 windowManager.addView(floatyView, params)
@@ -63,13 +62,13 @@ class ClipboardListener : Service() {
                 })
                 animator.start()
 
-                Handler().postDelayed(Runnable {
+                Handler().postDelayed({
                     removeRunner()
                 }, 5500)
             }
         }
 
-        return Service.START_NOT_STICKY
+        return START_NOT_STICKY
     }
 
     fun removeRunner() {
@@ -127,11 +126,7 @@ class ClipboardListener : Service() {
         return null
     }
 
-    override fun onUnbind(intent: Intent): Boolean {
-        return super.onUnbind(intent)
-    }
-
-    fun showToast(application: Application, msg: String) {
+    private fun showToast(application: Application, msg: String) {
         val h = Handler(application.mainLooper)
         h.post { Toast.makeText(application, msg, Toast.LENGTH_LONG).show() }
     }
@@ -161,17 +156,13 @@ class ClipboardListener : Service() {
         params.y = 0
         val interceptorLayout = object : FrameLayout(this) {
 
-            override fun dispatchGenericMotionEvent(event: MotionEvent?): Boolean {
-                return super.dispatchGenericMotionEvent(event)
-            }
-
             override fun dispatchKeyEvent(event: KeyEvent): Boolean {
 
                 // Only fire on the ACTION_DOWN event, or you'll get two events (one for _DOWN, one for _UP)
-                if (event.getAction() === KeyEvent.ACTION_DOWN) {
+                if (event.action === KeyEvent.ACTION_DOWN) {
 
                     // Check if the HOME button is pressed
-                    if (event.getKeyCode() === KeyEvent.KEYCODE_BACK) {
+                    if (event.keyCode === KeyEvent.KEYCODE_BACK) {
 
                         removeRunner()
                         // As we've taken action, we'll return true to prevent other apps from consuming the event as well
@@ -184,16 +175,16 @@ class ClipboardListener : Service() {
             }
         }
 
-        floatyView = (getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(com.itaewonproject.R.layout.view_url_copy, interceptorLayout)
-        var buttonOk = floatyView.findViewById(R.id.button_ok) as TextView
-        buttonOk.setOnClickListener({
+        floatyView = (getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.view_url_copy, interceptorLayout)
+        val buttonOk = floatyView.findViewById(R.id.button_ok) as TextView
+        buttonOk.setOnClickListener {
             var intent = Intent(this, LinkShareActivity::class.java)
             intent.putExtra(Intent.EXTRA_TEXT, cm.primaryClip!!.getItemAt(0).text)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             removeRunner()
 
             startActivity(intent)
-        })
+        }
     }
 
     companion object {

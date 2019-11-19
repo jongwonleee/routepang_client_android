@@ -44,7 +44,7 @@ class WishlistMapFragment : Fragment(), MyLocationSetting {
 
     private lateinit var mapView: CustomMapView
     private var list: ArrayList<Location> = arrayListOf()
-    lateinit var markerUtils: MarkerUtils
+    private lateinit var markerUtils: MarkerUtils
     private lateinit var autoCompleteButton: CardView
     private lateinit var title: TextView
     private lateinit var rating: RatingBar
@@ -78,26 +78,27 @@ class WishlistMapFragment : Fragment(), MyLocationSetting {
 
         Places.initialize(activity!!.applicationContext, context!!.getString(R.string.google_key))
         Places.createClient(context!!)
-        var intent = Autocomplete.IntentBuilder(
+        val intent = Autocomplete.IntentBuilder(
             AutocompleteActivityMode.OVERLAY,
-            Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG)).build(context!!)
-        autoCompleteButton.setOnClickListener({
+            listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG)
+        ).build(context!!)
+        autoCompleteButton.setOnClickListener {
             startActivityForResult(intent, 1)
-        })
+        }
     }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
-                var place = Autocomplete.getPlaceFromIntent(data!!)
+                val place = Autocomplete.getPlaceFromIntent(data!!)
                 if (place.latLng != null) {
                     map!!.clear()
                     map!!.moveCamera(CameraUpdateFactory.newLatLng(place.latLng))
                     map!!.animateCamera(CameraUpdateFactory.zoomTo(15f))
                 }
             } else if (requestCode == RestrictionsManager.RESULT_ERROR) {
-                var status = Autocomplete.getStatusFromIntent(data!!)
+                val status = Autocomplete.getStatusFromIntent(data!!)
                 Log.e(ContentValues.TAG, status.statusMessage!!)
             }
         }
@@ -163,13 +164,13 @@ class WishlistMapFragment : Fragment(), MyLocationSetting {
     }
 
     override fun onStart() {
-        if(mGoogleApiClient != null && mGoogleApiClient!!.isConnected== false){
+        if(mGoogleApiClient != null && !mGoogleApiClient!!.isConnected){
 
-            Log.d(TAG, "onStart: mGoogleApiClient connect");
-            mGoogleApiClient!!.connect();
+            Log.d(TAG, "onStart: mGoogleApiClient connect")
+            mGoogleApiClient!!.connect()
         }
 
-        super.onStart();
+        super.onStart()
     }
 
     fun showDetail(location:Location?){
@@ -198,12 +199,12 @@ class WishlistMapFragment : Fragment(), MyLocationSetting {
 
     override fun onResume() {
         mapView.onResume()
-        super.onResume();
+        super.onResume()
         mMoveMapByAPI=false
-        if (mGoogleApiClient!!.isConnected()) {
+        if (mGoogleApiClient!!.isConnected) {
 
-            Log.d(TAG, "onResume : call startLocationUpdates");
-            if (!mRequestingLocationUpdates) startLocationUpdates();
+            Log.d(TAG, "onResume : call startLocationUpdates")
+            if (!mRequestingLocationUpdates) startLocationUpdates()
         }
 
 
@@ -221,16 +222,16 @@ class WishlistMapFragment : Fragment(), MyLocationSetting {
     override fun onStop() {
         if (mRequestingLocationUpdates) {
 
-            Log.d(TAG, "onStop : call stopLocationUpdates");
-            stopLocationUpdates();
+            Log.d(TAG, "onStop : call stopLocationUpdates")
+            stopLocationUpdates()
         }
 
-        if ( mGoogleApiClient!!.isConnected()) {
+        if ( mGoogleApiClient!!.isConnected) {
 
-            Log.d(TAG, "onStop : mGoogleApiClient disconnect");
-            mGoogleApiClient!!.disconnect();
+            Log.d(TAG, "onStop : mGoogleApiClient disconnect")
+            mGoogleApiClient!!.disconnect()
         }
 
-        super.onStop();
+        super.onStop()
     }
 }

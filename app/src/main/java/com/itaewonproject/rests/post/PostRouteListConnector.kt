@@ -13,7 +13,7 @@ class PostRouteListConnector : PostStrategy() {
     override fun post(vararg params: Any): WebResponce {
         val routes = params[0] as ArrayList<Route>
         val id = params[1] as Long
-        var task = Task()
+        val task = Task()
         param = "$id/customers"
         task.execute(Gson().toJson(routes))
         return WebResponce(task.get(), statusCode)

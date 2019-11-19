@@ -10,14 +10,14 @@ const val CLASS_DOMAIN:String = "http://www.routepang.com:9090/"
  */
 abstract class WebStrategy {
     protected var domain: String
-    abstract protected val inner: String
-    abstract protected var param: String
-    abstract protected val mockData: String
+    protected abstract val inner: String
+    protected abstract var param: String
+    protected abstract val mockData: String
     protected var statusCode: Int? = null
     abstract val method:String
     companion object {
-        val classDomain: String = CLASS_DOMAIN
-        val isOffline: Boolean = IS_OFFLINE
+        const val classDomain: String = CLASS_DOMAIN
+        const val isOffline: Boolean = IS_OFFLINE
 
     }
 
@@ -42,7 +42,7 @@ abstract class WebStrategy {
                     HttpClient.Builder(method, createUrl(param)) // 포트번호,서블릿주소
                 Log.i("rest url", method+":: "+http.url)
                 // Parameter 를 전송한다.
-                if (p0.size> 0)
+                if (p0.isNotEmpty())
                     http.setParameters(p0[0])
 
                 // Http 요청 전송
@@ -60,8 +60,5 @@ abstract class WebStrategy {
             }
         }
 
-        override fun onPostExecute(result: String?) {
-            super.onPostExecute(result)
-        }
     }
 }

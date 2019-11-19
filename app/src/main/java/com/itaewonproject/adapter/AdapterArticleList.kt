@@ -14,13 +14,12 @@ import com.itaewonproject.R
 import com.itaewonproject.RatioTransformation
 import com.itaewonproject.customviews.RoundedImageView
 import com.squareup.picasso.Picasso
-import android.view.animation.AnimationUtils
 import android.view.animation.TranslateAnimation
 
 
 class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewonproject.model.receiver.Article>) : RecyclerView.Adapter<AdapterArticleList.ViewHolder>() {
 
-    private lateinit var listener: onItemClickListener
+    private lateinit var listener: OnItemClickListener
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)
@@ -35,15 +34,15 @@ class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewon
         return output.size
     }
 
-    interface onItemClickListener {
+    interface OnItemClickListener {
         fun onItemClick(v: View, position: Int)
     }
 
-    fun setOnItemClickClickListener(listener: onItemClickListener) {
+    fun setOnItemClickClickListener(listener: OnItemClickListener) {
         this.listener = listener
     }
 
-    inner class ViewHolder(itemView: View,parent: ViewGroup) : BaseViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : BaseViewHolder(itemView) {
 
         private var summary: TextView
         private var imgSmall: RoundedImageView
@@ -53,11 +52,11 @@ class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewon
         private val textName:TextView
         private var layoutArticle: ConstraintLayout
         private var articleId: Long = 0
-        var imgSmallWidth=0
-        var imgSmallHeight=0
-        var summaryHeight=0
-        val scale = context.resources.displayMetrics.density
-        val pixels = (70 * scale + 0.5f).toInt()
+        private var imgSmallWidth=0
+        private var imgSmallHeight=0
+        private var summaryHeight=0
+        private val scale = context.resources.displayMetrics.density
+        private val pixels = (70 * scale + 0.5f).toInt()
         init {
             summary = itemView.findViewById(R.id.text_summary) as TextView
             textName = itemView.findViewById(R.id.text_name)
@@ -67,19 +66,17 @@ class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewon
             layoutArticle = itemView.findViewById(R.id.layout_article) as ConstraintLayout
             imageMeasure = itemView.findViewById(R.id.image_measure) as ImageView
 
-            layoutArticle.setOnClickListener({
+            layoutArticle.setOnClickListener {
                 if (imgBig.visibility == View.GONE) {
                     openAnimation()
                 } else {
                     closeAnimation()
                 }
-            })
-            buttonRef.setOnClickListener(View.OnClickListener {
+            }
+            buttonRef.setOnClickListener({
                 val pos = adapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
-                    if (listener != null) {
                         listener.onItemClick(it, pos)
-                    }
                 }
             })
         }
@@ -193,7 +190,7 @@ class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewon
             imgBig.startAnimation(animation)
         }
         override fun bind(pos: Int) {
-            var output = output[pos]
+            val output = output[pos]
             articleId = output.articleId
             Picasso.with(itemView.context)
                 .load(output.link.image)
