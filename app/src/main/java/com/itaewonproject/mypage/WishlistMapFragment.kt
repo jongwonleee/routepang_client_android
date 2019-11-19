@@ -37,6 +37,7 @@ import com.itaewonproject.maputils.MarkerUtils
 import com.itaewonproject.maputils.MyLocationSetting
 import com.itaewonproject.model.receiver.Location
 import com.squareup.picasso.Picasso
+import java.lang.NullPointerException
 import java.util.*
 
 class WishlistMapFragment : Fragment(), MyLocationSetting {
@@ -67,7 +68,6 @@ class WishlistMapFragment : Fragment(), MyLocationSetting {
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
 
-        list = (parentFragment as WishlistFragment).list
 
         con = context!!
         mGoogleApiClient = GoogleApiClient.Builder(context!!)
@@ -130,16 +130,26 @@ class WishlistMapFragment : Fragment(), MyLocationSetting {
             showDetail(null)
         }
 
-        ///FIXME list 받아오기 구현
-
-
-        for (l in list) {
-            markerUtils.addLocationMarker(l, false)
-        }
-        if (list.size> 0) {
-            map!!.moveCamera(CameraUpdateFactory.newLatLngZoom(list[0].latlng(), 20f))
-        }
     }
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        try{
+            if (isVisibleToUser && isResumed) {
+                list = (parentFragment as WishlistFragment).list
+                for (l in list) {
+                    markerUtils.addLocationMarker(l, false)
+                }
+                if (list.size> 0) {
+                    map!!.moveCamera(CameraUpdateFactory.newLatLngZoom(list[0].latlng(), 20f))
+                }
+            }
+        }catch (e: NullPointerException){
+            e.printStackTrace()
+        }
+
+    }
+
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment

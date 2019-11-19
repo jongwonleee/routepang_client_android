@@ -10,20 +10,20 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.R
+import com.itaewonproject.Routepang
 import com.itaewonproject.adapter.AdapterLocationList
 import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.search.ArticleActivity
+import java.lang.NullPointerException
 
 class WishlistListFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     lateinit var list: ArrayList<Location>
-
+    var adapter:AdapterLocationList? =null
     private fun setListViewOption(view: View) {
-        Log.i("!!w", "wish list shown")
         list = (parentFragment as WishlistFragment).list
         recyclerView = view.findViewById(R.id.wishlist_RecyclerView) as RecyclerView
         val adapter = AdapterLocationList(view.context, list)
-
         adapter.setOnItemClickClickListener(object : AdapterLocationList.onItemClickListener {
             override fun onItemClick(v: View, position: Int) {
                 var intent = Intent(context, ArticleActivity::class.java)
@@ -42,6 +42,26 @@ class WishlistListFragment : Fragment() {
         // recyclerView.addItemDecoration(dividerItemDeco)
     }
 
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        try{
+
+        }catch (e: NullPointerException){
+            e.printStackTrace()
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.i("is wishlist list resumed?","yes!!!!")
+        try{
+            list = (parentFragment as WishlistFragment).list
+            if(adapter!=null) adapter!!.refreshList(list)
+        }catch (e: NullPointerException){
+            e.printStackTrace()
+        }
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setListViewOption(view)
     }

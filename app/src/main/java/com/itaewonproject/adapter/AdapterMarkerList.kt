@@ -10,6 +10,7 @@ import com.itaewonproject.maputils.CategoryIcon
 import com.itaewonproject.R
 import com.itaewonproject.RatioTransformation
 import com.itaewonproject.model.receiver.Location
+import com.itaewonproject.model.receiver.Product
 import com.itaewonproject.mypage.MarkerItemTouchHelperCallback
 import com.itaewonproject.mypage.RouteMapFragment
 import com.squareup.picasso.Picasso
@@ -23,7 +24,7 @@ class AdapterMarkerList(val context: Context, val fragment: RouteMapFragment)
 
     private var startDragListener: OnStartDragListener = fragment
 
-    var list: ArrayList<Location> = arrayListOf()
+    var list: ArrayList<Product> = arrayListOf()
 
 
     override fun OnItemMove(from: Int, to: Int): Boolean {
@@ -73,11 +74,11 @@ class AdapterMarkerList(val context: Context, val fragment: RouteMapFragment)
             })
         }
         override fun bind(pos: Int) {
-            val location = list[pos]
-            title.text = location.name
+            val product = list[pos]
+            title.text = product.location.name
             lineLeft.visibility = if (pos != 0) View.VISIBLE else View.INVISIBLE
             lineRight.visibility = if (pos != list.size - 1) View.VISIBLE else View.INVISIBLE
-            image.borderColor = CategoryIcon.getColor(location.category!!)
+            image.borderColor = CategoryIcon.getColor(product.location.category!!)
             Picasso.with(itemView.context)
                 .load("https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Oegyujanggak_at_Kanghwa.jpg/2560px-Oegyujanggak_at_Kanghwa.jpg")
                 .transform(RatioTransformation(100))

@@ -8,7 +8,7 @@ public class Product {
     /**
      *  id
      */
-    public long productId;
+    public long productId=0;
 
     /**
      *  연결된 사용자 장바구니
@@ -18,12 +18,19 @@ public class Product {
     /**
      *  location
      */
-    public Location location;
+    public Location location = new Location();
 
     /**
      *  어떤 루트에 포함된 item인지
      */
 
     public List<Route> route = new ArrayList<>();
+
+    public com.itaewonproject.model.receiver.Product getReceiverModel() {
+        com.itaewonproject.model.receiver.Product product = new com.itaewonproject.model.receiver.Product();
+        product.location=new com.itaewonproject.model.receiver.Location(location);
+        product.productId=productId;
+        return product;
+    }
 }
 

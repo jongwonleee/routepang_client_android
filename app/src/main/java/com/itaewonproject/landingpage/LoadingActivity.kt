@@ -17,6 +17,9 @@ import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.itaewonproject.JsonParser
 import com.itaewonproject.R
@@ -46,7 +49,21 @@ class LoadingActivity : AppCompatActivity() {
         slogan.text= Html.fromHtml("원하는 정보만 <b>루팡!</b><br>나만의 루트가 <b>팡팡!</b>",Html.FROM_HTML_MODE_LEGACY)
 
         isAutoLogin = sharedPreferences.getBoolean("autoLoginCheck",false)
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("firebase", "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
 
+                // Get new Instance ID token
+                val token = task.result?.token
+
+                // Log and toast
+                //val msg = getString(R.string.msg_token_fmt, token)
+                Log.d("firebase",token.toString())
+                Toast.makeText(baseContext, token.toString(), Toast.LENGTH_SHORT).show()
+            })
         if(isAutoLogin){
             try{
                 val token = sharedPreferences.getString("loginToken","")
@@ -55,6 +72,7 @@ class LoadingActivity : AppCompatActivity() {
                 (application as Routepang).token = token!!
                 (application as Routepang).customer = customer!!
                 Log.i("autoLoginMode","auto Login as ${customer.customerId}")
+                Log.i("autoLoginMode","auto Login as $token")
                 if(token=="") throw NullPointerException()
                 if (customer.account=="") throw java.lang.NullPointerException()
                 val intent = Intent(this, MainActivity::class.java)

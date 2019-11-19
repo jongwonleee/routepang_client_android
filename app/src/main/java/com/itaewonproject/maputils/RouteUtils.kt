@@ -22,12 +22,13 @@ import com.google.maps.model.DirectionsResult
 import com.google.maps.model.TravelMode
 import com.itaewonproject.R
 import com.itaewonproject.model.receiver.Location
+import com.itaewonproject.model.receiver.Product
 import com.itaewonproject.mypage.RouteMapFragment
 
 class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
     val view: View
     val image: ImageView
-    val latLoc = HashMap<LatLng, Location>()
+    val latLoc = HashMap<LatLng, Product>()
     val latIndex = HashMap<LatLng, Int>()
     val latWishlist = HashMap<LatLng, Int>()
     val imageList = listOf(listOf(
@@ -83,9 +84,9 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
                 if (it != null && selectedMarker != null) {
                     if (selectedMarker!!.position == it.position) {
                         if (latWishlist.contains(it.position)) {
-                            val addLocation = fragment.wishlist[latWishlist[it.position]!!]
+                            val addProduct = fragment.wishlist[latWishlist[it.position]!!]
                             fragment.wishlist.removeAt(latWishlist[it.position]!!)
-                            fragment.list.add(addLocation)
+                            fragment.list.add(addProduct)
                             fragment.setAdapterList()
                             latWishlist.remove(it.position)
                         } else {
@@ -131,10 +132,10 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
         addLine()
     }
 
-    fun addMarker(location: Location, isSelected: Boolean, index: Int, isWishlist: Boolean): Marker {
+    fun addMarker(product: Product, isSelected: Boolean, index: Int, isWishlist: Boolean): Marker {
         Log.i("adding marker","${isSelected}, ${index}, ${isWishlist}")
-        val position = location.latlng()
-        val categoryColor = CategoryIcon.getIndex(location.category!!)
+        val position = product.location.latlng()
+        val categoryColor = CategoryIcon.getIndex(product.location.category!!)
         image.setImageResource(if(isSelected){
             if(isWishlist) imageList[2][categoryColor]
             else imageList[1][categoryColor]
@@ -145,14 +146,14 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
         })
 
         val markerOptions = MarkerOptions()
-        markerOptions.title(location.name)
+        markerOptions.title(product.location.name)
         markerOptions.position(position)
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(view)))
         val marker = map.addMarker(markerOptions)
         if (isWishlist) latWishlist.put(position, index)
         else latIndex.put(position, index)
-        fragment.showDetail(location)
-        latLoc.put(position, location)
+        fragment.showDetail(product.location)
+        latLoc.put(position, product)
         return marker
     }
 
@@ -171,10 +172,10 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
         }
     }
 
-    fun setBoundary(list: ArrayList<Location>) {
+    fun setBoundary(list: ArrayList<Product>) {
         val bound = LatLngBounds.builder()
         for (l in list) {
-            bound.include(l.latlng())
+            bound.include(l.location.latlng())
         }
         if(list.size>0)map.moveCamera(CameraUpdateFactory.newLatLngBounds(bound.build(), 100))
     }
@@ -209,7 +210,7 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
 
         val arrayPoints = arrayListOf<LatLng>()
         for (l in list) {
-            arrayPoints.add(l.latlng())
+            arrayPoints.add(l.location.latlng())
         }
         for (i in 0..arrayPoints.size - 2) {
             calculateDirections(arrayPoints[i], arrayPoints[i + 1])

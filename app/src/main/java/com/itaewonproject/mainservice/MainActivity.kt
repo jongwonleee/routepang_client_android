@@ -10,9 +10,13 @@ import com.google.android.material.tabs.TabLayout
 import com.itaewonproject.R
 import android.widget.ImageView
 import android.widget.TextView
+import com.itaewonproject.JsonParser
+import com.itaewonproject.Routepang
 import com.itaewonproject.adapter.TabPagerAdapter
 import com.itaewonproject.message.MessageListActivity
+import com.itaewonproject.model.receiver.Product
 import com.itaewonproject.mypage.*
+import com.itaewonproject.rests.get.GetBasketConnector
 import com.itaewonproject.search.LocationActivity
 
 class MainActivity : AppCompatActivity(),TabLayout.OnTabSelectedListener {
@@ -59,6 +63,10 @@ class MainActivity : AppCompatActivity(),TabLayout.OnTabSelectedListener {
         adapter.addPage(MyPageFragment(), "")
         adapter.addPage(ComingSoonFragment(),"")
         adapter.addPage(ComingSoonFragment(),"")
+
+        val ret = GetBasketConnector().get((application as Routepang).customer.customerId)
+        val products = JsonParser().listJsonParsing(ret, Product::class.java)
+        (application as Routepang).wishlist = products
 
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)

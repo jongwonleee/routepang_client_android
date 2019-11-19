@@ -6,7 +6,7 @@ import java.sql.Timestamp
 import java.text.SimpleDateFormat
 
 class Route(var title: String,  var boundary: String,  var routeId: Long, var customerId: Long, var regDate: Long) {
-    var type = RouteType.FOLDER
+    var category = RouteType.ROUTE
     var parentId = 0
     var routes: ArrayList<Route> = arrayListOf()
     var endDate: Long=0
@@ -40,4 +40,4 @@ class Route(var title: String,  var boundary: String,  var routeId: Long, var cu
         }
     }
 }
-enum class RouteType{FOLDER,ROUTE}
+enum class RouteType{ROUTE,FOLDER}

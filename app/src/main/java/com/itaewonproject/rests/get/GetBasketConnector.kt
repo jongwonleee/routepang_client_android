@@ -5,7 +5,7 @@ import com.itaewonproject.rests.WebResponce
 
 class GetBasketConnector : GetStrategy() {
 
-    override val inner: String = "basket/"
+    override val inner: String = "basket/products/"
     override var param = ""
     override val mockData: String = """
 [

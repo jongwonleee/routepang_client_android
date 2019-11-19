@@ -15,4 +15,6 @@ public class CustomerPage
     public int routeCount;
 
     public int productCount;
+
+    public int articleCount;
 }

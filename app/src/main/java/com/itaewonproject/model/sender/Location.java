@@ -7,20 +7,20 @@ import org.locationtech.jts.geom.Point;
 
 public class Location {
 
-    public long locationId;
+    public long locationId=0;
 
-    public String coordinates;
+    public String coordinates="";
 
-    public String placeId;
+    public String placeId="";
 
-    public String address;
+    public String address="";
 
-    public String name;
+    public String name="";
 
-    public double usedTime;
+    public double usedTime=0;
 
-    public LocationCategory category;
+    public LocationCategory category=LocationCategory.ACTIVITY;
 
-    public int articleCount;
+    public int articleCount=0;
 
 }

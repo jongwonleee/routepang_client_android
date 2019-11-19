@@ -99,7 +99,7 @@ class GetRouteListConnector : GetStrategy() {
 
     override fun get(vararg params: Any): WebResponce {
         val id = params[0] as Long
-        param = "$id/customres"
+        param = "$id/customers"
 
         var task = Task()
         task.execute()

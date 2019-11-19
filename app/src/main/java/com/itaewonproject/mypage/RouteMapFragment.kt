@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -39,6 +40,8 @@ import com.itaewonproject.customviews.CustomMapView
 import com.itaewonproject.maputils.CategoryIcon
 import com.itaewonproject.maputils.MyLocationSetting
 import com.itaewonproject.maputils.RouteUtils
+import com.itaewonproject.model.receiver.Product
+import com.itaewonproject.rests.put.PutRouteConnector
 import java.util.*
 
 class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,
@@ -66,8 +69,8 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,
     private lateinit var itemTouchHelper: ItemTouchHelper
     private lateinit var callback: MarkerItemTouchHelperCallback
 
-    var list: ArrayList<Location>
-    var wishlist: ArrayList<Location>
+    var list: ArrayList<Product>
+    var wishlist: ArrayList<Product>
     lateinit var routeUtils: RouteUtils
 
     private var editMode = false
@@ -83,17 +86,8 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,
         super.setUserVisibleHint(isVisibleToUser)
         if (isResumed && isVisibleToUser) {
             try{
-                val temp = JsonParser().listJsonParsing(GetLocationConnector().get(LatLng(41.374902, 2.170370), 14f), Location::class.java)
-                for (i in 0..temp.size - 1) {
-                    // XXX:
-                    if (i <temp.size / 2) {
-                        list.add(temp[i])
-                    }
-                    else {
-                        wishlist.add(temp[i])
-                    }
-                }
-                // map.moveCamera(CameraUpdateFactory.newLatLngZoom(list[0].latlng(),15f))
+
+                wishlist =(activity!!.application as Routepang).wishlist
 
                 routeUtils.setList()
                 routeUtils.addLine()
@@ -102,7 +96,7 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,
 
                 adapter.list = list
                 adapter.notifyDataSetChanged()
-                Log.i("!!list size","${adapter.itemCount}")
+                Log.i("!!list size","${wishlist.size}")
             }catch (e : UninitializedPropertyAccessException){
                 e.printStackTrace()
             }
@@ -163,11 +157,21 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,
                     buttonEditor.visibility = View.GONE
                 } else {
                     layoutMarkerList.visibility = View.GONE
-                layoutDetail.visibility=View.GONE
-                textTitle.visibility = View.VISIBLE
+                    layoutDetail.visibility=View.GONE
+                    textTitle.visibility = View.VISIBLE
                     editTitle.visibility = View.INVISIBLE
                     buttonEditor.visibility = View.VISIBLE
                     routeUtils.setBoundary(list)
+                    for( p in list){
+                        val ret = PutRouteConnector().put(p.toSenderModel(),(parentFragment as RouteFragment).route.routeId)
+                        if(ret.responceCode==200 || ret.responceCode==201)
+                        {
+                            Toast.makeText(con,"루트에 반영되었습니다.",Toast.LENGTH_LONG).show()
+                        }else
+                        {
+                            Toast.makeText(con,"루트에 반영 실패했습니다.",Toast.LENGTH_LONG).show()
+                        }
+                    }
                 }
             routeUtils.editMode = editMode
         })

@@ -18,6 +18,7 @@ import com.itaewonproject.customviews.NonSwipeViewPager
 import com.itaewonproject.model.receiver.CustomerPage
 import com.itaewonproject.rests.get.GetCustomerPageConnector
 import com.itaewonproject.setting.SettingActivity
+import java.time.LocalDateTime
 
 class MyPageFragment : Fragment() {
     // TODO: Rename and change types of parameters\
@@ -30,12 +31,28 @@ class MyPageFragment : Fragment() {
     private lateinit var followingCount:TextView
     private lateinit var followerCount:TextView
     private lateinit var appBarLayout: AppBarLayout
+    private lateinit var adapter: TabPagerAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_my_page, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val ret = JsonParser().objectJsonParsing(GetCustomerPageConnector().get((activity!!.application as Routepang).customer.customerId).body!!,CustomerPage::class.java)
+        textName.text = ret?.reference
+        followingCount.text = ret?.followingCount.toString()
+        followerCount.text= ret?.follwerCount.toString()
+        val routeCount = ret?.routeCount
+        val wishlistCount = ret?.productCount
+        val reviewCount = ret?.articleCount
+        adapter.setPageString(0, "루트\n$routeCount")
+        adapter.setPageString(1,  "위시리스트\n$wishlistCount")
+        adapter.setPageString(2,  "후기\n$reviewCount")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,17 +71,10 @@ class MyPageFragment : Fragment() {
             startActivity(intent)
         })
 
-        val ret = JsonParser().objectJsonParsing(GetCustomerPageConnector().get((activity!!.application as Routepang).customer.customerId).body!!,CustomerPage::class.java)
-        textName.text = ret?.reference
-        followingCount.text = ret?.followingCount.toString()
-        followerCount.text= ret?.follwerCount.toString()
-        val routeCount = ret?.routeCount
-        val wishlistCount = ret?.productCount
-        //val reviewCount = ret?.
-        val adapter = TabPagerAdapter(childFragmentManager, 3)
-        adapter.addPage(RouteFragment(), "루트\n$routeCount")
-        adapter.addPage(WishlistFragment(), "위시리스트\n$wishlistCount")
-        adapter.addPage(ReviewFragment(), "후기\n100")
+        adapter = TabPagerAdapter(childFragmentManager, 3)
+        adapter.addPage(RouteFragment(), "루트")
+        adapter.addPage(WishlistFragment(), "위시리스트")
+        adapter.addPage(ReviewFragment(), "후기")
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)
         appBarLayout.setExpanded(true)

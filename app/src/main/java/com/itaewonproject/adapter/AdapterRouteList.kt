@@ -49,7 +49,7 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Route>) :
     
     fun newRoute(){
         val route = Route("새 루트","미지정",0, ((context as MainActivity).application as Routepang).customer.customerId,System.currentTimeMillis())
-        route.type=RouteType.ROUTE
+        route.category=RouteType.ROUTE
         this.folder.folders.add(route)
 
         this.folder.setList()
@@ -61,7 +61,7 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Route>) :
         val checkedList = isChecked.toMutableList()
         var folder: Route? = null
         for (l in checkedList) {
-            if (l.type == RouteType.FOLDER) {
+            if (l.category == RouteType.FOLDER) {
                 folder = l as Route
                 checkedList.remove(l)
                 break
@@ -72,7 +72,7 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Route>) :
             checkedList.removeAt(0)
         }
         for (l in checkedList) {
-            if (l.type ==  RouteType.FOLDER)
+            if (l.category ==  RouteType.FOLDER)
                 folder.routes.addAll((l as Route).routes)
             else folder.routes.add((l))
         }
@@ -85,14 +85,14 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Route>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == 0) SingleViewHolder(
+        return if (viewType == 0) RouteViewHolder(
             LayoutInflater.from(context).inflate(
                 R.layout.list_route_single,
                 parent,
                 false
             )
         )
-        else GroupViewHolder(
+        else FolderViewHolder(
             LayoutInflater.from(context).inflate(
                 R.layout.list_route_group,
                 parent,
@@ -106,7 +106,7 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Route>) :
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if(list[position].type==RouteType.ROUTE) 0 else 1
+        return if(list[position].category==RouteType.ROUTE) 0 else 1
     }
 
     interface onItemClickListener {
@@ -118,7 +118,7 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Route>) :
         this.listener = listener
     }
 
-    inner class SingleViewHolder(itemView: View) : BaseViewHolder(itemView) {
+    inner class RouteViewHolder(itemView: View) : BaseViewHolder(itemView) {
         private val title: TextView
         private val location: TextView
         private val updated: TextView
@@ -167,7 +167,7 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Route>) :
         }
     }
 
-    inner class GroupViewHolder(itemView: View) : BaseViewHolder(itemView) {
+    inner class FolderViewHolder(itemView: View) : BaseViewHolder(itemView) {
         private val folderImage: ImageView
         private val textTitle: TextView
         private val editTitle: EditText

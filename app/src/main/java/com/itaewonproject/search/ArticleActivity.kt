@@ -16,10 +16,12 @@ import com.itaewonproject.adapter.AdapterArticleList
 import com.itaewonproject.maputils.CategoryIcon
 import com.itaewonproject.model.receiver.Article
 import com.itaewonproject.model.receiver.Location
+import com.itaewonproject.model.sender.Product
 import com.itaewonproject.rests.GetStrategy
 import com.itaewonproject.rests.WebResponce
 import com.itaewonproject.rests.get.GetArticleConnector
 import com.itaewonproject.rests.post.PostBasketConnector
+import com.itaewonproject.rests.post.PostProductConnector
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -91,7 +93,17 @@ class ArticleActivity : AppCompatActivity() {
         tableInfo.visibility=View.GONE
 
         buttonAddBasket.setOnClickListener({
-            PostBasketConnector().post((application as Routepang).customer.customerId, location)
+            val product = Product()
+            product.location=location.getServerModel()
+            val ret = PostProductConnector().post(product,(application as Routepang).customer.customerId)
+            if(ret.responceCode!=201){
+                Toast.makeText(this,"위시리스트에 추가할 수 없습니다.",Toast.LENGTH_LONG).show()
+            }
+            else
+            {
+                Toast.makeText(this,"위시리스트에 추가했습니다!",Toast.LENGTH_LONG).show()
+                (application as Routepang).wishlist.add(product.receiverModel)
+            }
         })
 
         setListViewOption()

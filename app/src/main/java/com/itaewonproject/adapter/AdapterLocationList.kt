@@ -37,6 +37,12 @@ class AdapterLocationList(val context: Context, var output: ArrayList<Location>)
         notifyDataSetChanged()
     }
 
+    fun refreshList(list:ArrayList<Location>){
+        this.output =list
+        notifyDataSetChanged()
+    }
+
+
     interface onItemClickListener {
         fun onItemClick(v: View, position: Int)
     }
@@ -75,7 +81,7 @@ class AdapterLocationList(val context: Context, var output: ArrayList<Location>)
             this.title.text = output.name
             this.rating.rating = output.rating
             this.placeId = output.placeId
-            this.articleCount.text = "${output.articleCount}개의 게시"
+            this.articleCount.text = "${output.articleCount}개의 게시물"
             this.imageCategory.setImageResource(CategoryIcon.get(output.category!!))
             this.usedTime.text = "평균 소요 시간: ${APIs.secToString(output.usedTime.toInt())}"
             Log.i("imageCount","${output.imgUrl.size}")

@@ -127,7 +127,6 @@ class GetReviewConnector : GetStrategy() {
                 }
             ]
         """.trimIndent()
-        Log.i("!!!", mockData)
     }
 
     override fun get(vararg params: Any): WebResponce {

@@ -127,9 +127,6 @@ interface MyLocationSetting : OnMapReadyCallback,GoogleApiClient.ConnectionCallb
     override fun onLocationChanged(location: Location?) {
         currentPosition = LatLng( location!!.getLatitude(), location!!.getLongitude());
 
-
-        Log.d(TAG, "onLocationChanged : ");
-
         //현재 위치에 마커 생성하고 이동
         setCurrentLocation(location);
 

@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 
-data class Page(val title: String, val fragment: Fragment)
+data class Page(var title: String, val fragment: Fragment)
 
 
 class TabPagerAdapter(fm: FragmentManager, behavior: Int) : FragmentStatePagerAdapter(fm, behavior) {
@@ -19,6 +19,11 @@ class TabPagerAdapter(fm: FragmentManager, behavior: Int) : FragmentStatePagerAd
 
     fun addPage(fragment: Fragment, title: String) {
         pages.add(Page(title, fragment))
+    }
+
+    fun setPageString(index:Int,title:String){
+        pages[index].title=title
+        notifyDataSetChanged()
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
