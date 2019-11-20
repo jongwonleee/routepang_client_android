@@ -8,13 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.itaewonproject.JsonParser
 import com.itaewonproject.R
+import com.itaewonproject.Routepang
 import com.itaewonproject.adapter.TabPagerAdapter
 import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.model.receiver.Product
 import com.itaewonproject.model.receiver.Route
+import com.itaewonproject.model.sender.Customer
 import com.itaewonproject.rests.get.GetRouteConnector
 
-class RouteFragment : Fragment() {
+class RouteFragment: Fragment() {
 
     // private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager
@@ -25,8 +27,10 @@ class RouteFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // tabLayout = view.findViewById(R.id.tabLayout) as TabLayout
+
         viewPager = view.findViewById(R.id.viewPager) as ViewPager
         adapter = TabPagerAdapter(childFragmentManager, 3)
         adapter.addPage(RouteListFragment(), "List")

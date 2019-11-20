@@ -8,25 +8,31 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import com.itaewonproject.JsonParser
 import com.itaewonproject.R
 import com.itaewonproject.Routepang
 import com.itaewonproject.adapter.TabPagerAdapter
 import com.itaewonproject.model.receiver.Location
+import com.itaewonproject.model.receiver.Product
+import com.itaewonproject.model.sender.Customer
+import com.itaewonproject.rests.get.GetBasketConnector
 import java.lang.NullPointerException
 
-class WishlistFragment : Fragment() {
+class WishlistFragment: Fragment() {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager
     var list: ArrayList<Location> = arrayListOf()
-
+    private lateinit var customer:Customer
     private val listFragment = WishlistListFragment()
-    private val mapFragment= WishlistMapFragment()
+    private val mapFragment = WishlistMapFragment()
+
+
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         try{
             if (isVisibleToUser && isResumed ) {
-                val products = (activity!!.application as Routepang).wishlist
+                val products = JsonParser().listJsonParsing(GetBasketConnector().get(customer.customerId), Product::class.java)
                 list.clear()
                 for( p in products){
                     list.add(p.location)
@@ -38,11 +44,7 @@ class WishlistFragment : Fragment() {
 
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val products = (activity!!.application as Routepang).wishlist
-        list.clear()
-        for( p in products){
-            list.add(p.location)
-        }
+        this.customer = (activity!!.application as Routepang).userToSee
         tabLayout = view.findViewById(R.id.tabLayout) as TabLayout
         viewPager = view.findViewById(R.id.viewPager) as ViewPager
 

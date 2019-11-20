@@ -10,6 +10,7 @@ class Routepang: Application() {
     //var customerId:Long=0
     var token:String =""
     var customer = Customer()
+    var userToSee = Customer()
     var wishlist = arrayListOf<Product>()
     fun hasProduct(location:Location):Product?{
         val id = location.placeId

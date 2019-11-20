@@ -12,10 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.R
 import com.itaewonproject.adapter.AdapterLocationList
 import com.itaewonproject.model.receiver.Location
+import com.itaewonproject.model.sender.Customer
 import com.itaewonproject.search.ArticleActivity
 import java.lang.NullPointerException
 
-class WishlistListFragment : Fragment() {
+class WishlistListFragment: Fragment() {
     private lateinit var recyclerView: RecyclerView
     lateinit var list: ArrayList<Location>
     lateinit var adapter:AdapterLocationList

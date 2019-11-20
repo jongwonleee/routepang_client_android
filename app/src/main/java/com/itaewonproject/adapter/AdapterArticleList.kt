@@ -2,6 +2,7 @@ package com.itaewonproject.adapter
 
 import android.animation.ValueAnimator
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import com.itaewonproject.RatioTransformation
 import com.itaewonproject.customviews.RoundedImageView
 import com.squareup.picasso.Picasso
 import android.view.animation.TranslateAnimation
+import com.itaewonproject.model.sender.Customer
 
 
 class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewonproject.model.receiver.Article>) : RecyclerView.Adapter<AdapterArticleList.ViewHolder>() {
@@ -35,7 +37,8 @@ class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewon
     }
 
     interface OnItemClickListener {
-        fun onItemClick(v: View, position: Int)
+        fun onReferenceClick(position: Int)
+        fun onProfileClick(customer: Customer)
     }
 
     fun setOnItemClickClickListener(listener: OnItemClickListener) {
@@ -47,6 +50,7 @@ class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewon
         private var summary: TextView
         private var imgSmall: RoundedImageView
         private var imgBig: RoundedImageView
+        private var profile :ImageView
         private val imageMeasure:ImageView
         private val buttonRef: ImageView
         private val textName:TextView
@@ -60,6 +64,7 @@ class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewon
         init {
             summary = itemView.findViewById(R.id.text_summary) as TextView
             textName = itemView.findViewById(R.id.text_name)
+            profile = itemView.findViewById(R.id.image_profile)
             imgSmall = itemView.findViewById(R.id.image_article_small) as RoundedImageView
             imgBig = itemView.findViewById(R.id.image_arcticle_big) as RoundedImageView
             buttonRef = itemView.findViewById(R.id.imageButton_ref) as ImageView
@@ -76,7 +81,7 @@ class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewon
             buttonRef.setOnClickListener({
                 val pos = adapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(it, pos)
+                        listener.onReferenceClick(pos)
                 }
             })
         }
@@ -210,6 +215,12 @@ class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewon
             imgBig.visibility=View.GONE
             textName.text = output.customer.reference
 
+            profile.setOnClickListener({
+                listener.onProfileClick(output.customer)
+            })
+            textName.setOnClickListener({
+                listener.onProfileClick(output.customer)
+            })
         }
     }
 }

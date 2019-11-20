@@ -13,9 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.*
 import com.itaewonproject.adapter.AdapterArticleList
+import com.itaewonproject.mainservice.UserInfoActivity
 import com.itaewonproject.maputils.CategoryIcon
 import com.itaewonproject.model.receiver.Article
 import com.itaewonproject.model.receiver.Location
+import com.itaewonproject.model.sender.Customer
 import com.itaewonproject.model.sender.Product
 import com.itaewonproject.model.sender.Rating
 import com.itaewonproject.rests.get.GetStrategy
@@ -167,10 +169,14 @@ class ArticleActivity : AppCompatActivity() {
         val adapter = AdapterArticleList(this, list)
 
         adapter.setOnItemClickClickListener(object : AdapterArticleList.OnItemClickListener {
-            override fun onItemClick(v: View, position: Int) {
+            override fun onReferenceClick(position: Int) {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(list[position].link.linkUrl))
-                startActivity(intent)
+                startActivity(intent)            }
 
+            override fun onProfileClick(customer: Customer) {
+                val intent = Intent(this@ArticleActivity, UserInfoActivity::class.java)
+                intent.putExtra("customer",customer)
+                startActivity(intent)
             }
         })
 

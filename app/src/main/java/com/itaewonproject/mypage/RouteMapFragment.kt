@@ -40,10 +40,12 @@ import com.itaewonproject.maputils.CategoryIcon
 import com.itaewonproject.maputils.MyLocationSetting
 import com.itaewonproject.maputils.RouteUtils
 import com.itaewonproject.model.receiver.Product
+import com.itaewonproject.model.sender.Customer
+import com.itaewonproject.rests.get.GetBasketConnector
 import com.itaewonproject.rests.put.PutRouteConnector
 import java.util.*
 
-class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,
+class RouteMapFragment: Fragment(), AdapterMarkerList.OnStartDragListener,
     MyLocationSetting {
 
 
@@ -73,7 +75,7 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,
     lateinit var routeUtils: RouteUtils
 
     private var editMode = false
-
+    lateinit var customer:Customer
     init {
         list = arrayListOf()
         wishlist = arrayListOf()
@@ -86,7 +88,7 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,
         if (isResumed && isVisibleToUser) {
             try{
                 list = (parentFragment as RouteFragment).products
-                val wish =(activity!!.application as Routepang).wishlist
+                val wish =JsonParser().listJsonParsing(GetBasketConnector().get(customer.customerId), Product::class.java)
                 wishlist.clear()
                 for(w in wish){
                     if(!list.contains(w)) wishlist.add(w)
@@ -126,6 +128,7 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        this.customer = (activity!!.application as Routepang).userToSee
         mapView = view.findViewById(R.id.map) as CustomMapView
         mapView.isInRoute=true
         mapView.onCreate(savedInstanceState)
@@ -150,32 +153,35 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,
             .addApi(LocationServices.API)
             .build()
 
+        if((activity!!.application as Routepang).customer.customerId != customer.customerId) buttonEdit.visibility=View.GONE
 
-        buttonEdit.setOnClickListener {
-            editMode = !editMode
-            if (editMode) {
-                layoutMarkerList.visibility = View.VISIBLE
-                layoutDetail.visibility=View.GONE
-                textTitle.visibility = View.INVISIBLE
-                editTitle.visibility = View.VISIBLE
-                buttonEditor.visibility = View.GONE
-            } else {
-                layoutMarkerList.visibility = View.GONE
-                layoutDetail.visibility=View.GONE
-                textTitle.visibility = View.VISIBLE
-                editTitle.visibility = View.INVISIBLE
-                buttonEditor.visibility = View.VISIBLE
-                routeUtils.setBoundary(list)
-                for( p in list){
-                    val ret = PutRouteConnector().put(p.toSenderModel(),(parentFragment as RouteFragment).route.routeId)
-                    if(ret.responceCode==200 || ret.responceCode==201) {
-                        Toast.makeText(con,"루트에 반영되었습니다.",Toast.LENGTH_LONG).show()
-                    }else {
-                        Toast.makeText(con,"루트에 반영 실패했습니다.",Toast.LENGTH_LONG).show()
+            buttonEdit.setOnClickListener {
+            if((activity!!.application as Routepang).customer.customerId == customer.customerId) {
+                editMode = !editMode
+                if (editMode) {
+                    layoutMarkerList.visibility = View.VISIBLE
+                    layoutDetail.visibility=View.GONE
+                    textTitle.visibility = View.INVISIBLE
+                    editTitle.visibility = View.VISIBLE
+                    buttonEditor.visibility = View.GONE
+                } else {
+                    layoutMarkerList.visibility = View.GONE
+                    layoutDetail.visibility=View.GONE
+                    textTitle.visibility = View.VISIBLE
+                    editTitle.visibility = View.INVISIBLE
+                    buttonEditor.visibility = View.VISIBLE
+                    routeUtils.setBoundary(list)
+                    for( p in list){
+                        val ret = PutRouteConnector().put(p.toSenderModel(),(parentFragment as RouteFragment).route.routeId)
+                        if(ret.responceCode==200 || ret.responceCode==201) {
+                            Toast.makeText(con,"루트에 반영되었습니다.",Toast.LENGTH_LONG).show()
+                        }else {
+                            Toast.makeText(con,"루트에 반영 실패했습니다.",Toast.LENGTH_LONG).show()
+                        }
                     }
                 }
+                routeUtils.editMode = editMode
             }
-            routeUtils.editMode = editMode
         }
         textTitle.visibility = View.VISIBLE
         editTitle.visibility = View.INVISIBLE

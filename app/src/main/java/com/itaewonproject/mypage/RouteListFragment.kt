@@ -16,10 +16,11 @@ import com.itaewonproject.R
 import com.itaewonproject.Routepang
 import com.itaewonproject.adapter.AdapterRouteList
 import com.itaewonproject.model.receiver.*
+import com.itaewonproject.model.sender.Customer
 import com.itaewonproject.rests.get.GetRouteListConnector
 import com.itaewonproject.rests.post.PostRouteListConnector
 
-class RouteListFragment : Fragment() {
+class RouteListFragment: Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var list: ArrayList<Route>
     private lateinit var adapter: AdapterRouteList
@@ -27,16 +28,19 @@ class RouteListFragment : Fragment() {
     private lateinit var buttonDelete: ImageView
     private lateinit var viewDivider:View
     private lateinit var buttonNewRoute:FloatingActionButton
+    lateinit var customer:Customer
 
     private fun setListViewOption(view: View) {
-        val ret = GetRouteListConnector().get((activity!!.application as Routepang).customer.customerId)
+        val ret = GetRouteListConnector().get(customer.customerId)
         list = JsonParser().listJsonParsing(ret, Route::class.java)
         adapter = AdapterRouteList(view.context, list)
         adapter.setOnItemClickClickListener(object : AdapterRouteList.OnItemClickListener {
             override fun onItemLongClick(size: Int) {
-                buttonMakeRoute.visibility = if (size> 1) View.VISIBLE else View.GONE
-                buttonDelete.visibility = if(size>0) View.VISIBLE else View.GONE
-                viewDivider.visibility = if (size> 1) View.VISIBLE else View.GONE
+                if((activity!!.application as Routepang).customer.customerId == customer.customerId){
+                    buttonMakeRoute.visibility = if (size> 1) View.VISIBLE else View.GONE
+                    buttonDelete.visibility = if(size>0) View.VISIBLE else View.GONE
+                    viewDivider.visibility = if (size> 1) View.VISIBLE else View.GONE
+                }
             }
 
             override fun onItemClick(v: View, position: Int) {
@@ -56,6 +60,7 @@ class RouteListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        this.customer = (activity!!.application as Routepang).userToSee
         buttonMakeRoute = view.findViewById(R.id.image_makeFolder) as ImageView
         buttonDelete = view.findViewById(R.id.image_delete) as ImageView
         recyclerView = view.findViewById(R.id.route_RecyclerView) as RecyclerView
@@ -75,7 +80,7 @@ class RouteListFragment : Fragment() {
         }
         buttonNewRoute.setOnClickListener {
             adapter.newRoute()
-            val ret = PostRouteListConnector().post(adapter.folder.folders,(activity!!.application as Routepang).customer.customerId)
+            val ret = PostRouteListConnector().post(adapter.folder.folders,customer.customerId)
             Log.i("post routes","${ret.responceCode} ${ret.body}")
         }
         setListViewOption(view)

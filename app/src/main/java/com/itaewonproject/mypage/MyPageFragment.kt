@@ -57,6 +57,7 @@ class MyPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity!!.application as Routepang).userToSee = (activity!!.application as Routepang).customer
         appBarLayout = view.findViewById(R.id.appBar_layout) as AppBarLayout
         tabLayout = view.findViewById(R.id.tabLayout) as TabLayout
         viewPager = view.findViewById(R.id.viewPager) as NonSwipeViewPager

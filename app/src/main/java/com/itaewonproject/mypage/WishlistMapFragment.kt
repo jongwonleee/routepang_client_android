@@ -36,11 +36,12 @@ import com.itaewonproject.maputils.CategoryIcon
 import com.itaewonproject.maputils.MarkerUtils
 import com.itaewonproject.maputils.MyLocationSetting
 import com.itaewonproject.model.receiver.Location
+import com.itaewonproject.model.sender.Customer
 import com.squareup.picasso.Picasso
 import java.lang.NullPointerException
 import java.util.*
 
-class WishlistMapFragment : Fragment(), MyLocationSetting {
+class WishlistMapFragment: Fragment(), MyLocationSetting {
 
     private lateinit var mapView: CustomMapView
     private var list: ArrayList<Location> = arrayListOf()

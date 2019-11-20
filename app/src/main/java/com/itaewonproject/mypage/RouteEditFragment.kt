@@ -24,13 +24,17 @@ import com.google.maps.model.*
 import com.itaewonproject.APIs
 import com.itaewonproject.JsonParser
 import com.itaewonproject.R
+import com.itaewonproject.Routepang
 import com.itaewonproject.adapter.AdapterRouteEdit
 import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.model.receiver.Product
+import com.itaewonproject.model.sender.Customer
 import com.itaewonproject.rests.get.GetLocationConnector
 import java.lang.NullPointerException
 
 class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
+    lateinit var  customer:Customer
+
 
     override fun OnStartDrag(viewHolder: RecyclerView.ViewHolder) {
         itemTouchHelper.startDrag(viewHolder)
@@ -87,6 +91,7 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        this.customer = (activity!!.application as Routepang).userToSee
         Log.i("view Created!!!","!!")
         buttonMap = view.findViewById(R.id.image_map)
         recyclerView = view.findViewById(R.id.edit_recyclerView) as RecyclerView
@@ -113,26 +118,29 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
     }
 
     private fun setEditMode() {
-        callback.swipable = editMode
-        if (editMode) {
-            textTitle.visibility = View.INVISIBLE
-            editTitle.visibility = View.VISIBLE
-            buttonBack.visibility = View.GONE
-            buttonMap.visibility = View.GONE
-            editTitle.text = Editable.Factory.getInstance().newEditable(textTitle.text)
-        } else {
-            textTitle.visibility = View.VISIBLE
-            editTitle.visibility = View.INVISIBLE
-            buttonBack.visibility = View.VISIBLE
-            buttonMap.visibility = View.VISIBLE
-            val route = (parentFragment as RouteFragment).route
-            if(!route.title.equals(editTitle.text.toString())) {
-                route.title = editTitle.text.toString()
+        if((activity!!.application as Routepang).customer.customerId == customer.customerId){
+            callback.swipable = editMode
+            if (editMode) {
+                textTitle.visibility = View.INVISIBLE
+                editTitle.visibility = View.VISIBLE
+                buttonBack.visibility = View.GONE
+                buttonMap.visibility = View.GONE
+                editTitle.text = Editable.Factory.getInstance().newEditable(textTitle.text)
+            } else {
+                textTitle.visibility = View.VISIBLE
+                editTitle.visibility = View.INVISIBLE
+                buttonBack.visibility = View.VISIBLE
+                buttonMap.visibility = View.VISIBLE
+                val route = (parentFragment as RouteFragment).route
+                if(!route.title.equals(editTitle.text.toString())) {
+                    route.title = editTitle.text.toString()
+                }
+                textTitle.text = route.title
+                setTotals()
             }
-            textTitle.text = route.title
-            setTotals()
+            adapter!!.setEditMode(editMode)
         }
-        adapter!!.setEditMode(editMode)
+        buttonEdit.visibility=View.GONE
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
