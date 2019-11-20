@@ -58,7 +58,7 @@ class LoadingActivity : AppCompatActivity() {
 
                 // Log and toast
                 //val msg = getString(R.string.msg_token_fmt, token)
-                Log.d("firebase",token.toString())
+                Log.d("firebase",token)
                 Toast.makeText(baseContext, token.toString(), Toast.LENGTH_SHORT).show()
             })
         if(isAutoLogin){
@@ -91,12 +91,6 @@ class LoadingActivity : AppCompatActivity() {
 
         }
 
-        //FIXME 나중에 로그인 완성되면 삭제
-        slogan.setOnClickListener {
-            val intent = Intent(this,LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
         getPermissions()
     }
 

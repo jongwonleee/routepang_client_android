@@ -4,6 +4,7 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.RestrictionsManager.RESULT_ERROR
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import android.view.InflateException
 import android.view.LayoutInflater
@@ -95,6 +96,8 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,
                 routeUtils.setBoundary(list)
 
 
+                editTitle.text = Editable.Factory.getInstance().newEditable((parentFragment as RouteFragment).route.title)
+                textTitle.text = (parentFragment as RouteFragment).route.title
                 adapter.list = list
                 adapter.notifyDataSetChanged()
                 Log.i("!!list size","${wishlist.size}")

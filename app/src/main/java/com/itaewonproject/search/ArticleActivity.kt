@@ -17,6 +17,7 @@ import com.itaewonproject.maputils.CategoryIcon
 import com.itaewonproject.model.receiver.Article
 import com.itaewonproject.model.receiver.Location
 import com.itaewonproject.model.sender.Product
+import com.itaewonproject.model.sender.Rating
 import com.itaewonproject.rests.get.GetStrategy
 import com.itaewonproject.rests.WebResponce
 import com.itaewonproject.rests.delete.DeleteProductConnector
@@ -51,6 +52,8 @@ class ArticleActivity : AppCompatActivity() {
     private lateinit var title: TextView
     private lateinit var buttonAddBasket: TextView
     private lateinit var category:ImageView
+    private lateinit var buttonRating:ImageView
+    private lateinit var buttonFollow:ImageView
 
     private var product:com.itaewonproject.model.receiver.Product? = null
     private var list = ArrayList<Article>()
@@ -64,22 +67,24 @@ class ArticleActivity : AppCompatActivity() {
         product = (application as Routepang).hasProduct(location.getServerModel())
         placeId = location.placeId
 
-        rating = findViewById<RatingBar>(R.id.ratingBar_location)
-        address = findViewById<TextView>(R.id.text_address)
-        openNow = findViewById<TextView>(R.id.text_opennow)
-        restDays = findViewById<TextView>(R.id.text_restdays)
-        phoneNumber = findViewById<TextView>(R.id.text_phonenumber)
-        website = findViewById<TextView>(R.id.text_website)
-        addressRow = findViewById<TableRow>(R.id.row_address)
-        openNowRow = findViewById<TableRow>(R.id.row_opennow)
-        restDaysRow = findViewById<TableRow>(R.id.row_restdays)
-        phoneNumberRow = findViewById<TableRow>(R.id.row_phonenumber)
-        websiteRow = findViewById<TableRow>(R.id.row_website)
-        usedTime = findViewById<TextView>(R.id.text_used_time)
-        title = findViewById<TextView>(R.id.title_location)
-        buttonAddBasket = findViewById<TextView>(R.id.button_addBucket)
-        tableInfo = findViewById<TableLayout>(R.id.table_info)
+        rating = findViewById(R.id.ratingBar_location)
+        address = findViewById(R.id.text_address)
+        openNow = findViewById(R.id.text_opennow)
+        restDays = findViewById(R.id.text_restdays)
+        phoneNumber = findViewById(R.id.text_phonenumber)
+        website = findViewById(R.id.text_website)
+        addressRow = findViewById(R.id.row_address)
+        openNowRow = findViewById(R.id.row_opennow)
+        restDaysRow = findViewById(R.id.row_restdays)
+        phoneNumberRow = findViewById(R.id.row_phonenumber)
+        websiteRow = findViewById(R.id.row_website)
+        usedTime = findViewById(R.id.text_used_time)
+        title = findViewById(R.id.title_location)
+        buttonAddBasket = findViewById(R.id.button_addBucket)
+        tableInfo = findViewById(R.id.table_info)
         category = findViewById(R.id.image_category)
+        buttonRating=findViewById(R.id.button_rating)
+        buttonFollow=findViewById(R.id.button_follow)
 
         category.setImageResource(CategoryIcon.get(location.category!!))
         title.text = location.name
@@ -96,6 +101,12 @@ class ArticleActivity : AppCompatActivity() {
         tableInfo.visibility=View.GONE
 
         buttonAddBasket.text = if(product!=null) "-제거" else "+추가"
+
+        buttonRating.setOnClickListener({
+            val intent = Intent(this,RatingActivity::class.java)
+            intent.putExtra("location",location)
+            startActivity(intent)
+        })
 
         buttonAddBasket.setOnClickListener {
             if(product!=null){

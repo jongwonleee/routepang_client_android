@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Editable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -56,10 +57,13 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
         super.setUserVisibleHint(isVisibleToUser)
         try{
             if (isVisibleToUser && isResumed ) {
+                Log.i("isvisible","${(parentFragment as RouteFragment).route.title}")
                 list = (parentFragment as RouteFragment).products
                 adapter!!.list = list
                 adapter!!.resetSteplist()
                 adapter!!.notifyDataSetChanged()
+                editTitle.text = Editable.Factory.getInstance().newEditable((parentFragment as RouteFragment).route.title)
+                textTitle.text = (parentFragment as RouteFragment).route.title
                 setEditMode()
             }
         }catch (e:NullPointerException){
@@ -79,7 +83,7 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
         recyclerView.adapter = adapter
 
         recyclerView.setHasFixedSize(true)
-        setEditMode()
+        //setEditMode()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -115,11 +119,17 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
             editTitle.visibility = View.VISIBLE
             buttonBack.visibility = View.GONE
             buttonMap.visibility = View.GONE
+            editTitle.text = Editable.Factory.getInstance().newEditable(textTitle.text)
         } else {
             textTitle.visibility = View.VISIBLE
             editTitle.visibility = View.INVISIBLE
             buttonBack.visibility = View.VISIBLE
             buttonMap.visibility = View.VISIBLE
+            val route = (parentFragment as RouteFragment).route
+            if(!route.title.equals(editTitle.text.toString())) {
+                route.title = editTitle.text.toString()
+            }
+            textTitle.text = route.title
             setTotals()
         }
         adapter!!.setEditMode(editMode)

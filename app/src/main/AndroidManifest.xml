@@ -26,6 +26,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
+        <activity android:name=".search.RatingActivity"
+                android:theme="@style/Theme.Transparent"/>
         <activity android:name=".message.MessagingActivity" />
         <activity android:name=".message.MessageListActivity" />
         <activity android:name=".setting.MyInfoActivity" />
@@ -49,14 +51,15 @@
                 android:enabled="true"
                 android:exported="true"
                 android:stopWithTask="false" />
-
-        <service android:name=".message.FirebaseCloudMessaging"
+        <service
+                android:name=".message.FirebaseCloudMessaging"
                 android:exported="false"
                 android:stopWithTask="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <receiver android:name=".linkshare.AlarmReceiver" />
         <receiver
                 android:name=".linkshare.RebootReceiver"
@@ -98,10 +101,10 @@
                 android:value="@string/kakao_app_key" />
         <meta-data
                 android:name="com.google.firebase.messaging.default_notification_icon"
-                android:resource="@drawable/ic_logo_splash"/>
+                android:resource="@drawable/ic_logo_splash" />
         <meta-data
                 android:name="com.google.firebase.messaging.default_notification_color"
-                android:resource="@color/colorPrimary"/>
+                android:resource="@color/colorPrimary" />
     </application>
 
 </manifest>

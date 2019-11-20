@@ -50,6 +50,11 @@ class RouteListFragment : Fragment() {
         recyclerView.setHasFixedSize(true)
     }
 
+    override fun onResume() {
+        super.onResume()
+        adapter.notifyDataSetChanged()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         buttonMakeRoute = view.findViewById(R.id.image_makeFolder) as ImageView
         buttonDelete = view.findViewById(R.id.image_delete) as ImageView
