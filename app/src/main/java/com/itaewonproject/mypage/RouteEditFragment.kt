@@ -25,6 +25,7 @@ import com.itaewonproject.JsonParser
 import com.itaewonproject.R
 import com.itaewonproject.adapter.AdapterRouteEdit
 import com.itaewonproject.model.receiver.Location
+import com.itaewonproject.model.receiver.Product
 import com.itaewonproject.rests.get.GetLocationConnector
 import java.lang.NullPointerException
 
@@ -43,7 +44,7 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
     private lateinit var textTotalMove: TextView
     private lateinit var recyclerView: RecyclerView
 
-    lateinit var list: ArrayList<Location>
+    lateinit var list: ArrayList<Product>
     private var durations: Long? = null
     private var distances: Long? = null
     private lateinit var itemTouchHelper: ItemTouchHelper
@@ -55,7 +56,7 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
         super.setUserVisibleHint(isVisibleToUser)
         try{
             if (isVisibleToUser && isResumed ) {
-                list = JsonParser().listJsonParsing(GetLocationConnector().get(LatLng(41.374902, 2.170370), 14f),Location::class.java)
+                list = (parentFragment as RouteFragment).products
                 adapter!!.list = list
                 adapter!!.resetSteplist()
                 adapter!!.notifyDataSetChanged()
@@ -135,8 +136,8 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
         val arrayPoints = arrayListOf<LatLng>()
         Log.i("!!!", "$list")
         for (l in list) {
-            arrayPoints.add(l.latlng())
-            durations += l.usedTime.toLong()
+            arrayPoints.add(l.location.latlng())
+            durations += l.location.usedTime.toLong()
         }
 
         // FIXME: context variable
@@ -158,8 +159,6 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
             .setCallback(object : PendingResult.Callback<DirectionsResult> {
                 override fun onResult(result: DirectionsResult) {
                     Log.d(TAG, "calculateDirections: routes: " + result.routes[0].toString())
-                    // Log.d(TAG, "calculateDirections: duration: " + result.routes[0].legs[0].duration.inSeconds);
-                    // Log.d(TAG, "calculateDirections: distance: " + result.routes[0].legs[0].distance.inMeters);
                     Log.d(TAG, "calculateDirections: geocodedWayPoints: " + result.geocodedWaypoints[0].toString())
                     setResult(result, pos)
                     Log.d(Constraints.TAG, "onResult: successfully retrieved directions.")

@@ -84,9 +84,12 @@ class RouteMapFragment : Fragment(), AdapterMarkerList.OnStartDragListener,
         super.setUserVisibleHint(isVisibleToUser)
         if (isResumed && isVisibleToUser) {
             try{
-
-                wishlist =(activity!!.application as Routepang).wishlist
-
+                list = (parentFragment as RouteFragment).products
+                val wish =(activity!!.application as Routepang).wishlist
+                wishlist.clear()
+                for(w in wish){
+                    if(!list.contains(w)) wishlist.add(w)
+                }
                 routeUtils.setList()
                 routeUtils.addLine()
                 routeUtils.setBoundary(list)

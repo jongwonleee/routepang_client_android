@@ -10,6 +10,7 @@ import com.itaewonproject.JsonParser
 import com.itaewonproject.R
 import com.itaewonproject.adapter.TabPagerAdapter
 import com.itaewonproject.model.receiver.Location
+import com.itaewonproject.model.receiver.Product
 import com.itaewonproject.model.receiver.Route
 import com.itaewonproject.rests.get.GetRouteConnector
 
@@ -19,7 +20,7 @@ class RouteFragment : Fragment() {
     private lateinit var viewPager: ViewPager
     private lateinit var adapter: TabPagerAdapter
     lateinit var route: Route
-    private var routeLocations = arrayListOf<Location>()
+    var products = arrayListOf<Product>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -36,7 +37,7 @@ class RouteFragment : Fragment() {
 
     fun toEditFragment(item: Route) {
         route = item
-        routeLocations = JsonParser().listJsonParsing(GetRouteConnector().get(route.routeId),Location::class.java)
+        products = JsonParser().listJsonParsing(GetRouteConnector().get(route.routeId),Product::class.java)
         viewPager.setCurrentItem(1, true)
     }
 

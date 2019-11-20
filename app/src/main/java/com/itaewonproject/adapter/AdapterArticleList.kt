@@ -27,7 +27,7 @@ class AdapterArticleList(val context: Context, var output: ArrayList<com.itaewon
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.list_article, parent, false)
-        return ViewHolder(view,parent)
+        return ViewHolder(view)
     }
 
     override fun getItemCount(): Int {

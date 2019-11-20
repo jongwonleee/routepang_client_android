@@ -16,6 +16,7 @@ import com.itaewonproject.APIs
 import com.itaewonproject.maputils.CategoryIcon
 import com.itaewonproject.R
 import com.itaewonproject.model.receiver.Location
+import com.itaewonproject.model.receiver.Product
 import com.itaewonproject.mypage.EditItemTouchHelperCallback
 import com.itaewonproject.mypage.RouteEditFragment
 import java.util.*
@@ -28,7 +29,7 @@ class AdapterRouteEdit(val context: Context, val fragment: RouteEditFragment) :
     private var startDragListener: OnStartDragListener
     private var editMode = false
     var stepList: ArrayList<List<DirectionsStep>>
-    var list: ArrayList<Location>
+    var list: ArrayList<Product>
     init {
         startDragListener = fragment
         list = fragment.list
@@ -62,7 +63,7 @@ class AdapterRouteEdit(val context: Context, val fragment: RouteEditFragment) :
     }
 
     override fun onItemSwipe(pos: Int): Boolean {
-        Log.i("Removing", "$pos, ${list[pos].name}")
+        Log.i("Removing", "$pos, ${list[pos].location.name}")
         list.removeAt(pos)
         resetSteplist()
         notifyItemRemoved(pos)
@@ -131,8 +132,8 @@ class AdapterRouteEdit(val context: Context, val fragment: RouteEditFragment) :
 
         override fun bind(pos: Int) {
             val edit = list[pos]
-            title.text = edit.name
-            usedTime.text = "약 ${APIs.secToString(edit.usedTime.toInt())}"
+            title.text = edit.location.name
+            usedTime.text = "약 ${APIs.secToString(edit.location.usedTime.toInt())}"
             if (pos == 0) {
                 lineUp.visibility = View.INVISIBLE
                 lineDown.visibility = View.VISIBLE
@@ -143,7 +144,7 @@ class AdapterRouteEdit(val context: Context, val fragment: RouteEditFragment) :
                 lineUp.visibility = View.VISIBLE
                 lineDown.visibility = View.VISIBLE
             }
-            category.setImageResource(CategoryIcon.get(edit.category!!))
+            category.setImageResource(CategoryIcon.get(edit.location.category!!))
             if (editMode) {
                 drag.visibility = View.VISIBLE
                 showSteps = false
