@@ -30,6 +30,9 @@
         <activity
                 android:name=".search.RatingActivity"
                 android:theme="@style/Theme.Transparent" />
+        <activity
+            android:name=".message.FollowActivity"
+            android:theme="@style/Theme.Transparent" />
         <activity android:name=".message.MessagingActivity" />
         <activity android:name=".message.MessageListActivity" />
         <activity android:name=".setting.MyInfoActivity" />

@@ -1,5 +1,6 @@
 package com.itaewonproject.message
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,10 +19,13 @@ import com.itaewonproject.model.sender.Customer
 
 class MessageListActivity : AppCompatActivity() {
 
+    private val REQUEST_CODE=9999
+
     private lateinit var buttonBack: ImageView
     private lateinit var recyclerview: RecyclerView
     private lateinit var buttonNewMessage: FloatingActionButton
     private lateinit var adapter :AdapterMessengerList
+    private val list = arrayListOf<Messenger>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_message_list)
@@ -29,22 +33,12 @@ class MessageListActivity : AppCompatActivity() {
         recyclerview = findViewById(R.id.recyclerView)
         buttonNewMessage = findViewById(R.id.button_new_message)
         buttonNewMessage.setOnClickListener {
-            val intent = Intent(this,MessagingActivity::class.java)
-            startActivity(intent)
+            val intent = Intent(this,FollowActivity::class.java)
+            startActivityForResult(intent,REQUEST_CODE)
         }
         buttonBack.setOnClickListener { finish() }
 
-        val m2 = Message()
-        m2.regDate= Timestamp.now().seconds
-        m2.customer = (application as Routepang).customer
-        m2.isMe = false
-        m2.text = "hi baby"
-        val m = Messenger()
-        m.customer = (application as Routepang).customer
-        m.customer.reference="김덕춘삼"
-        m.lastMessage = m2
-
-        adapter = AdapterMessengerList(this, arrayListOf(m,m,m,m,m,m,m,m,m))
+        adapter = AdapterMessengerList(this, list)
         recyclerview.adapter = adapter
         val linearLayoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         recyclerview.layoutManager = linearLayoutManager
@@ -56,5 +50,28 @@ class MessageListActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK){
+            val customer = data!!.getSerializableExtra("customer") as Customer
+            var messenger = Messenger()
+            var contained=false
+            for(l in list){
+                if(l.customer.equals(customer)){
+                    messenger = l
+                    contained=true
+                }
+            }
+            if(!contained){
+                messenger.customer=customer
+                list.add(messenger)
+            }
+            val intent = Intent(this@MessageListActivity,MessagingActivity::class.java)
+            intent.putExtra("customer",customer)
+            startActivity(intent)
+            adapter.notifyDataSetChanged()
+        }
     }
 }
