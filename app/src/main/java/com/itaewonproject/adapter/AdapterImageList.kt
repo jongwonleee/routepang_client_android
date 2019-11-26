@@ -44,6 +44,7 @@ class AdapterImageList(val context: Context, var images: ArrayList<String>?) : R
             Picasso.with(itemView.context)
                 .load(images!![pos])
                 .transform(RatioTransformation(300))
+                .placeholder(R.drawable.box_empty_location)
                 .into(img)
         }
     }

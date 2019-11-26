@@ -10,7 +10,7 @@ import java.net.*
 
 
 var authorization= ""
-class HttpClient {
+class HttpClient(val contents:ArrayList<Pair<String,String>>) {
 
         var httpStatusCode: Int = 0
         var body: String = ""
@@ -59,6 +59,10 @@ class HttpClient {
         private fun setContentType(connection: HttpURLConnection) {
             connection.setRequestProperty("Content-Type", "application/json")
             connection.setRequestProperty("Authorization", authorization)
+            for(c in contents){
+                connection.setRequestProperty(c.first,c.second)
+            }
+            contents.clear()
         }
 
         private fun setRequestMethod(connection: HttpURLConnection) {
@@ -130,6 +134,7 @@ class HttpClient {
 
             private var parameters: String
             val method: String
+            val contents = arrayListOf<Pair<String,String>>()
 
             /* private val keys: Iterator<String>
                  get() = this.parameters.keys.iterator()
@@ -148,6 +153,11 @@ class HttpClient {
 
             fun getParameters(): String {
                 return parameters
+            }
+
+            fun addContentType(content:Pair<String,String>) {
+                contents.add(content)
+
             }
 
             /*private fun generateParameters(): String {
@@ -173,7 +183,7 @@ class HttpClient {
             }
 */
             fun create(): HttpClient {
-                val client = HttpClient()
+                val client = HttpClient(contents)
                 client.setBuilder(this)
                 return client
             }

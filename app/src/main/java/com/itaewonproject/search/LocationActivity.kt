@@ -129,7 +129,7 @@ class LocationActivity : AppCompatActivity(),  Serializable,
         sortList()
 
         adapter.setOnItemClickClickListener(object : AdapterLocationList.OnItemClickListener {
-            override fun onItemClick(v: View, position: Int) {
+            override fun onItemClick(position: Int) {
                 showArticleActivity(adapter.output[position])
             }
         })

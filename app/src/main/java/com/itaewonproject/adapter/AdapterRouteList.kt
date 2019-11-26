@@ -33,6 +33,14 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Route>) :
         folder = RouteListManager(folderArray)
     }
 
+    fun resetList(list:ArrayList<Route>){
+
+        this.list.clear()
+        this.isChecked.clear()
+        folder = RouteListManager(list)
+        notifyDataSetChanged()
+    }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as BaseViewHolder).bind(position)
     }
@@ -43,8 +51,8 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Route>) :
         isChecked.clear()
         notifyDataSetChanged()
     }
-    
-    fun newRoute(){
+/*
+    fun newRoute():Route{
         val route = Route("새 루트","미지정",0, ((context as MainActivity).application as Routepang).customer.customerId,System.currentTimeMillis())
         route.category=RouteType.ROUTE
         this.folder.folders.add(route)
@@ -52,7 +60,8 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Route>) :
         this.folder.setList()
         isChecked.clear()
         notifyDataSetChanged()
-    }
+        return route
+    }*/
 
     fun folderChecked() {
         val checkedList = isChecked.toMutableList()
@@ -65,7 +74,7 @@ class AdapterRouteList(val context: Context, folderArray: ArrayList<Route>) :
             }
         }
         if (folder == null) {
-            folder = Route("새로운 폴더", "바르셀로나", 0, arrayListOf(checkedList[0]),checkedList[0].customerId,checkedList[0].regDate)
+            folder = Route("새로운 폴더", "바르셀로나", 0, arrayListOf(checkedList[0]),checkedList[0].customer,checkedList[0].regDate)
             checkedList.removeAt(0)
         }
         for (l in checkedList) {

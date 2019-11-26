@@ -12,7 +12,7 @@ import com.itaewonproject.R
 import com.itaewonproject.model.receiver.Messenger
 import com.itaewonproject.model.sender.Customer
 
-class AdapterMessengerList(val context: Context, var list: ArrayList<Messenger>) : RecyclerView.Adapter<AdapterMessengerList.ViewHolder>() {
+class AdapterMessengerList(val context: Context, var list: ArrayList<Customer>) : RecyclerView.Adapter<AdapterMessengerList.ViewHolder>() {
 
     private lateinit var listener: OnItemClickListener
 
@@ -50,11 +50,11 @@ class AdapterMessengerList(val context: Context, var list: ArrayList<Messenger>)
             background =itemView.findViewById(R.id.background)
         }
         override fun bind(pos: Int) {
-            val messenger = list[pos]
-            textMessage.text = messenger.lastMessage.text
-            textName.text= messenger.customer.reference
+            val customer = list[pos]
+            //textMessage.text = messenger.lastMessage.text
+            textName.text= customer.reference
             background.setOnClickListener {
-                listener.onItemClick(itemView,messenger.customer)
+                listener.onItemClick(itemView,customer)
             }
         }
     }

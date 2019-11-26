@@ -45,7 +45,7 @@ class AdapterLocationList(val context: Context, var output: ArrayList<Location>)
 
 
     interface OnItemClickListener {
-        fun onItemClick(v: View, position: Int)
+        fun onItemClick(position: Int)
     }
 
     fun setOnItemClickClickListener(listener: OnItemClickListener) {
@@ -71,7 +71,7 @@ class AdapterLocationList(val context: Context, var output: ArrayList<Location>)
             itemView.setOnClickListener {
                 val pos = adapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(it, pos)
+                        listener.onItemClick( pos)
                 }
             }
         }
@@ -83,8 +83,8 @@ class AdapterLocationList(val context: Context, var output: ArrayList<Location>)
             this.articleCount.text = "${output.articleCount}개의 게시물"
             this.imageCategory.setImageResource(CategoryIcon.get(output.category!!))
             this.usedTime.text = "평균 소요 시간: ${APIs.secToString(output.usedTime.toInt())}"
-            Log.i("imageCount","${output.imgUrl.size}")
-            val adapter = AdapterImageList(itemView.context, output.imgUrl)
+            Log.i("imageCount","${output.images.size}")
+            val adapter = AdapterImageList(itemView.context, output.images)
 
             imgList.adapter = adapter
 

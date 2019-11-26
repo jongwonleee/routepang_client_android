@@ -16,7 +16,7 @@ import java.io.Serializable
  */
 class Location : Serializable {
     var name = ""
-    var imgUrl = arrayListOf<String>()
+    var images = arrayListOf<String>()
     var rating = 0f
     var placeId = ""
     var coordinates =""
@@ -27,7 +27,7 @@ class Location : Serializable {
     var address = ""
     constructor()
     constructor(location: Location) {
-        imgUrl = ArrayList()
+        images = ArrayList()
         name = location.name
         address = location.address
         Log.i("getting serverModel", location.coordinates)

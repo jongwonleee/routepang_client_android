@@ -8,12 +8,14 @@ const val CLASS_DOMAIN:String = "http://www.routepang.com:9090/"
 /* jsonParsing 따로 객체화 시키기 : apiUtils
  * stretegy화. getResult method로 통일
  */
+
 abstract class WebStrategy {
     protected var domain: String
     protected abstract val inner: String
     protected abstract var param: String
     protected abstract val mockData: String
     protected var statusCode: Int? = null
+    protected var contents= arrayListOf<Pair<String,String>>()
     abstract val method:String
     companion object {
         const val classDomain: String = CLASS_DOMAIN
@@ -45,6 +47,12 @@ abstract class WebStrategy {
                 if (p0.isNotEmpty())
                     http.setParameters(p0[0])
 
+
+                for(c in contents){
+                    http.addContentType(c)
+                }
+
+
                 // Http 요청 전송
                 val post = http.create()
 
@@ -59,6 +67,5 @@ abstract class WebStrategy {
                 return post.body
             }
         }
-
     }
 }

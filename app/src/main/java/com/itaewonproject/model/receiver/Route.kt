@@ -1,19 +1,21 @@
 package com.itaewonproject.model.receiver
 
+import com.itaewonproject.model.sender.Customer
 import kotlin.collections.ArrayList
 
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 
-class Route(var title: String,  var boundary: String,  var routeId: Long, var customerId: Long, var regDate: Long) {
+class Route(var title: String, var boundary: String, var routeId: Long, var customer: Customer, var regDate: Long) {
     var category = RouteType.ROUTE
     var parentId = 0
     var routes: ArrayList<Route> = arrayListOf()
+    var products :ArrayList<Product> = arrayListOf()
     private var endDate: Long=0
     private var startDate: Long=0
     var opened = false
 
-    constructor(title: String, boundary: String, routeId: Long,routes:ArrayList<Route>,customerId: Long,regDate: Long) : this(title,boundary, routeId, customerId, regDate){
+    constructor(title: String, boundary: String, routeId: Long,routes:ArrayList<Route>,customer: Customer,regDate: Long) : this(title,boundary, routeId, customer, regDate){
         this.routes = routes
     }
 

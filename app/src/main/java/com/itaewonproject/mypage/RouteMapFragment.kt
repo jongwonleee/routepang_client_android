@@ -87,11 +87,14 @@ class RouteMapFragment: Fragment(), AdapterMarkerList.OnStartDragListener,
         super.setUserVisibleHint(isVisibleToUser)
         if (isResumed && isVisibleToUser) {
             try{
-                list = (parentFragment as RouteFragment).products
+                list = (parentFragment as RouteFragment).route.products
                 val wish =JsonParser().listJsonParsing(GetBasketConnector().get(customer.customerId), Product::class.java)
                 wishlist.clear()
+                wishlist.addAll(wish)
                 for(w in wish){
-                    if(!list.contains(w)) wishlist.add(w)
+                    for(l in list){
+                        if(w.productId==l.productId)wishlist.remove(w)
+                    }
                 }
                 routeUtils.setList()
                 routeUtils.addLine()
@@ -128,7 +131,6 @@ class RouteMapFragment: Fragment(), AdapterMarkerList.OnStartDragListener,
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        this.customer = (activity!!.application as Routepang).userToSee
         mapView = view.findViewById(R.id.map) as CustomMapView
         mapView.isInRoute=true
         mapView.onCreate(savedInstanceState)
@@ -171,13 +173,12 @@ class RouteMapFragment: Fragment(), AdapterMarkerList.OnStartDragListener,
                     editTitle.visibility = View.INVISIBLE
                     buttonEditor.visibility = View.VISIBLE
                     routeUtils.setBoundary(list)
-                    for( p in list){
-                        val ret = PutRouteConnector().put(p.toSenderModel(),(parentFragment as RouteFragment).route.routeId)
-                        if(ret.responceCode==200 || ret.responceCode==201) {
-                            Toast.makeText(con,"루트에 반영되었습니다.",Toast.LENGTH_LONG).show()
-                        }else {
-                            Toast.makeText(con,"루트에 반영 실패했습니다.",Toast.LENGTH_LONG).show()
-                        }
+                    (parentFragment as RouteFragment).route.customer = customer
+                    val ret = PutRouteConnector().put((parentFragment as RouteFragment).route.routeId,(parentFragment as RouteFragment).route)
+                    if(ret.responceCode==200 || ret.responceCode==201) {
+                        Toast.makeText(con,"루트에 반영되었습니다.",Toast.LENGTH_LONG).show()
+                    }else {
+                        Toast.makeText(con,"루트에 반영 실패했습니다.",Toast.LENGTH_LONG).show()
                     }
                 }
                 routeUtils.editMode = editMode
@@ -262,6 +263,7 @@ class RouteMapFragment: Fragment(), AdapterMarkerList.OnStartDragListener,
         setMapReady()
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        this.customer = arguments!!.getSerializable("customer")as Customer
         var view = view
         try {
             view = inflater.inflate(R.layout.fragment_route_map, container, false)

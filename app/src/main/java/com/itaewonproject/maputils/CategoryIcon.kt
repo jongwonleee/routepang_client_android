@@ -6,7 +6,7 @@ import com.itaewonproject.R
 object CategoryIcon{
     private val icons = hashMapOf<LocationCategory,Int>()
     private val indexs = HashMap<LocationCategory,Int>()
-    private val colors = arrayOf("#4DABFF","#4DABFF","#866DF2","#FB7286","#F8C51B")
+    private val colors = arrayOf("#4DABFF","#23A80C","#866DF2","#FB7286","#F8C51B")
     init{
         icons[LocationCategory.UNKNOWN] = R.drawable.ic_ico_dummy
         icons[LocationCategory.PUBLIC] = R.drawable.ic_ico_tourist

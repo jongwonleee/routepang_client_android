@@ -2,17 +2,24 @@ package com.itaewonproject.message
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.util.Log
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.cloud.Timestamp
+import com.itaewonproject.JsonParser
 import com.itaewonproject.R
 import com.itaewonproject.Routepang
 import com.itaewonproject.adapter.AdapterMessagingList
-import com.itaewonproject.model.receiver.Message
+import com.itaewonproject.model.receiver.ChatMessage
+import com.itaewonproject.model.receiver.Route
 import com.itaewonproject.model.sender.Customer
+import com.itaewonproject.rests.get.GetChatConnector
+import com.itaewonproject.rests.post.PostChatConnector
 
 class MessagingActivity : AppCompatActivity() {
 
@@ -24,6 +31,7 @@ class MessagingActivity : AppCompatActivity() {
     private lateinit var title:TextView
 
     private lateinit var customer:Customer
+    private var list = arrayListOf<ChatMessage>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,26 +48,35 @@ class MessagingActivity : AppCompatActivity() {
 
         title.text=customer.reference
 
-        ///TODO 차후에 지워주기
-        val m1 = Message()
-        m1.regDate= Timestamp.now().seconds
-        m1.customer = (application as Routepang).customer
-        m1.isMe = true
-        m1.text = "text11"
-        val m2 = Message()
-        m2.regDate= Timestamp.now().seconds
-        m2.customer = (application as Routepang).customer
-        m2.isMe = false
-        m2.text = "hi baby"
+        list = JsonParser().listJsonParsing(GetChatConnector().get((application as Routepang).customer.customerId,customer.customerId),ChatMessage::class.java)
 
-
-
-        adapter = AdapterMessagingList(this, arrayListOf(m2,m1,m2,m2,m2,m1,m2,m2,m1))
+        adapter = AdapterMessagingList(this, list,(application as Routepang).customer.customerId)
         recyclerview.adapter = adapter
 
         val linearLayoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        linearLayoutManager.reverseLayout=true
+        linearLayoutManager.stackFromEnd=true
         recyclerview.layoutManager = linearLayoutManager
         recyclerview.setHasFixedSize(true)
+
+        buttonSend.setOnClickListener({
+            if(!editMessage.text.trim().isEmpty())
+            {
+                val chat =ChatMessage()
+                chat.senderId=(application as Routepang).customer.customerId
+                chat.receiverId = customer.customerId
+                chat.content=editMessage.text.trim().toString()
+                val ret = PostChatConnector().post(chat)
+                if(ret.responceCode==200){
+                    editMessage.text = Editable.Factory.getInstance().newEditable("")
+                    list = JsonParser().listJsonParsing(GetChatConnector().get((application as Routepang).customer.customerId,customer.customerId),ChatMessage::class.java)
+                    adapter.refreshData(list)
+                }
+            }else
+            {
+                Toast.makeText(this,"메시지를 압력해주세요.",Toast.LENGTH_SHORT).show()
+            }
+        })
 
 
     }

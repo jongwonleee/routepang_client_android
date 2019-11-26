@@ -185,10 +185,11 @@ class WishlistMapFragment: Fragment(), MyLocationSetting {
             this.rating.rating = location.rating
             this.imageCategory.setImageResource(CategoryIcon.get(location.category!!))
             this.usedTime.text = "평균 소요 시간: ${APIs.secToString(location.usedTime.toInt())}"
-            if(location.imgUrl.size>0){
+            if(location.images.size>0){
                 imagePreview.visibility=View.VISIBLE
                 Picasso.with(context)
-                    .load(location.imgUrl[0])
+                    .load(location.images[0])
+                    .placeholder(R.drawable.box_empty_location)
                     .transform(RatioTransformation(300))
                     .into(imagePreview)
             }else

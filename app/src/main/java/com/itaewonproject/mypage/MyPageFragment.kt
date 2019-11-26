@@ -57,7 +57,6 @@ class MyPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity!!.application as Routepang).userToSee = (activity!!.application as Routepang).customer
         appBarLayout = view.findViewById(R.id.appBar_layout) as AppBarLayout
         tabLayout = view.findViewById(R.id.tabLayout) as TabLayout
         viewPager = view.findViewById(R.id.viewPager) as NonSwipeViewPager
@@ -73,9 +72,18 @@ class MyPageFragment : Fragment() {
         }
 
         adapter = TabPagerAdapter(childFragmentManager, 3)
-        adapter.addPage(RouteFragment(), "루트")
-        adapter.addPage(WishlistFragment(), "위시리스트")
-        adapter.addPage(ReviewFragment(), "후기")
+        val bundle = Bundle(1)
+        bundle.putSerializable("customer",(activity!!.application as Routepang).customer)
+        val routeFragment = RouteFragment()
+        val wishlistFragment = WishlistFragment()
+        val reviewFragment = ReviewFragment()
+        routeFragment.arguments = bundle
+        wishlistFragment.arguments =bundle
+        reviewFragment.arguments=bundle
+
+        adapter.addPage(routeFragment, "루트")
+        adapter.addPage(wishlistFragment, "위시리스트")
+        adapter.addPage(reviewFragment, "후기")
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)
         appBarLayout.setExpanded(true)

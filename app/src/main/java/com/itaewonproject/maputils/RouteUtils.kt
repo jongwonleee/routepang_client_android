@@ -250,13 +250,22 @@ class RouteUtils(val map: GoogleMap, val fragment: RouteMapFragment) {
             polylineOptions.width(10.0f)
             polylineOptions.clickable(false)
             polylineOptions.endCap(RoundCap())
+            val route = result.routes[0]
+            val decodedPath = PolylineEncoding.decode(route.overviewPolyline.encodedPath)
+            val list = arrayListOf<LatLng>()
+            for (path in decodedPath) {
+                list.add(LatLng(path.lat, path.lng))
+            }
+            polylineOptions.addAll(list)
             for (route in result.routes) {
+                /*
                 val decodedPath = PolylineEncoding.decode(route.overviewPolyline.encodedPath)
                 val list = arrayListOf<LatLng>()
                 for (path in decodedPath) {
                     list.add(LatLng(path.lat, path.lng))
                 }
                 polylineOptions.addAll(list)
+                 */
             }
             map.addPolyline(polylineOptions)
         })

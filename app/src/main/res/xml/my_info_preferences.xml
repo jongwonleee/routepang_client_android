@@ -52,6 +52,10 @@
         <Preference
                 app:key="null" />
         <Preference
+                app:key="secure_logout"
+                app:iconSpaceReserved="false"
+                app:title="로그아웃" />
+        <Preference
                 app:key="secure_quit"
                 app:iconSpaceReserved="false"
                 app:title="회원탈퇴" />

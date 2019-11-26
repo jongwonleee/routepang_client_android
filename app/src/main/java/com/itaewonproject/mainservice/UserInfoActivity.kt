@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.google.android.material.tabs.TabLayout
 import com.itaewonproject.JsonParser
 import com.itaewonproject.R
@@ -15,10 +16,12 @@ import com.itaewonproject.adapter.TabPagerAdapter
 import com.itaewonproject.customviews.NonSwipeViewPager
 import com.itaewonproject.model.receiver.CustomerPage
 import com.itaewonproject.model.sender.Customer
+import com.itaewonproject.model.sender.Follow
 import com.itaewonproject.mypage.ReviewFragment
 import com.itaewonproject.mypage.RouteFragment
 import com.itaewonproject.mypage.WishlistFragment
 import com.itaewonproject.rests.get.GetCustomerPageConnector
+import com.itaewonproject.rests.post.PostFollowConnector
 
 class UserInfoActivity : AppCompatActivity() {
 
@@ -38,7 +41,6 @@ class UserInfoActivity : AppCompatActivity() {
         setContentView(R.layout.activity_user_info)
 
         customer = intent.getSerializableExtra("customer") as Customer
-        (application as Routepang).userToSee=customer
         tabLayout = findViewById(R.id.tabLayout)
         viewPager = findViewById(R.id.viewPager)
         textName = findViewById(R.id.text_name)
@@ -48,9 +50,19 @@ class UserInfoActivity : AppCompatActivity() {
         buttonFollow = findViewById(R.id.button_follow)
 
         adapter = TabPagerAdapter(supportFragmentManager, 3)
-        adapter.addPage(RouteFragment(), "루트")
-        adapter.addPage(WishlistFragment(), "위시리스트")
-        adapter.addPage(ReviewFragment(), "후기")
+
+        val bundle = Bundle(1)
+        bundle.putSerializable("customer",customer)
+        val routeFragment = RouteFragment()
+        val wishlistFragment = WishlistFragment()
+        val reviewFragment = ReviewFragment()
+        routeFragment.arguments = bundle
+        wishlistFragment.arguments =bundle
+        reviewFragment.arguments=bundle
+
+        adapter.addPage(routeFragment, "루트")
+        adapter.addPage(wishlistFragment, "위시리스트")
+        adapter.addPage(reviewFragment, "후기")
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)
         viewPager.setSwipePagingEnabled(true)
@@ -58,6 +70,18 @@ class UserInfoActivity : AppCompatActivity() {
         tabLayout.setOnTouchListener { view: View, motionEvent: MotionEvent ->
             return@setOnTouchListener true
         }
+        buttonFollow.setOnClickListener({
+            val follow = Follow()
+            follow.target = customer
+            follow.follower = (application as Routepang).customer
+            val ret = PostFollowConnector().post(follow)
+            if(ret.responceCode==200){
+                Toast.makeText(this,"팔로우 완료",Toast.LENGTH_SHORT).show()
+            }else
+            {
+                Toast.makeText(this,"다시 시도해주세요",Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     override fun onResume() {

@@ -148,7 +148,7 @@ class LinkShareActivity : AppCompatActivity(){
                 location.name=place.name
                 location.placeId=place.id
                 location.category = LocationCategoryParser.get(place.types!![0].name)
-                location.coordinates = "POINT (${place.latLng!!.latitude} ${place.latLng!!.longitude})"
+                location.coordinates = "POINT (${place.latLng!!.longitude} ${place.latLng!!.latitude})"
 
                 adapter?.addAddress(location)
 

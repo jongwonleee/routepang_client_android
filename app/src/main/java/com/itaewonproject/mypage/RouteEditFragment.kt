@@ -62,7 +62,7 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
         try{
             if (isVisibleToUser && isResumed ) {
                 Log.i("isvisible","${(parentFragment as RouteFragment).route.title}")
-                list = (parentFragment as RouteFragment).products
+                list = (parentFragment as RouteFragment).route.products
                 adapter!!.list = list
                 adapter!!.resetSteplist()
                 adapter!!.notifyDataSetChanged()
@@ -91,7 +91,6 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        this.customer = (activity!!.application as Routepang).userToSee
         Log.i("view Created!!!","!!")
         buttonMap = view.findViewById(R.id.image_map)
         recyclerView = view.findViewById(R.id.edit_recyclerView) as RecyclerView
@@ -144,7 +143,7 @@ class RouteEditFragment : Fragment(), AdapterRouteEdit.OnStartDragListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
+        this.customer = arguments!!.getSerializable("customer")as Customer
         return inflater.inflate(R.layout.fragment_route_edit, container, false)
     }
 

@@ -5,9 +5,12 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.Html
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.Gson
 import com.itaewonproject.JsonParser
 import com.itaewonproject.customviews.ClearEditText
@@ -19,6 +22,7 @@ import com.itaewonproject.rests.IS_OFFLINE
 import com.itaewonproject.rests.authorization
 import com.itaewonproject.rests.get.GetCustomerConnector
 import com.itaewonproject.rests.post.LogInConnector
+import com.itaewonproject.rests.post.PostTokenConnector
 
 class LoginActivity : AppCompatActivity() {
 
@@ -43,6 +47,16 @@ class LoginActivity : AppCompatActivity() {
         buttonSignin = findViewById<TextView>(R.id.button_signin)
         buttonFind = findViewById<TextView>(R.id.button_find)
         checkAutoLogin = findViewById<CheckBox>(R.id.check_autologin)
+        var token=""
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("firebase", "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
+                token = task.result?.token.toString()
+                Log.i("FCM Token",token)
+            })
 
         sharedPreferences = getSharedPreferences("autoLogin", MODE_PRIVATE)
         checkAutoLogin.isChecked = sharedPreferences.getBoolean("autoLoginCheck",false)
@@ -71,8 +85,10 @@ class LoginActivity : AppCompatActivity() {
                 (application as Routepang).token = ret.body!!
                 authorization = ret.body!!
                 (application as Routepang).customer = JsonParser().objectJsonParsing(GetCustomerConnector().get(id).body!!,Customer::class.java)!!
+                PostTokenConnector().post((application as Routepang).customer.customerId,token)
                 if(checkAutoLogin.isChecked){
                     val editor = sharedPreferences.edit()
+                    editor.putBoolean("autoLoginCheck",true)
                     editor.putString("loginToken", ret.body)
                     editor.putString("autoLoginCustomer", Gson().toJson((application as Routepang).customer))
                     editor.apply()
@@ -112,11 +128,6 @@ class LoginActivity : AppCompatActivity() {
 
         }
 
-        checkAutoLogin.setOnCheckedChangeListener { compoundButton: CompoundButton, isChecked: Boolean ->
-            val editor = sharedPreferences.edit()
-            editor.putBoolean("autoLoginCheck",isChecked)
-            editor.apply()
-        }
 
     }
 

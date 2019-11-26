@@ -52,16 +52,17 @@ class MainActivity : AppCompatActivity(),TabLayout.OnTabSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        tabLayout = findViewById<TabLayout>(R.id.tabLayout)
-        viewPager = findViewById<ViewPager>(R.id.viewPager)
-        buttonSearch = findViewById<ImageView>(R.id.button_search)
-        buttonMessage= findViewById<ImageView>(R.id.button_message)
+        tabLayout = findViewById(R.id.tabLayout)
+        viewPager = findViewById(R.id.viewPager)
+        buttonSearch = findViewById(R.id.button_search)
+        buttonMessage= findViewById(R.id.button_message)
 
         val adapter = TabPagerAdapter(supportFragmentManager, 3)
        /* adapter.addPage(NewsfeedFragment(), "")
-        adapter.addPage(FavRouteFragment(), "")*/
+        adapter.addPage(FavRouteFragment(), "")
+        adapter.addPage(MyPageFragment(), "")*/
         adapter.addPage(MyPageFragment(), "")
-        adapter.addPage(ComingSoonFragment(),"")
+        adapter.addPage(NewsfeedFragment(),"")
         adapter.addPage(ComingSoonFragment(),"")
 
         val ret = GetBasketConnector().get((application as Routepang).customer.customerId)
@@ -92,6 +93,12 @@ class MainActivity : AppCompatActivity(),TabLayout.OnTabSelectedListener {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        val ret = GetBasketConnector().get((application as Routepang).customer.customerId)
+        val products = JsonParser().listJsonParsing(ret, Product::class.java)
+        (application as Routepang).wishlist = products
+    }
 
     private fun setTabView(pos:Int,selected:Boolean){
         Log.i("changing Tab","$pos, $selected ${if(selected)iconsOn[pos] else iconsOff[pos]}")

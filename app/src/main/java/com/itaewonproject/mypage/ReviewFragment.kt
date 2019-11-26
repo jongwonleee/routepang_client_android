@@ -24,12 +24,17 @@ class ReviewFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var list: ArrayList<Article>
     lateinit var  customer:Customer
+    lateinit var adapter:AdapterArticleList
+    override fun onResume() {
+        super.onResume()
+        list = JsonParser().listJsonParsing(GetReviewConnector().get(customer.customerId), Article::class.java)
+        adapter.notifyDataSetChanged()
 
-
+    }
     private fun setListViewOption(view: View) {
         list = JsonParser().listJsonParsing(GetReviewConnector().get(customer.customerId), Article::class.java)
         recyclerView = view.findViewById(R.id.review_RecyclerView) as RecyclerView
-        val adapter = AdapterArticleList(view.context, list)
+        adapter = AdapterArticleList(view.context, list)
 
         adapter.setOnItemClickClickListener(object : AdapterArticleList.OnItemClickListener {
             override fun onReferenceClick(position: Int) {
@@ -50,7 +55,6 @@ class ReviewFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        this.customer = (activity!!.application as Routepang).userToSee
         val button = view.findViewById(R.id.button_link_share) as CardView
         button.setOnClickListener {
             val intent = Intent(context, LinkShareActivity::class.java)
@@ -60,6 +64,8 @@ class ReviewFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        this.customer = arguments!!.getSerializable("customer") as Customer
+
         return inflater.inflate(R.layout.fragment_review, container, false)
     }
 }

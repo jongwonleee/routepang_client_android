@@ -133,7 +133,7 @@
                             android:layout_marginRight="5dp"
                             android:fontFamily="@font/notosanscjkkr_regular"
                             android:gravity="center"
-                            android:text="팔로잉"
+                            android:text="팔로우"
                             android:textColor="#666666" />
 
                     <TextView

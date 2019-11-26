@@ -9,10 +9,10 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.itaewonproject.R
-import com.itaewonproject.model.receiver.Message
+import com.itaewonproject.model.receiver.ChatMessage
 import java.sql.Timestamp
 
-class AdapterMessagingList(val context: Context, var list: ArrayList<Message>) : RecyclerView.Adapter<AdapterMessagingList.ViewHolder>() {
+class AdapterMessagingList(val context: Context, var list: ArrayList<ChatMessage>,val customerId:Long) : RecyclerView.Adapter<AdapterMessagingList.ViewHolder>() {
 
     private lateinit var listener: OnItemClickListener
 
@@ -27,6 +27,11 @@ class AdapterMessagingList(val context: Context, var list: ArrayList<Message>) :
 
     override fun getItemCount(): Int {
         return list.size
+    }
+
+    fun refreshData(list: ArrayList<ChatMessage>){
+        this.list = list
+        notifyDataSetChanged()
     }
 
 
@@ -54,9 +59,9 @@ class AdapterMessagingList(val context: Context, var list: ArrayList<Message>) :
         }
         override fun bind(pos: Int) {
             val message = list[pos]
-            textMessage.text = message.text
+            textMessage.text = message.content
             textTime.text = Timestamp(message.regDate).toString()
-            if(message.isMe){
+            if(message.senderId==customerId){
                 imageOpposite.visibility=View.GONE
                 imageMe.visibility=View.VISIBLE
                 background.setBackgroundResource(R.drawable.box_grey_right_top_not_curved)
@@ -66,6 +71,7 @@ class AdapterMessagingList(val context: Context, var list: ArrayList<Message>) :
                 imageMe.visibility=View.GONE
                 background.setBackgroundResource(R.drawable.box_grey_right_top_not_curved)
             }
+
         }
     }
 }

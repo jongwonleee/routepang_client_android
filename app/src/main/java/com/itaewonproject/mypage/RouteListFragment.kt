@@ -15,9 +15,11 @@ import com.itaewonproject.JsonParser
 import com.itaewonproject.R
 import com.itaewonproject.Routepang
 import com.itaewonproject.adapter.AdapterRouteList
+import com.itaewonproject.mainservice.MainActivity
 import com.itaewonproject.model.receiver.*
 import com.itaewonproject.model.sender.Customer
 import com.itaewonproject.rests.get.GetRouteListConnector
+import com.itaewonproject.rests.post.PostRouteConnector
 import com.itaewonproject.rests.post.PostRouteListConnector
 
 class RouteListFragment: Fragment() {
@@ -60,7 +62,6 @@ class RouteListFragment: Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        this.customer = (activity!!.application as Routepang).userToSee
         buttonMakeRoute = view.findViewById(R.id.image_makeFolder) as ImageView
         buttonDelete = view.findViewById(R.id.image_delete) as ImageView
         recyclerView = view.findViewById(R.id.route_RecyclerView) as RecyclerView
@@ -79,14 +80,20 @@ class RouteListFragment: Fragment() {
             buttonDelete.visibility = View.GONE
         }
         buttonNewRoute.setOnClickListener {
-            adapter.newRoute()
-            val ret = PostRouteListConnector().post(adapter.folder.folders,customer.customerId)
-            Log.i("post routes","${ret.responceCode} ${ret.body}")
+            var route = Route("새 루트","미지정",0, ((context as MainActivity).application as Routepang).customer,System.currentTimeMillis())
+            val ret = PostRouteConnector().post(customer.customerId,route)
+            if(ret.responceCode==200){
+                val ret = GetRouteListConnector().get(customer.customerId)
+                list = JsonParser().listJsonParsing(ret, Route::class.java)
+                adapter.resetList(list)
+            }
         }
         setListViewOption(view)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        this.customer = arguments!!.getSerializable("customer")as Customer
+
         var view = view
         try {
             view = inflater.inflate(R.layout.fragment_route_list, container, false)

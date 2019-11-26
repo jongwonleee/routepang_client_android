@@ -6,7 +6,10 @@ import android.os.Bundle
 import android.widget.ImageView
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.google.gson.Gson
 import com.itaewonproject.R
+import com.itaewonproject.Routepang
+import com.itaewonproject.landingpage.LoginActivity
 
 class MyInfoActivity : AppCompatActivity() {
 
@@ -14,7 +17,7 @@ class MyInfoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_setting)
+        setContentView(R.layout.activity_my_info)
         buttonBack = findViewById<ImageView>(R.id.button_back)
         buttonBack.setOnClickListener { finish()}
         supportFragmentManager
@@ -22,6 +25,7 @@ class MyInfoActivity : AppCompatActivity() {
             .replace(R.id.settings, SettingsFragment())
             .commit()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        finish()
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {
@@ -44,6 +48,17 @@ class MyInfoActivity : AppCompatActivity() {
                     }
                     "service_openSource"->{
 
+                    }
+                    "secure_logout"->{
+                        val sharedPreferences = activity!!.getSharedPreferences("autoLogin", MODE_PRIVATE)
+                        val editor = sharedPreferences.edit()
+                        editor.putBoolean("autoLoginCheck",false)
+                        editor.putString("loginToken", null)
+                        editor.putString("autoLoginCustomer",null)
+                        editor.apply()
+                        val intent = Intent(context, LoginActivity::class.java)
+                        startActivity(intent)
+                        activity!!.finish()
                     }
                 }
             }

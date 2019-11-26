@@ -121,7 +121,7 @@ public class LinkManager {
                                 location.category = LocationCategoryParser.INSTANCE.get(locations.getJSONObject(i).getJSONArray("types").get(0).toString());
                                 double lat = locations.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lat");
                                 double lng = locations.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lng");
-                                location.coordinates = "POINT ("+lat+" "+lng+")";
+                                location.coordinates = "POINT ("+lng+" "+lat+")";
                                 linkPlaces.getList().add(location);
                             }
                         }

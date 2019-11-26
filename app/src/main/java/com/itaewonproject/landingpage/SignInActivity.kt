@@ -68,6 +68,7 @@ class SignInActivity : AppCompatActivity() {
                 Toast.makeText(this,"회원가입에 실패했습니다. 다시 시도해주세요.",Toast.LENGTH_LONG).show()
                 editName.text=empty
                 editID.text=empty
+                editEmail.text=empty
                 editPWCheck.text=empty
                 editPW.text=empty
             }

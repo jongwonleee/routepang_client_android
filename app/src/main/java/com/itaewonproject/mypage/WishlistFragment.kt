@@ -44,7 +44,7 @@ class WishlistFragment: Fragment() {
 
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        this.customer = (activity!!.application as Routepang).userToSee
+        this.customer = arguments!!.getSerializable("customer")as Customer
         tabLayout = view.findViewById(R.id.tabLayout) as TabLayout
         viewPager = view.findViewById(R.id.viewPager) as ViewPager
 

@@ -25,7 +25,7 @@ class WishlistListFragment: Fragment() {
         recyclerView = view.findViewById(R.id.wishlist_RecyclerView) as RecyclerView
         adapter = AdapterLocationList(view.context, list)
         adapter.setOnItemClickClickListener(object : AdapterLocationList.OnItemClickListener {
-            override fun onItemClick(v: View, position: Int) {
+            override fun onItemClick(position: Int) {
                 val intent = Intent(context, ArticleActivity::class.java)
                 intent.putExtra("Location", adapter.output[position])
                 startActivity(intent)

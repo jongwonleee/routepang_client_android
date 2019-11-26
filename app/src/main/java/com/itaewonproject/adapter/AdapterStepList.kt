@@ -61,6 +61,7 @@ class AdapterStepList(val context: Context, var list: List<DirectionsStep>) : Re
                         category.setImageResource(VehicleIcon.get(line.vehicle.type))
                         Picasso.with(itemView.context)
                             .load(line.vehicle.localIcon)
+                            .placeholder(R.drawable.box_empty_location)
                             .transform(RatioTransformation(16))
                             .into(travelMode)
                     }

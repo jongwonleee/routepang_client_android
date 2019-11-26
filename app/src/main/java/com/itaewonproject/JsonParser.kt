@@ -26,4 +26,15 @@ class JsonParser {
         return if(arr==null) arrayListOf()
         else arr
     }
+    fun <T> setJsonParsing(result: String, cls: Class<T>): Set<T> {
+        var arr:Set<T>? = null
+        try {
+
+            arr = Gson().fromJson(result, TypeToken.getParameterized(Set::class.java, cls).type)
+        } catch (e: JsonParseException) {
+            e.printStackTrace()
+        }
+        return if(arr==null) setOf()
+        else arr
+    }
 }

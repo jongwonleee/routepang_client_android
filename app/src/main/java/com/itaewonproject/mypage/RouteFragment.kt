@@ -22,7 +22,7 @@ class RouteFragment: Fragment() {
     private lateinit var viewPager: ViewPager
     private lateinit var adapter: TabPagerAdapter
     lateinit var route: Route
-    var products = arrayListOf<Product>()
+    lateinit var customer:Customer
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -32,16 +32,22 @@ class RouteFragment: Fragment() {
         // tabLayout = view.findViewById(R.id.tabLayout) as TabLayout
 
         viewPager = view.findViewById(R.id.viewPager) as ViewPager
+        val routeListFragment =  RouteListFragment()
+        val routeEditFragment = RouteEditFragment()
+        val routeMapFragment = RouteMapFragment()
+        routeListFragment.arguments = arguments
+        routeEditFragment.arguments = arguments
+        routeMapFragment.arguments =arguments
         adapter = TabPagerAdapter(childFragmentManager, 3)
-        adapter.addPage(RouteListFragment(), "List")
-        adapter.addPage(RouteEditFragment(), "Edit")
-        adapter.addPage(RouteMapFragment(), "Map")
+        adapter.addPage(routeListFragment, "List")
+        adapter.addPage(routeEditFragment, "Edit")
+        adapter.addPage(routeMapFragment, "Map")
         viewPager.adapter = adapter
     }
 
     fun toEditFragment(item: Route) {
         route = item
-        products = JsonParser().listJsonParsing(GetRouteConnector().get(route.routeId),Product::class.java)
+        route.products = JsonParser().listJsonParsing(GetRouteConnector().get(route.routeId),Product::class.java)
         viewPager.setCurrentItem(1, true)
     }
 
@@ -57,6 +63,7 @@ class RouteFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
+        this.customer = arguments!!.getSerializable("customer") as Customer
         return inflater.inflate(R.layout.fragment_route, container, false)
     }
 
