@@ -9,6 +9,9 @@
 ---------------------------
 ### 2. Stack
 - Language: Kotlin version 1.3.31  
+- Firebase crashlytics
+- Firebase cloud notification
+- Gitlab CI
 
 ---------------------------
 ### 3. Framework
