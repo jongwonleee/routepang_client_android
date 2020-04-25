@@ -22,7 +22,11 @@
 ### 4. Demo
 - [Demo Video](https://drive.google.com/open?id=169y81-A1pnN3kSwx5WCf685Z-JlOSIaL)
 
+---
+### 5. Logo
+![로고](/app/src/main/ic_launcher-web.png)
+
 ---------------------------
-### 5. Contacts
+### 6. Contacts
 - distributed by Jongwon Lee  
 - email: jong12em@naver.com
